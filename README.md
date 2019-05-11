@@ -1,9 +1,9 @@
-# GabTag 
+# GabTags [![Build Status](https://travis-ci.com/lachhebo/GabTags.svg?branch=master)](https://travis-ci.com/lachhebo/GabTags) 
 
 
 ## Description :
 
-GabTag is a GTK software written in Python, it allows user to add or modify tags on audio files.
+GabTags is a GTK software written in Python, it allows user to add or modify tags on audio files.
 
 It uses Mutagen to handle tags. I hope to make it available on Flathub as soon as possible.
 
@@ -11,7 +11,7 @@ It uses Mutagen to handle tags. I hope to make it available on Flathub as soon a
 
 - [x] Add, modify or delete basic tags (title, album, artist, genre)
 - [ ] other strings tags (less important)
-- [ ] Continuous integration
+- [x] Continuous integration
 - [x] Modify several file at the same time.
 - [x] MP3 file handled
 - [ ] Flac File handled
@@ -23,12 +23,12 @@ It uses Mutagen to handle tags. I hope to make it available on Flathub as soon a
 
 ## Screenshots:
 
-![ScreenShot](https://raw.githubusercontent.com/lachhebo/GabTag/screenshots/Image1.png)
+![ScreenShot](https://raw.githubusercontent.com/lachhebo/GabTags/screenshots/Image1.png)
 
 
 ## Development Instruction:
 
-GabtTag is written to be as easily maintainable and extensible as possible.
+GabtTags is written to be as easily maintainable and extensible as possible.
 
 ### Contributions :
 
