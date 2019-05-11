@@ -1,0 +1,63 @@
+{
+    "app-id": "org.gnome.Gabtag",
+    "runtime": "org.gnome.Platform",
+    "runtime-version": "3.28",
+    "sdk": "org.gnome.Sdk",
+    "command": "gabtag",
+    "finish-args": [
+        "--share=network",
+        "--share=ipc",
+        "--socket=x11",
+        "--socket=wayland",
+        "--filesystem=xdg-run/dconf",
+        "--filesystem=~/.config/dconf:ro",
+        "--talk-name=ca.desrt.dconf",
+        "--env=DCONF_USER_CONFIG_DIR=.config/dconf"
+    ],
+    "build-options": {
+        "cflags": "-O2 -g",
+        "cxxflags": "-O2 -g",
+        "env": {
+            "V": "1"
+        }
+    },
+    "cleanup": [
+        "/include",
+        "/lib/pkgconfig",
+        "/man",
+        "/share/doc",
+        "/share/gtk-doc",
+        "/share/man",
+        "/share/pkgconfig",
+        "*.la",
+        "*.a"
+    ],
+    "modules": [
+    	{
+	    "name": "python3-mutagen",
+	    "buildsystem": "simple",
+	    "build-commands": [
+		"pip3 install --no-index --find-links=\"file://${PWD}\" --prefix=${FLATPAK_DEST} mutagen"
+	    ],
+	    "sources": [
+		{
+		    "type": "file",
+		    "url": "https://files.pythonhosted.org/packages/30/4c/5ad1a6e1ccbcfaf6462db727989c302d9d721beedd9b09c11e6f0c7065b0/mutagen-1.42.0.tar.gz",
+		    "sha256": "bb61e2456f59a9a4a259fbc08def6d01ba45a42da8eeaa97d00633b0ec5de71c"
+		}
+	    ]
+	},
+        {
+            "name": "gabtag",
+            "buildsystem": "meson",
+            "config-opts": [ "--libdir=lib" ],
+            "builddir": true,
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "file:///home/isma/Projets/GabTag"
+                }
+            ]
+        }
+    ]
+}
