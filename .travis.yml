@@ -1,7 +1,9 @@
 
 language: python
-branch: 
- - travis
+# safelist
+branches:
+  only:
+  - travis
 before_install:
  - sudo apt-get update
  - sudo apt-get install python-gi
