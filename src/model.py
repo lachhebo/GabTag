@@ -16,7 +16,8 @@ class Model:
                         "title" :{ "groupability": 0, "value": None},
                         "album" :{ "groupability": 1, "value": None},
                         "artist":{ "groupability": 1, "value": None},
-                        "genre" :{ "groupability": 0, "value": None},
+                        "genre" :{ "groupability": 1, "value": None},
+                        "cover" :{ "groupability": 1, "value": None}
                         }
 
         def update_directory(self,directory):
@@ -53,6 +54,7 @@ class Model:
             self.getTags(model,listiter)
 
             # afficher les modifs :
+            #print("listiter : ",listiter)
             self.view.show(self.tagdico)
 
         def update_modifications(self,selection, tag_changed, new_value):
@@ -121,6 +123,9 @@ class Model:
             for key in self.tagdico :
                 self.tagdico[key]["value"] = audio.getTag(key)
 
+
+            #print("AFTER_GETTAG DICO : ", self.tagdico)
+
             self.check_dictionnary(namefile)   # Look in Mofification
 
 
@@ -130,7 +135,6 @@ class Model:
 
                 for key in self.tagdico:
                     contkey_dico[key] = 1
-
 
                 for i in range(1,len(listiter)):
                     namefile = model[listiter[i]][0]

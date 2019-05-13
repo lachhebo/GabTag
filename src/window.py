@@ -34,6 +34,7 @@ class GabtagWindow(Gtk.ApplicationWindow):
     id_artist = GtkTemplate.Child()
     id_type = GtkTemplate.Child()
     id_title  = GtkTemplate.Child()
+    id_cover = GtkTemplate.Child()
     id_popover_menu = GtkTemplate.Child()
 
 
@@ -41,7 +42,7 @@ class GabtagWindow(Gtk.ApplicationWindow):
         super().__init__(**kwargs)
         self.init_template()
 
-        View(self.tree_view_id, self.id_title, self.id_album, self.id_artist, self.id_type)
+        View(self.tree_view_id, self.id_title, self.id_album, self.id_artist, self.id_type, self.id_cover)
 
         view = View.getInstance()
 
@@ -70,7 +71,9 @@ class GabtagWindow(Gtk.ApplicationWindow):
         response = dialog.run()
 
         model = Model.getInstance()
-        model.update_directory(dialog.get_filename())
+        if response == Gtk.ResponseType.OK:
+            model.update_directory(dialog.get_filename())
+
         dialog.destroy()
 
         # List mp3 file on the folder on the tree view :
@@ -110,6 +113,29 @@ class GabtagWindow(Gtk.ApplicationWindow):
         if self.realselection == 1 :
             model = Model.getInstance()
             model.update_modifications(self.selectionned,"genre",widget.get_text())
+
+    @GtkTemplate.Callback
+    def load_cover_clicked(self, widget):
+        if self.realselection == 1:
+            model = Model.getInstance()
+            view = View.getInstance()
+
+            dialog = Gtk.FileChooserDialog("Please choose a file", self,
+            Gtk.FileChooserAction.OPEN,
+            (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
+            Gtk.STOCK_OPEN, Gtk.ResponseType.OK))
+
+            #self.add_filters(dialog)
+
+            response = dialog.run()
+
+            if response == Gtk.ResponseType.OK:
+                file_cover = dialog.get_filename()
+                print("La COVER : ",file_cover)
+                model.update_modifications(self.selectionned,"cover",file_cover)
+                view.update_cover(file_cover)
+
+            dialog.destroy()
 
 
     @GtkTemplate.Callback
