@@ -74,7 +74,7 @@ class MP3Handler(AudioBasics):
 
     def savemodif(self):
         self.tags.save(self.adress)
-        self.id3.save(self.adress)
+        #self.id3.save(self.adress) #TODO FIX because both tagging tool are used !
 
 
     

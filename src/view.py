@@ -27,12 +27,21 @@ class View:
             self.title.set_text("")
             self.artist.set_text("")
 
-        def show(self,tagdico):
+        def set_editibility_title(self, multiline, title):
+            if multiline == 1 :
+                self.title.set_text("")
+                self.title.set_editable(0)
+            else :
+                self.title.set_editable(1)
+                self.title.set_text(title)
+
+        def show(self,tagdico, multiline):
+            self.set_editibility_title(multiline,tagdico["title"]["value"] )
             self.genre.set_text(tagdico["genre"]["value"])
             self.album.set_text(tagdico["album"]["value"])
-            self.title.set_text(tagdico["title"]["value"])
             self.artist.set_text(tagdico["artist"]["value"])
-            if tagdico["cover"]["value"] != None:
+            print(tagdico["cover"]["value"])
+            if tagdico["cover"]["value"] != None and tagdico["cover"]["value"] != "":
                 if len(tagdico["cover"]["value"])>100 :
                      with  Image.open(io.BytesIO(tagdico["cover"]["value"])) as img :
 
@@ -48,8 +57,7 @@ class View:
                                                                 len(img_resized.getbands())*img_resized.width)
 
                         self.cover.set_from_pixbuf(pixbuf)
-                else :
-
+                else:
                     with  Image.open(tagdico["cover"]["value"]) as img :
 
                         img_resized = img.resize((self.cover_width , self.cover_height))

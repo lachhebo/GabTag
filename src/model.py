@@ -51,11 +51,10 @@ class Model:
 
             model, listiter = selection.get_selected_rows()
 
-            self.getTags(model,listiter)
+            multiline = self.getTags(model,listiter)
 
             # afficher les modifs :
-            #print("listiter : ",listiter)
-            self.view.show(self.tagdico)
+            self.view.show(self.tagdico, multiline)
 
         def update_modifications(self,selection, tag_changed, new_value):
             '''
@@ -146,6 +145,10 @@ class Model:
                 for key in contkey_dico :
                     if contkey_dico[key] == 0 :
                         self.tagdico[key]["value"] = ""
+
+                return 1
+            else:
+                return 0
 
         def check_dictionnary(self,namefile):
             '''
