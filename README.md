@@ -23,7 +23,7 @@ It uses Mutagen to handle tags. I hope to make it available on Flathub as soon a
 
 ## Screenshots:
 
-![ScreenShot](https://raw.githubusercontent.com/lachhebo/GabTags/screenshots/Image1.png)
+![ScreenShot](https://raw.githubusercontent.com/lachhebo/GabTags/screenshots/Image2.png)
 
 
 ## Development Instruction:
