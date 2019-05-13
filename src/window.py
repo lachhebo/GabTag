@@ -118,6 +118,7 @@ class GabtagWindow(Gtk.ApplicationWindow):
     def load_cover_clicked(self, widget):
         if self.realselection == 1:
             model = Model.getInstance()
+            view = View.getInstance()
 
             dialog = Gtk.FileChooserDialog("Please choose a file", self,
             Gtk.FileChooserAction.OPEN,
@@ -132,6 +133,7 @@ class GabtagWindow(Gtk.ApplicationWindow):
                 file_cover = dialog.get_filename()
                 print("La COVER : ",file_cover)
                 model.update_modifications(self.selectionned,"cover",file_cover)
+                view.update_cover(file_cover)
 
             dialog.destroy()
 

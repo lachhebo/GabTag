@@ -34,21 +34,57 @@ class View:
                 if len(tagdico["cover"]["value"])>100 :
                      with  Image.open(io.BytesIO(tagdico["cover"]["value"])) as img :
 
-                        img_resized = img.resize((128, 128))
+                        img_resized = img.resize((300, 300))
                         glibbytes = GLib.Bytes.new(img_resized.tobytes())
 
                         pixbuf = GdkPixbuf.Pixbuf.new_from_bytes(glibbytes,
                                                                 GdkPixbuf.Colorspace.RGB,
                                                                 False,
                                                                 8,
-                                                                128,
-                                                                128,
+                                                                300,
+                                                                300,
                                                                 len(img_resized.getbands())*img_resized.width)
 
                         self.cover.set_from_pixbuf(pixbuf)
                 else :
-                    pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_scale(tagdico["cover"]["value"], 128, 128, False)
-                    self.cover.set_from_pixbuf(pixbuf)
+                    # pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_scale(tagdico["cover"]["value"], 300, 300, False)
+                    # self.cover.set_from_pixbuf(pixbuf)
+
+                    with  Image.open(tagdico["cover"]["value"]) as img :
+
+                        img_resized = img.resize((300, 300))
+                        glibbytes = GLib.Bytes.new(img_resized.tobytes())
+
+                        pixbuf = GdkPixbuf.Pixbuf.new_from_bytes(glibbytes,
+                                                                GdkPixbuf.Colorspace.RGB,
+                                                                False,
+                                                                8,
+                                                                300,
+                                                                300,
+                                                                len(img_resized.getbands())*img_resized.width)
+
+                        self.cover.set_from_pixbuf(pixbuf)
+
+
+        def update_cover(self,cover_value):
+            # pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_scale(cover_value, 300, 300, False)
+            # self.cover.set_from_pixbuf(pixbuf)
+            with  Image.open(cover_value) as img :
+                img_resized = img.resize((300, 300))
+                glibbytes = GLib.Bytes.new(img_resized.tobytes())
+
+                pixbuf = GdkPixbuf.Pixbuf.new_from_bytes(glibbytes,
+                                                        GdkPixbuf.Colorspace.RGB,
+                                                        False,
+                                                        8,
+                                                        300,
+                                                        300,
+                                                        len(img_resized.getbands())*img_resized.width)
+
+                self.cover.set_from_pixbuf(pixbuf)
+
+
+
 
         def add_column(self, name):
             renderer = Gtk.CellRendererText()

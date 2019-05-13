@@ -8,9 +8,10 @@ class MP3Handler(AudioBasics):
 
     def __init__(self,adress):
         self.adress = adress
-        self.audio_easy = EasyMP3(adress)
-        self.audio_cover = MP3(adress,ID3=ID3)
-        self.tags = self.audio_easy.tags
+        self.audio = EasyMP3(adress)
+        #self.audio_cover = MP3(adress,ID3=ID3)
+        self.id3 = ID3(adress)
+        self.tags = self.audio.tags
 
 
     def getTag(self,tag_key): #TODO
@@ -21,10 +22,8 @@ class MP3Handler(AudioBasics):
             else :
                 return ""
         else :
-            id3 = ID3(self.adress)
-            cover_tag = id3.getall('APIC')
-
-            #print("COVERTAG :",cover_tag)
+            #id3 = ID3(self.adress)
+            cover_tag = self.id3.getall('APIC')
 
             if len(cover_tag)>0 :
                 return cover_tag[0].data
@@ -43,8 +42,8 @@ class MP3Handler(AudioBasics):
         if key != "cover":
             return key in self.tags
         else :
-            id3 = ID3(self.adress)
-            cover_tag = id3.getall('APIC')
+            #id3 = ID3(self.adress)
+            cover_tag = self.id3.getall('APIC')
             return len(cover_tag)>0
 
 
@@ -53,20 +52,9 @@ class MP3Handler(AudioBasics):
         if tag_key == "cover":
             extension_image  = self.get_extension_image(tag_value)
 
-           # img = Image.open(tag_value)
+            self.id3.delall('APIC')
 
-            #glibbytes = GLib.Bytes.new(img.tobytes())
-
-
-            #imagedata = open(tag_value, 'rb').read()
-            self.audio_cover.tags
-
-            # id3 = ID3(tag_value)
-
-            # if id3.getall('APIC'):
-            #     id3.delall('APIC')
-
-            self.audio_cover.tags.add(
+            self.id3.add(
                 APIC(
                     encoding = 3,  # UTF-8
                     mime= extension_image,   # '/image/png'
@@ -87,7 +75,7 @@ class MP3Handler(AudioBasics):
 
     def savemodif(self):
         self.tags.save(self.adress)
-        self.audio_cover.tags.save(self.adress)
+        self.id3.save(self.adress)
 
 
     
