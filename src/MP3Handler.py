@@ -9,12 +9,11 @@ class MP3Handler(AudioBasics):
     def __init__(self,adress):
         self.adress = adress
         self.audio = EasyMP3(adress)
-        #self.audio_cover = MP3(adress,ID3=ID3)
         self.id3 = ID3(adress)
         self.tags = self.audio.tags
 
 
-    def getTag(self,tag_key): #TODO
+    def getTag(self,tag_key):
         if tag_key != "cover" :
             if tag_key in self.tags:
                 #print("GETTAG : ", self.tags[tag_key][0])
