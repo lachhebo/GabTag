@@ -110,6 +110,6 @@ class View:
     def getInstance():
         """ Static access method. """
         if View.__instance == None:
-            View(None,None,None,None,None)
+            View(None,None,None,None,None, None)
         return View.__instance
 
