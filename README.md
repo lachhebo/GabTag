@@ -15,7 +15,7 @@ It uses Mutagen to handle tags. I hope to make it available on Flathub as soon a
 - [x] Modify several file at the same time.
 - [x] MP3 file handled
 - [ ] Flac File handled
-- [ ] Cover tag
+- [x] Cover tag
 - [ ] About window
 - [ ] Multi-folder modification
 
