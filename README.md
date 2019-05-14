@@ -10,7 +10,7 @@ It uses Mutagen to handle tags. I hope to make it available on Flathub as soon a
 ## Features :
 
 - [x] Add, modify or delete basic tags (title, album, artist, genre)
-- [ ] other strings tags (less important)
+- [x] other strings tags (less important)
 - [x] Continuous integration
 - [x] Modify several file at the same time.
 - [x] MP3 file handled

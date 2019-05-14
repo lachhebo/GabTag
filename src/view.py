@@ -10,7 +10,7 @@ class View:
 
     class __View:
 
-        def __init__(self, tree_view, title, album, artist, genre, cover, track, year):
+        def __init__(self, tree_view, title, album, artist, genre, cover, track, year, length, size):
 
             self.tree_view = tree_view
             self.title = title
@@ -20,6 +20,8 @@ class View:
             self.cover = cover
             self.track = track
             self.year = year
+            self.length = length
+            self.size = size
             self.cover_width = 300
             self.cover_height = 300
 
@@ -40,8 +42,22 @@ class View:
                 self.title.set_editable(1)
                 self.title.set_text(title)
 
+        def set_editability_size(self, multiline, size):
+            if multiline == 1 :
+                self.size.set_text("")
+            else :
+                self.size.set_text(size)
+
+        def set_editability_length(self, multiline, length):
+            if multiline == 1 :
+                self.length.set_text("")
+            else :
+                self.length.set_text(length)
+
         def show(self,tagdico, multiline):
-            self.set_editibility_title(multiline,tagdico["title"]["value"] )
+            self.set_editibility_title(multiline,tagdico["title"]["value"])
+            self.set_editability_size(multiline,tagdico["size"]["value"])
+            self.set_editability_length(multiline,tagdico["length"]["value"])
             self.genre.set_text(tagdico["genre"]["value"])
             self.album.set_text(tagdico["album"]["value"])
             self.artist.set_text(tagdico["artist"]["value"])
@@ -112,12 +128,12 @@ class View:
 
     __instance = None
 
-    def __init__(self, tree_view, title, album, artist, genre, cover, track, year):
+    def __init__(self, tree_view, title, album, artist, genre, cover, track, year, length, size):
         """ Virtually private constructor. """
         if View.__instance != None:
             raise Exception("This class is a singleton!")
         else:
-            View.__instance = View.__View(tree_view, title, album, artist, genre, cover, track, year)
+            View.__instance = View.__View(tree_view, title, album, artist, genre, cover, track, year, length, size)
 
 
     @staticmethod

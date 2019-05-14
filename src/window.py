@@ -37,6 +37,8 @@ class GabtagWindow(Gtk.ApplicationWindow):
     id_cover = GtkTemplate.Child()
     id_year = GtkTemplate.Child()
     id_track = GtkTemplate.Child()
+    id_info_length = GtkTemplate.Child()
+    id_info_size = GtkTemplate.Child()
     id_popover_menu = GtkTemplate.Child()
 
 
@@ -44,7 +46,7 @@ class GabtagWindow(Gtk.ApplicationWindow):
         super().__init__(**kwargs)
         self.init_template()
 
-        View(self.tree_view_id, self.id_title, self.id_album, self.id_artist, self.id_type, self.id_cover, self.id_track, self.id_year)
+        View(self.tree_view_id, self.id_title, self.id_album, self.id_artist, self.id_type, self.id_cover, self.id_track, self.id_year, self.id_info_length, self.id_info_size)
 
         view = View.getInstance()
 

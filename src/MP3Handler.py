@@ -3,6 +3,7 @@ from mutagen.mp3 import EasyMP3, MP3
 from mutagen.id3 import ID3, APIC, TRCK, USLT, TIT2, TALB, TPE1, TCON, TYER
 from PIL import Image
 import io
+import os
 
 class MP3Handler(AudioBasics):
 
@@ -73,6 +74,13 @@ class MP3Handler(AudioBasics):
                 return year_tag[0].text[0]
             else:
                 return ""
+
+        elif tag_key == "size":
+            return str(os.path.getsize(self.path_file)/1000000) + " Mb"
+
+        elif tag_key == "length":
+
+            return str(self.audio.info.length) + " seconds"
 
 
 

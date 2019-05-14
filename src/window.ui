@@ -2,6 +2,15 @@
 <!-- Generated with glade 3.22.1 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
+  <object class="GtkWindow">
+    <property name="can_focus">False</property>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <placeholder/>
+    </child>
+  </object>
   <object class="GtkAdjustment" id="adjustment1">
     <property name="upper">100</property>
     <property name="step_increment">1</property>
@@ -136,6 +145,7 @@
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="position">160</property>
+        <property name="position_set">True</property>
         <child>
           <object class="GtkScrolledWindow" id="id_scrolledW">
             <property name="visible">True</property>
@@ -444,36 +454,6 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkLabel" id="id_label_name">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="margin_left">10</property>
-                            <property name="margin_right">10</property>
-                            <property name="margin_top">5</property>
-                            <property name="margin_bottom">5</property>
-                            <property name="label" translatable="yes">Name</property>
-                          </object>
-                          <packing>
-                            <property name="left_attach">0</property>
-                            <property name="top_attach">9</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkLabel" id="id_label_dir">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="margin_left">10</property>
-                            <property name="margin_right">10</property>
-                            <property name="margin_top">5</property>
-                            <property name="margin_bottom">5</property>
-                            <property name="label" translatable="yes">Directory</property>
-                          </object>
-                          <packing>
-                            <property name="left_attach">0</property>
-                            <property name="top_attach">10</property>
-                          </packing>
-                        </child>
-                        <child>
                           <object class="GtkLabel" id="id_label_length">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
@@ -485,7 +465,7 @@
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
-                            <property name="top_attach">11</property>
+                            <property name="top_attach">9</property>
                           </packing>
                         </child>
                         <child>
@@ -500,11 +480,11 @@
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
-                            <property name="top_attach">12</property>
+                            <property name="top_attach">10</property>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkLabel" id="id_info_name">
+                          <object class="GtkLabel" id="id_info_length">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="margin_left">5</property>
@@ -518,34 +498,6 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkLabel" id="id_info_dir">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="margin_left">5</property>
-                            <property name="margin_right">10</property>
-                            <property name="margin_top">7</property>
-                            <property name="margin_bottom">7</property>
-                          </object>
-                          <packing>
-                            <property name="left_attach">1</property>
-                            <property name="top_attach">10</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkLabel" id="id_dir_length">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="margin_left">5</property>
-                            <property name="margin_right">10</property>
-                            <property name="margin_top">7</property>
-                            <property name="margin_bottom">7</property>
-                          </object>
-                          <packing>
-                            <property name="left_attach">1</property>
-                            <property name="top_attach">11</property>
-                          </packing>
-                        </child>
-                        <child>
                           <object class="GtkLabel" id="id_info_size">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
@@ -556,7 +508,7 @@
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
-                            <property name="top_attach">12</property>
+                            <property name="top_attach">10</property>
                           </packing>
                         </child>
                         <child>

@@ -19,7 +19,9 @@ class Model:
                         "genre" :{ "groupability": 1, "value": None},
                         "cover" :{ "groupability": 1, "value": None},
                         "year"  :{ "groupability": 1, "value": None},
-                        "track" :{ "groupability": 1, "value": None}
+                        "track" :{ "groupability": 1, "value": None},
+                        "length":{ "groupability": 0, "value": None},
+                        "size"  :{ "groupability": 0, "value": None}
                         }
 
         def update_directory(self,directory):
