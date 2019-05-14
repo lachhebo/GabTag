@@ -35,6 +35,8 @@ class GabtagWindow(Gtk.ApplicationWindow):
     id_type = GtkTemplate.Child()
     id_title  = GtkTemplate.Child()
     id_cover = GtkTemplate.Child()
+    id_year = GtkTemplate.Child()
+    id_track = GtkTemplate.Child()
     id_popover_menu = GtkTemplate.Child()
 
 
@@ -42,7 +44,7 @@ class GabtagWindow(Gtk.ApplicationWindow):
         super().__init__(**kwargs)
         self.init_template()
 
-        View(self.tree_view_id, self.id_title, self.id_album, self.id_artist, self.id_type, self.id_cover)
+        View(self.tree_view_id, self.id_title, self.id_album, self.id_artist, self.id_type, self.id_cover, self.id_track, self.id_year)
 
         view = View.getInstance()
 
@@ -58,6 +60,10 @@ class GabtagWindow(Gtk.ApplicationWindow):
     def but_saved_cliqued(self, widget):
         model = Model.getInstance()
         model.save_modifications()
+
+    @GtkTemplate.Callback
+    def clicked_save_one(self,widget):
+        pass
 
 
     @GtkTemplate.Callback
@@ -113,6 +119,21 @@ class GabtagWindow(Gtk.ApplicationWindow):
         if self.realselection == 1 :
             model = Model.getInstance()
             model.update_modifications(self.selectionned,"genre",widget.get_text())
+
+    @GtkTemplate.Callback
+    def track_changed(self,widget):
+        if self.realselection == 1:
+            model = Model.getInstance()
+            model.update_modifications(self.selectionned,"track",widget.get_text())
+
+    @GtkTemplate.Callback
+    def year_changed(self,widget):
+        if self.realselection == 1:
+            model = Model.getInstance()
+            model.update_modifications(self.selectionned,"year",widget.get_text())
+
+
+
 
     @GtkTemplate.Callback
     def load_cover_clicked(self, widget):

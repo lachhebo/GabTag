@@ -17,7 +17,9 @@ class Model:
                         "album" :{ "groupability": 1, "value": None},
                         "artist":{ "groupability": 1, "value": None},
                         "genre" :{ "groupability": 1, "value": None},
-                        "cover" :{ "groupability": 1, "value": None}
+                        "cover" :{ "groupability": 1, "value": None},
+                        "year"  :{ "groupability": 1, "value": None},
+                        "track" :{ "groupability": 1, "value": None}
                         }
 
         def update_directory(self,directory):
@@ -123,7 +125,6 @@ class Model:
                 self.tagdico[key]["value"] = audio.getTag(key)
 
 
-            #print("AFTER_GETTAG DICO : ", self.tagdico)
 
             self.check_dictionnary(namefile)   # Look in Mofification
 

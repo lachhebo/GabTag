@@ -1,6 +1,6 @@
 from .audiobasics import AudioBasics
 from mutagen.mp3 import EasyMP3, MP3
-from mutagen.id3 import ID3, APIC, TRCK, USLT, TIT2, TALB, TPE1
+from mutagen.id3 import ID3, APIC, TRCK, USLT, TIT2, TALB, TPE1, TCON, TYER
 from PIL import Image
 import io
 
@@ -21,7 +21,6 @@ class MP3Handler(AudioBasics):
         if tag_key == "title" :
             title_tag = self.id3.getall('TIT2')
             if len(title_tag)>0:
-                print(title_tag)
                 return title_tag[0].text[0]
             else:
                 return ""
@@ -58,20 +57,20 @@ class MP3Handler(AudioBasics):
                 return ""
 
 
-        elif tag_key == "track_number":
-            print(year_tag)
+        elif tag_key == "track":
+
             track_tag = self.id3.getall('TRCK')
             if len(track_tag)>0:
-                return track_tag[0].data
+                print("TRACK :",track_tag)
+                return track_tag[0].text[0] #text 6/16
             else:
                 return ""
 
         elif tag_key == "year":
-
             year_tag = self.id3.getall('TYER')
             if len(year_tag)>0:
-                print(year_tag)
-                return year_tag[0].data
+                print("YEAR :", year_tag)
+                return year_tag[0].text[0]
             else:
                 return ""
 
@@ -136,11 +135,13 @@ class MP3Handler(AudioBasics):
             self.id3.add(TPE1(encoding=3, text=tag_value))
         elif tag_key == "genre":
             self.id3.delall('TCON')
-            self.id3.add(TIT2(encoding=3, text=tag_value))
+            self.id3.add(TCON(encoding=3, text=tag_value))
         elif tag_key == "track_number":
-            pass
+            self.id3.delall('TRCK')
+            self.id3.add(TRCK(encoding=3, text=tag_value))
         elif tag_key == "year":
-            pass
+            self.id3.delall('TRCK')
+            self.id3.add(TYER(encoding=3, text=tag_value))
 
 
     def get_extension_image(self, filename):
@@ -150,7 +151,7 @@ class MP3Handler(AudioBasics):
 
 
     def savemodif(self):
-        self.id3.save(self.path_file) #TODO FIX because both tagging tool are used !
+        self.id3.save(self.path_file)
 
 
     

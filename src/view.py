@@ -10,7 +10,7 @@ class View:
 
     class __View:
 
-        def __init__(self, tree_view, title, album, artist, genre, cover):
+        def __init__(self, tree_view, title, album, artist, genre, cover, track, year):
 
             self.tree_view = tree_view
             self.title = title
@@ -18,6 +18,8 @@ class View:
             self.artist = artist
             self.genre = genre
             self.cover = cover
+            self.track = track
+            self.year = year
             self.cover_width = 300
             self.cover_height = 300
 
@@ -26,6 +28,9 @@ class View:
             self.album.set_text("")
             self.title.set_text("")
             self.artist.set_text("")
+            self.year.set_text("")
+            self.track.set_text("")
+
 
         def set_editibility_title(self, multiline, title):
             if multiline == 1 :
@@ -40,7 +45,8 @@ class View:
             self.genre.set_text(tagdico["genre"]["value"])
             self.album.set_text(tagdico["album"]["value"])
             self.artist.set_text(tagdico["artist"]["value"])
-            print(tagdico["cover"]["value"])
+            self.year.set_text(tagdico["year"]["value"])
+            self.track.set_text(tagdico["track"]["value"])
             if tagdico["cover"]["value"] != None and tagdico["cover"]["value"] != "":
                 if len(tagdico["cover"]["value"])>100 :
                      with  Image.open(io.BytesIO(tagdico["cover"]["value"])) as img :
@@ -106,18 +112,18 @@ class View:
 
     __instance = None
 
-    def __init__(self, tree_view, title, album, artist, genre, cover):
+    def __init__(self, tree_view, title, album, artist, genre, cover, track, year):
         """ Virtually private constructor. """
         if View.__instance != None:
             raise Exception("This class is a singleton!")
         else:
-            View.__instance = View.__View(tree_view, title, album, artist, genre, cover)
+            View.__instance = View.__View(tree_view, title, album, artist, genre, cover, track, year)
 
 
     @staticmethod
     def getInstance():
         """ Static access method. """
         if View.__instance == None:
-            View(None,None,None,None,None, None)
+            View(None,None,None,None,None, None, None, None)
         return View.__instance
 

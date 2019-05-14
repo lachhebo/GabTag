@@ -198,8 +198,8 @@
                           <object class="GtkLabel" id="id_label_album">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="margin_left">10</property>
-                            <property name="margin_right">10</property>
+                            <property name="margin_left">5</property>
+                            <property name="margin_right">1</property>
                             <property name="margin_top">10</property>
                             <property name="margin_bottom">10</property>
                             <property name="label" translatable="yes">Album</property>
@@ -213,8 +213,8 @@
                           <object class="GtkLabel" id="id_label_artist">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="margin_left">10</property>
-                            <property name="margin_right">10</property>
+                            <property name="margin_left">5</property>
+                            <property name="margin_right">5</property>
                             <property name="margin_top">10</property>
                             <property name="margin_bottom">10</property>
                             <property name="label" translatable="yes">Artiste</property>
@@ -228,8 +228,8 @@
                           <object class="GtkLabel" id="id_label_type">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="margin_left">10</property>
-                            <property name="margin_right">10</property>
+                            <property name="margin_left">5</property>
+                            <property name="margin_right">5</property>
                             <property name="margin_top">10</property>
                             <property name="margin_bottom">10</property>
                             <property name="label" translatable="yes">Genre</property>
@@ -243,8 +243,8 @@
                           <object class="GtkLabel" id="id_label_artist_title">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="margin_left">10</property>
-                            <property name="margin_right">10</property>
+                            <property name="margin_left">5</property>
+                            <property name="margin_right">5</property>
                             <property name="margin_top">10</property>
                             <property name="margin_bottom">10</property>
                             <property name="label" translatable="yes">Title</property>
@@ -328,8 +328,8 @@
                             <property name="can_focus">False</property>
                             <property name="halign">center</property>
                             <property name="valign">center</property>
-                            <property name="margin_left">10</property>
-                            <property name="margin_right">10</property>
+                            <property name="margin_left">3</property>
+                            <property name="margin_right">5</property>
                             <property name="margin_top">10</property>
                             <property name="margin_bottom">5</property>
                             <property name="label" translatable="yes">Cover</property>
@@ -383,8 +383,8 @@
                           <object class="GtkLabel" id="id_label_trackid">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="margin_left">10</property>
-                            <property name="margin_right">10</property>
+                            <property name="margin_left">5</property>
+                            <property name="margin_right">5</property>
                             <property name="margin_top">10</property>
                             <property name="margin_bottom">10</property>
                             <property name="label" translatable="yes">Track number</property>
@@ -398,8 +398,8 @@
                           <object class="GtkLabel" id="id_label_year">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="margin_left">10</property>
-                            <property name="margin_right">10</property>
+                            <property name="margin_left">5</property>
+                            <property name="margin_right">5</property>
                             <property name="margin_top">10</property>
                             <property name="margin_bottom">10</property>
                             <property name="label" translatable="yes">Year</property>
@@ -410,7 +410,7 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkEntry" id="id_trackid">
+                          <object class="GtkEntry" id="id_track">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="halign">baseline</property>
@@ -419,6 +419,7 @@
                             <property name="margin_right">10</property>
                             <property name="margin_top">8</property>
                             <property name="margin_bottom">8</property>
+                            <signal name="changed" handler="track_changed" swapped="no"/>
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
@@ -435,6 +436,7 @@
                             <property name="margin_right">10</property>
                             <property name="margin_top">8</property>
                             <property name="margin_bottom">8</property>
+                            <signal name="changed" handler="year_changed" swapped="no"/>
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
