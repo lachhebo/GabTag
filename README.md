@@ -1,4 +1,4 @@
-# GabTags [![Build Status](https://travis-ci.com/lachhebo/GabTags.svg?branch=master)](https://travis-ci.com/lachhebo/GabTags) 
+# GabTags [![Build Status](https://travis-ci.com/lachhebo/GabTag.svg?branch=master)](https://travis-ci.com/lachhebo/GabTag) 
 
 
 ## Description :
