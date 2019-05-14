@@ -1,49 +1,112 @@
 from .audiobasics import AudioBasics
 from mutagen.mp3 import EasyMP3, MP3
-from mutagen.id3 import ID3, APIC, TRCK, USLT
+from mutagen.id3 import ID3, APIC, TRCK, USLT, TIT2, TALB, TPE1
 from PIL import Image
 import io
 
 class MP3Handler(AudioBasics):
 
-    def __init__(self,adress):
-        self.adress = adress
-        self.audio = EasyMP3(adress)
-        self.id3 = ID3(adress)
-        self.tags = self.audio.tags
+    def __init__(self,path_file):
+        '''
+        We initialise :
+         the path of the file
+         the tagging tool we use
+        '''
+        self.path_file = path_file
+        self.audio = MP3(path_file)
+        self.id3 = self.audio.tags
 
 
     def getTag(self,tag_key):
-        if tag_key != "cover" :
-            if tag_key in self.tags:
-                #print("GETTAG : ", self.tags[tag_key][0])
-                return self.tags[tag_key][0]
-            else :
+        if tag_key == "title" :
+            title_tag = self.id3.getall('TIT2')
+            if len(title_tag)>0:
+                print(title_tag)
+                return title_tag[0].text[0]
+            else:
                 return ""
-        else :
-            #id3 = ID3(self.adress)
+
+        elif tag_key == "cover":
             cover_tag = self.id3.getall('APIC')
 
             if len(cover_tag)>0 :
                 return cover_tag[0].data
             else:
-                return None
+                return ""
+
+        elif tag_key == "album":
+            album_tag = self.id3.getall('TALB')
+            if len(album_tag)>0:
+                return album_tag[0].text[0]
+            else:
+                return ""
+
+        elif tag_key == "artist":
+
+            artist_tag = self.id3.getall('TPE1')
+            if len(artist_tag)>0:
+                return artist_tag[0].text[0]
+            else:
+                return ""
+
+        elif tag_key == "genre":
+
+            genre_tag = self.id3.getall('TCON')
+            if len(genre_tag)>0:
+                return genre_tag[0].text[0]
+            else:
+                return ""
+
+
+        elif tag_key == "track_number":
+            print(year_tag)
+            track_tag = self.id3.getall('TRCK')
+            if len(track_tag)>0:
+                return track_tag[0].data
+            else:
+                return ""
+
+        elif tag_key == "year":
+
+            year_tag = self.id3.getall('TYER')
+            if len(year_tag)>0:
+                print(year_tag)
+                return year_tag[0].data
+            else:
+                return ""
+
+
 
 
     def get_extension_mime(self, filename):
-
          namelist = filename.split('/')
          return namelist[-1]
 
 
 
     def check_tag_existence(self,key):
-        if key != "cover":
-            return key in self.tags
-        else :
-            #id3 = ID3(self.adress)
-            cover_tag = self.id3.getall('APIC')
+        if key != "title":
+            tag = self.id3.getall('TIT2')
+            return len(tag)>0
+        elif key == "cover" :
+            tag = self.id3.getall('APIC')
             return len(cover_tag)>0
+        elif key == "album":
+            tag = self.id3.getall('TALB')
+            return len(cover_tag)>0
+        elif key == "artist":
+            tag = self.id3.getall('TPE1')
+            return len(cover_tag)>0
+        elif key == "genre":
+            tag = self.id3.getall('TCON')
+            return len(cover_tag)>0
+        elif key == "track_number":
+            tag = self.id3.getall('TRCK')
+            return len(cover_tag)>0
+        elif key == "year":
+            tag = self.id3.getall('TYER')
+            return len(cover_tag)>0
+
 
 
     def setTag(self,tag_key,tag_value): #TODO
@@ -62,8 +125,22 @@ class MP3Handler(AudioBasics):
                     data= open(tag_value, 'rb').read()      #img.read()  # Reads and adds album art
                 )
             )
-        else :
-            self.tags[tag_key] = tag_value
+        elif tag_key == "title":
+            self.id3.delall("TIT2")
+            self.id3.add(TIT2(encoding=3, text=tag_value))
+        elif tag_key == "album":
+            self.id3.delall('TALB')
+            self.id3.add(TALB(encoding=3, text=tag_value))
+        elif tag_key == "artist":
+            self.id3.delall('TPE1')
+            self.id3.add(TPE1(encoding=3, text=tag_value))
+        elif tag_key == "genre":
+            self.id3.delall('TCON')
+            self.id3.add(TIT2(encoding=3, text=tag_value))
+        elif tag_key == "track_number":
+            pass
+        elif tag_key == "year":
+            pass
 
 
     def get_extension_image(self, filename):
@@ -73,8 +150,7 @@ class MP3Handler(AudioBasics):
 
 
     def savemodif(self):
-        self.tags.save(self.adress)
-        #self.id3.save(self.adress) #TODO FIX because both tagging tool are used !
+        self.id3.save(self.path_file) #TODO FIX because both tagging tool are used !
 
 
     
