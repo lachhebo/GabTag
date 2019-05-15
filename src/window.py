@@ -40,7 +40,7 @@ class GabtagWindow(Gtk.ApplicationWindow):
     id_info_length = GtkTemplate.Child()
     id_info_size = GtkTemplate.Child()
     id_popover_menu = GtkTemplate.Child()
-
+    id_about_window = GtkTemplate.Child()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -83,7 +83,7 @@ class GabtagWindow(Gtk.ApplicationWindow):
 
     @GtkTemplate.Callback
     def about_clicked(self,widget):
-        pass
+        self.id_about_window.show()
 
 
     @GtkTemplate.Callback
@@ -153,6 +153,17 @@ class GabtagWindow(Gtk.ApplicationWindow):
             model.update_modifications(self.selectionned,"year",widget.get_text())
 
 
+    def add_filters(self, dialog):
+        filter_png = Gtk.FileFilter()
+        filter_png.set_name("Png")
+        filter_png.add_mime_type("image/png")
+        dialog.add_filter(filter_png)
+
+        filter_jpeg = Gtk.FileFilter()
+        filter_jpeg.set_name("jpeg")
+        filter_jpeg.add_mime_type("image/jpeg")
+        dialog.add_filter(filter_jpeg)
+
 
 
     @GtkTemplate.Callback
@@ -166,7 +177,7 @@ class GabtagWindow(Gtk.ApplicationWindow):
             (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
             Gtk.STOCK_OPEN, Gtk.ResponseType.OK))
 
-            #self.add_filters(dialog)
+            self.add_filters(dialog)
 
             response = dialog.run()
 
