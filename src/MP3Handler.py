@@ -30,6 +30,7 @@ class MP3Handler(AudioBasics):
             cover_tag = self.id3.getall('APIC')
 
             if len(cover_tag)>0 :
+               # print(cover_tag[0])
                 return cover_tag[0].data
             else:
                 return ""
@@ -62,7 +63,6 @@ class MP3Handler(AudioBasics):
 
             track_tag = self.id3.getall('TRCK')
             if len(track_tag)>0:
-                print("TRACK :",track_tag)
                 return track_tag[0].text[0] #text 6/16
             else:
                 return ""
@@ -70,7 +70,6 @@ class MP3Handler(AudioBasics):
         elif tag_key == "year":
             year_tag = self.id3.getall('TYER')
             if len(year_tag)>0:
-                print("YEAR :", year_tag)
                 return year_tag[0].text[0]
             else:
                 return ""

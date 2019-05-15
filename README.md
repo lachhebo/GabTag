@@ -4,20 +4,22 @@
 ## Description :
 
 GabTag is a GTK software written in Python, it allows user to add or modify tags on audio files.
-
 It uses Mutagen to handle tags. I hope to make it available on Flathub as soon as possible.
 
 ## Features :
 
 - [x] Add, modify or delete basic tags (title, album, artist, genre)
-- [x] other strings tags (less important)
+- [x] other strings tags and labels
 - [x] Continuous integration
 - [x] Modify several file at the same time.
-- [x] MP3 file handled
+- [x] MP3  File handled
 - [ ] Flac File handled
 - [x] Cover tag
 - [ ] About window
+- [ ] Automatic completion of tags (from web data)
 - [ ] Multi-folder modification
+- [ ] Icon, AppData file
+- [ ] Flathub repository 
 
 
 
@@ -26,24 +28,25 @@ It uses Mutagen to handle tags. I hope to make it available on Flathub as soon a
 ![ScreenShot](https://raw.githubusercontent.com/lachhebo/GabTags/screenshots/Image2.png)
 
 
-## Development Instruction:
+## Contributions :
 
 GabtTag is written to be as easily maintainable and extensible as possible.
 
-### Contributions :
+If you want to contribute, there is several thing you can do :
 
-If you want to contribute, you can add a extension Handler :
+- Add a new Python file to handle a new extension (like .mp3) and add the new classe in the moteur.py file; you can take as an example the MP3Handler.
+- Design a improved icon 
+- Improve the layout of the app (window.ui file)
+- Add unitary tests (in tests/)
+- Multi-folder tree in the left panel 
+- Work on more advanced features like Automatic tagging (using web)
 
-- you can just add a new Python file to handle a new extension (like .mp3); you can take as an example the MP3Handler.
-- Then add your handler in the moteur.py file
 
+## Installation :
 
-### Installation :
+- clone this repository
 
-clone this repository
-
-## Acknowledgments :
-
+## Support/Donation :
 
 Ismaël Lachheb :  [https://paypal.me/lachhebo?locale.x=fr_FR](https://paypal.me/lachhebo?locale.x=fr_FR)
 

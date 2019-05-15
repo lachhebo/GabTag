@@ -28,6 +28,39 @@ class Model:
             self.directory = directory
             self.modification = {}
 
+        def reset_all(self,selection):
+            self.modification = {}
+            print ("ERASED ALL")
+            self.view.erase()
+            self.update_view(selection)
+
+        def reset_one(self, selection):
+            model, listiter = selection.get_selected_rows()
+
+            for i in range(0,len(listiter)):
+                namefile = model[listiter[i]][0]
+                print(namefile)
+                self.modification[namefile] = {}
+            self.update_view(selection)
+
+        def save_one(self, selection):
+            model, listiter = selection.get_selected_rows()
+
+            for i in range(len(listiter)):
+                namefile = model[listiter[i]][0]
+                audio = self.moteur.getFile(namefile, self.directory)
+                filemodifs = self.modification[namefile]
+
+                for key in self.tagdico :
+                    if key in filemodifs:
+                        audio.setTag(key,filemodifs[key])
+
+                audio.savemodif()
+                self.modification[namefile] = {}
+
+            #self.update_view(selection)
+
+
         def update_list(self,store):
 
             # Erase the list
@@ -105,7 +138,7 @@ class Model:
                 audio = self.moteur.getFile(filename, self.directory)
                 filemodifs = self.modification[filename]
 
-                for key in self.tagdico :
+                for key in self.tagdico:
                     if key in filemodifs:
                         audio.setTag(key,filemodifs[key])
 

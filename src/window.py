@@ -65,6 +65,24 @@ class GabtagWindow(Gtk.ApplicationWindow):
 
     @GtkTemplate.Callback
     def clicked_save_one(self,widget):
+        if self.realselection == 1 :
+            model = Model.getInstance()
+            model.save_one(self.selectionned)
+
+    @GtkTemplate.Callback
+    def reset_one_clicked(self, widget):
+        if self.realselection == 1 :
+            model = Model.getInstance()
+            model.reset_one(self.selectionned)
+
+    @GtkTemplate.Callback
+    def reset_all_clicked(self, widget):
+        model = Model.getInstance()
+        print ("ERASED ALL CLICK")
+        model.reset_all(self.selectionned)
+
+    @GtkTemplate.Callback
+    def about_clicked(self,widget):
         pass
 
 
