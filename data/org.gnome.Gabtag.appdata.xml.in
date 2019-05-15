@@ -3,6 +3,30 @@
 	<id>org.gnome.Gabtag.desktop</id>
 	<metadata_license>CC0-1.0</metadata_license>
 	<project_license>GPL-3.0-or-later</project_license>
+  <releases>
+    <release date="2019-05-20" version="0.8"/>
+  </releases>
+  <version>0.8</version>
 	<description>
+	  <p>
+	  GabTags is a GTK software written in Python, it allows user to view audio tags and to add or modify them.
+	  </p>
+	  <p>Functionnality</p>
+​   <ul>
+​   <li>MP3 handled</li>
+   <li>Basic tags: Title, Album, Artist, Track number, Cover</li>
+   <li>Modify several file at the same time</li>
+​  </ul>
 	</description>
+    <screenshots>
+    <screenshot type="default">
+      <image>https://raw.githubusercontent.com/lachhebo/GabTags/screenshots/Image2.png</image>
+      <caption/>
+    </screenshot>
+  </screenshots>
+  <update_contact>ismael.lachheb@protonmail.com</update_contact>
+  <developer_name>Ismaël Lachheb</developer_name>
+  <url type="homepage">https://github.com/lachhebo/gabtag</url>
+  <url type="bugtracker">https://github.com/lachhebo/gabtag/issues</url>
+  <url type="donation">https://paypal.me/lachhebo</url>
 </component>

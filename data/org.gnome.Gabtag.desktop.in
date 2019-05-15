@@ -1,5 +1,7 @@
 [Desktop Entry]
-Name=gabtag
+Name=Gabtag
+Comment= Modify audio tags
+Icon= org.gnome.Gabtag
 Exec=gabtag
 Terminal=false
 Type=Application
