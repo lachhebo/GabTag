@@ -48,9 +48,8 @@ class ModelTest(unittest.TestCase):
         value_test2 = testmodel.check_tag_equal_key_value(1,"xeu", "testkey","album","xeu")
 
         #Assert
-        self.assertEqual(value_test,1)
-        self.assertEqual(value_test,0)
-
+        self.assertEqual(value_test1,1)
+        self.assertEqual(value_test2,0)
 
 
 if __name__ == '__main__':
