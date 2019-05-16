@@ -29,14 +29,14 @@ class Application(Gtk.Application):
     def __init__(self):
         super().__init__(application_id='org.gnome.Gabtag',
                          flags=Gio.ApplicationFlags.FLAGS_NONE)
-
-        GLib.set_application_name(_("GabTag"))
+        GLib.set_application_name(("GabTag"))
         GLib.set_prgname('org.gnome.Gabtag')
 
     def do_activate(self):
         win = self.props.active_window
         if not win:
             win = GabtagWindow(application=self)
+            win.set_default_icon_name(self.props.application_id)
         win.present()
 
 

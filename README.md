@@ -15,10 +15,10 @@ It uses Mutagen to handle tags. I hope to make it available on Flathub as soon a
 - [x] MP3  File handled
 - [ ] Flac File handled
 - [x] Cover tag
-- [ ] About window
+- [x] About window
 - [ ] Automatic completion of tags (from web data)
 - [ ] Multi-folder modification
-- [ ] Icon, AppData file
+- [x] Icon, AppData file
 - [ ] Flathub repository 
 
 
@@ -48,5 +48,5 @@ If you want to contribute, there is several thing you can do :
 
 ## Support/Donation :
 
-Ismaël Lachheb :  [https://paypal.me/lachhebo?locale.x=fr_FR](https://paypal.me/lachhebo?locale.x=fr_FR)
+Ismaël Lachheb :  [https://paypal.me/lachhebo](https://paypal.me/lachhebo)
 
