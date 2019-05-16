@@ -6,91 +6,70 @@ import io
 import os
 
 class MP3Handler(AudioBasics):
+    '''
+    This function treat MP3 tags, There is no reference of MP3 in the code elsewhere,
+    to handle a new file type, implement a similar class who is the children of AudioBasics
+    '''
 
     def __init__(self,path_file):
         '''
-        We initialise :
-         the path of the file
-         the tagging tool we use
+        We initialise the path of the file and the tagging tool we use
         '''
         self.path_file = path_file
         self.audio = MP3(path_file)
         self.id3 = self.audio.tags
 
 
+    def get_one_tag(self,id3_nametag,data_type):
+        '''
+        A function to return the first tag of an id3 label
+        '''
+        tag = self.id3.getall(id3_nametag)
+        if len(tag)>0:
+            if data_type == "text":
+                return tag[0].text[0]
+            elif data_type == "data":
+                return tag[0].data
+        else:
+            return ""
+
+
     def getTag(self,tag_key):
+        '''
+        We handle tag using a switch, it is working well because it is basically the structure.
+        '''
         if tag_key == "title" :
-            title_tag = self.id3.getall('TIT2')
-            if len(title_tag)>0:
-                return title_tag[0].text[0]
-            else:
-                return ""
-
+            return self.get_one_tag('TIT2',"text")
         elif tag_key == "cover":
-            cover_tag = self.id3.getall('APIC')
-
-            if len(cover_tag)>0 :
-               # print(cover_tag[0])
-                return cover_tag[0].data
-            else:
-                return ""
-
+            return self.get_one_tag('APIC',"data")
         elif tag_key == "album":
-            album_tag = self.id3.getall('TALB')
-            if len(album_tag)>0:
-                return album_tag[0].text[0]
-            else:
-                return ""
-
+            return self.get_one_tag('TALB',"text")
         elif tag_key == "artist":
-
-            artist_tag = self.id3.getall('TPE1')
-            if len(artist_tag)>0:
-                return artist_tag[0].text[0]
-            else:
-                return ""
-
+            return self.get_one_tag('TPE1',"text")
         elif tag_key == "genre":
-
-            genre_tag = self.id3.getall('TCON')
-            if len(genre_tag)>0:
-                return genre_tag[0].text[0]
-            else:
-                return ""
-
-
+            return self.get_one_tag('TCON',"text")
         elif tag_key == "track":
-
-            track_tag = self.id3.getall('TRCK')
-            if len(track_tag)>0:
-                return track_tag[0].text[0] #text 6/16
-            else:
-                return ""
-
+            return self.get_one_tag('TRCK',"text")
         elif tag_key == "year":
-            year_tag = self.id3.getall('TYER')
-            if len(year_tag)>0:
-                return year_tag[0].text[0]
-            else:
-                return ""
+            return self.get_one_tag('TYER',"text")
 
+        # NOT tags but file information
         elif tag_key == "size":
             return str(os.path.getsize(self.path_file)/1000000) + " Mb"
-
         elif tag_key == "length":
-
-            return str(self.audio.info.length) + " seconds"
-
-
+            return str(self.audio.info.length) + " seconds" #TODO Minutes and seconds
 
 
     def get_extension_mime(self, filename):
-         namelist = filename.split('/')
-         return namelist[-1]
-
+        '''
+        return the type of the file (jpeg or png)
+        '''
+        namelist = filename.split('/')
+        return namelist[-1]
 
 
     def check_tag_existence(self,key):
+        ''' Every thing is in the title'''
         if key != "title":
             tag = self.id3.getall('TIT2')
             return len(tag)>0
@@ -115,7 +94,7 @@ class MP3Handler(AudioBasics):
 
 
 
-    def setTag(self,tag_key,tag_value): #TODO
+    def setTag(self,tag_key,tag_value):
 
         if tag_key == "cover":
             extension_image  = self.get_extension_image(tag_value)
@@ -128,7 +107,7 @@ class MP3Handler(AudioBasics):
                     mime= extension_image,   # '/image/png'
                     type= 3,  # 3 is for album art
                     desc='Cover',
-                    data= open(tag_value, 'rb').read()      #img.read()  # Reads and adds album art
+                    data= open(tag_value, 'rb').read()
                 )
             )
         elif tag_key == "title":
@@ -152,12 +131,17 @@ class MP3Handler(AudioBasics):
 
 
     def get_extension_image(self, filename):
-
-         namelist = filename.split('.')
-         return "/image/" + namelist[-1]
+        '''
+        return a mime from a filename
+        '''
+        namelist = filename.split('.')
+        return "/image/" + namelist[-1]
 
 
     def savemodif(self):
+        '''
+        Save definitvely the modification we have made.
+        '''
         self.id3.save(self.path_file)
 
 

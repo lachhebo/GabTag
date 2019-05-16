@@ -183,7 +183,6 @@ class GabtagWindow(Gtk.ApplicationWindow):
 
             if response == Gtk.ResponseType.OK:
                 file_cover = dialog.get_filename()
-                print("La COVER : ",file_cover)
                 model.update_modifications(self.selectionned,"cover",file_cover)
                 view.update_cover(file_cover)
 
