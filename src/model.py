@@ -223,7 +223,10 @@ class Model:
                 if key in dict_tag_changed:
                     if key_value != dict_tag_changed[key]:
                         return 0
-            elif not(audio_key_exist) or key_value != audio_tag_value:
+                    else :
+                        return 1
+
+            if not(audio_key_exist) or key_value != audio_tag_value:
                 return 0
             else :
                 return 1
