@@ -51,7 +51,9 @@ class Model:
 
             for i in range(0,len(listiter)):
                 namefile = model[listiter[i]][0]
-                self.modification[namefile] = {}
+                if namefile in self.modification:
+                    del self.modification[namefile]
+
             self.update_view(selection)
 
         def save_one(self, selection):
@@ -186,7 +188,7 @@ class Model:
                     audio =  self.moteur.getFile(namefile,self.directory)
                     for key in contkey_dico :
                         if contkey_dico[key] == 1:
-                            contkey_dico[key] = self.check_tag_in_file(audio,namefile,key,self.tagdico[key]["value"])
+                            contkey_dico[key] = self.check_tag_equal_key_value(audio.check_tag_existence(key),audio.getTag(key),namefile,key,self.tagdico[key]["value"])
 
                 for key in contkey_dico :
                     if contkey_dico[key] == 0 :
@@ -210,7 +212,7 @@ class Model:
                 if key in dict_tag_changed :
                     self.tagdico[key]["value"] = dict_tag_changed[key]
 
-        def check_tag_in_file(self,audio, namefile,key,key_value):
+        def check_tag_equal_key_value(self,audio_key_exist,audio_tag_value, namefile,key,key_value):
             '''
             We check that the tag 'key' is egal to key_value for namefile else we return 0.
             We first look in modification then in the tag audio file.
@@ -221,11 +223,10 @@ class Model:
                 if key in dict_tag_changed:
                     if key_value != dict_tag_changed[key]:
                         return 0
-            elif not(audio.check_tag_existence(key)) or key_value != audio.getTag(key):
+            elif not(audio_key_exist) or key_value != audio_tag_value:
                 return 0
             else :
                 return 1
-
 
 
     __instance = None

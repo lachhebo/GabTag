@@ -47,7 +47,6 @@ class View:
                 self.title.set_text("")
                 self.title.set_editable(0)
             else :
-                print(title)
                 self.title.set_editable(1)
                 self.title.set_text(title)
 
@@ -127,7 +126,7 @@ class View:
                     self.show_cover_from_file(tagdico["cover"]["value"])
             else :
 
-                self.cover.set_from_icon_name('gtk-missing-image',32)
+                self.cover.set_from_icon_name('gtk-missing-image',6)
 
 
         def add_column(self, name):
