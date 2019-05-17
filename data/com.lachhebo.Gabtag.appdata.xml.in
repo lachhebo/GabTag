@@ -7,7 +7,7 @@
   <releases>
     <release date="2019-05-15" version="0.9"/>
   </releases>
-  <version>0.8</version>
+  <version>0.9</version>
   ​<categories>
       <category>Audio</category>
   </categories>
@@ -16,8 +16,8 @@
 	  GabTags is a GTK software written in Python, it allows user to view audio tags and to add or modify them.
 	</description>
     <screenshots>
-    <screenshot type="default" height="653" width="802">
-      <image>https://raw.githubusercontent.com/lachhebo/GabTags/screenshots/Image2.png</image>
+    <screenshot type="default" height="647" width="800">
+      <image>https://raw.githubusercontent.com/lachhebo/GabTag/screenshots/Image3.png</image>
       <caption/>
     </screenshot>
   </screenshots>
