@@ -24,7 +24,7 @@ from .gi_composites import GtkTemplate
 from .model import Model
 from .view import View
 
-@GtkTemplate(ui='/org/gnome/Gabtag/window.ui')
+@GtkTemplate(ui='/com/lachhebo/Gabtag/window.ui')
 class GabtagWindow(Gtk.ApplicationWindow):
     __gtype_name__ = 'GabtagWindow'
 
@@ -90,7 +90,7 @@ class GabtagWindow(Gtk.ApplicationWindow):
     @GtkTemplate.Callback
     def about_clicked(self,widget):
         self.id_about_window.run()
-        self.id_about_window.destroy()
+        self.id_about_window.hide()
 
 
     @GtkTemplate.Callback

@@ -27,10 +27,10 @@ from .window import GabtagWindow
 
 class Application(Gtk.Application):
     def __init__(self):
-        super().__init__(application_id='org.gnome.Gabtag',
+        super().__init__(application_id='com.lachhebo.Gabtag',
                          flags=Gio.ApplicationFlags.FLAGS_NONE)
         GLib.set_application_name(("GabTag"))
-        GLib.set_prgname('org.gnome.Gabtag')
+        GLib.set_prgname('com.lachhebo.Gabtag')
 
     def do_activate(self):
         win = self.props.active_window

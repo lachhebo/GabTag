@@ -1,6 +1,6 @@
-data/org.gnome.Gabtag.desktop.in
-data/org.gnome.Gabtag.appdata.xml.in
-data/org.gnome.Gabtag.gschema.xml
+data/com.lachhebo.Gabtag.desktop.in
+data/com.lachhebo.Gabtag.appdata.xml.in
+data/com.lachhebo.Gabtag.gschema.xml
 src/window.ui
 src/main.py
 src/window.py

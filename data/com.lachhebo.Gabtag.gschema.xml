@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist gettext-domain="gabtag">
-	<schema id="org.gnome.Gabtag" path="/org/gnome/Gabtag/">
+	<schema id="com.lachhebo.Gabtag" path="/com/lachhebo/Gabtag/">
 	</schema>
 </schemalist>
