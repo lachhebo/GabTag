@@ -11,10 +11,22 @@
   ​<categories>
       <category>Audio</category>
   </categories>
-  <summary> An audio tag tool </summary>
-	<description>
-	  GabTags is a GTK software written in Python, it allows user to view audio tags and to add or modify them.
-	</description>
+  <summary> An audio tagging tool </summary>
+	  <description>
+    <p>
+    GabTag is a Linux audio tagging tool written in GTK 3, which makes
+    it very suitable for gtk based desktop users. Its practical design is aimed at simplicity
+    and efficiency.
+    </p>
+    <p>
+    It consists of two main components, a file tree and a grid box. It allow
+    users to select several file and modify their tags. Actually it is possible
+    to set the title, album, artist, cover, track release and track number.
+    </p>
+    <p>
+    GabTag is written in Python 3 and uses Mutagen API to handle audio tags.
+    </p>
+  </description>
     <screenshots>
     <screenshot type="default" height="647" width="800">
       <image>https://raw.githubusercontent.com/lachhebo/GabTag/screenshots/Image3.png</image>
