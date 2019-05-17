@@ -89,7 +89,8 @@ class GabtagWindow(Gtk.ApplicationWindow):
 
     @GtkTemplate.Callback
     def about_clicked(self,widget):
-        self.id_about_window.show()
+        self.id_about_window.run()
+        self.id_about_window.destroy()
 
 
     @GtkTemplate.Callback
