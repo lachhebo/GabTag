@@ -5,7 +5,7 @@
     "sdk": "org.gnome.Sdk",
     "command": "gabtag",
     "finish-args": [
-        "--share=network",
+        "--filesystem=home",
         "--share=ipc",
         "--socket=x11",
         "--socket=wayland",
@@ -69,7 +69,7 @@
             "sources": [
                 {
                     "type": "git",
-                    "url": "file:///home/isma/Projets/GabTag"
+                    "url": "https://github.com/lachhebo/GabTag"
                 }
             ]
         }
