@@ -1,6 +1,6 @@
 from .audiobasics import AudioBasics
 from mutagen.mp3 import EasyMP3, MP3
-from mutagen.id3 import ID3, APIC, TRCK, USLT, TIT2, TALB, TPE1, TCON, TYER
+from mutagen.id3 import ID3, APIC, TRCK, USLT, TIT2, TALB, TPE1, TCON, TDRC
 from PIL import Image
 import io
 import os
@@ -51,7 +51,7 @@ class MP3Handler(AudioBasics):
         elif tag_key == "track":
             return self.get_one_tag('TRCK',"text")
         elif tag_key == "year":
-            return self.get_one_tag('TYER',"text")
+            return str(self.get_one_tag('TDRC',"text"))
 
         # NOT tags but file information
         elif tag_key == "size":
@@ -85,11 +85,11 @@ class MP3Handler(AudioBasics):
         elif key == "genre":
             tag = self.id3.getall('TCON')
             return len(cover_tag)>0
-        elif key == "track_number":
+        elif key == "track":
             tag = self.id3.getall('TRCK')
             return len(cover_tag)>0
         elif key == "year":
-            tag = self.id3.getall('TYER')
+            tag = self.id3.getall('TDRC')
             return len(cover_tag)>0
 
 
@@ -122,13 +122,14 @@ class MP3Handler(AudioBasics):
         elif tag_key == "genre":
             self.id3.delall('TCON')
             self.id3.add(TCON(encoding=3, text=tag_value))
-        elif tag_key == "track_number":
+        elif tag_key == "track":
             self.id3.delall('TRCK')
             self.id3.add(TRCK(encoding=3, text=tag_value))
         elif tag_key == "year":
-            self.id3.delall('TRCK')
-            self.id3.add(TYER(encoding=3, text=tag_value))
-
+            self.id3.delall('TDRC')
+            self.id3.add(TDRC(encoding=3, text=tag_value))
+        else :
+            print("NO_TAG",tag_key)
 
     def get_extension_image(self, filename):
         '''
