@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop">
-	<id>com.lachhebo.Gabtag.desktop</id>
+	<id>com.github.lachhebo.Gabtag.desktop</id>
   <name>GabTag</name>
 	<metadata_license>CC0-1.0</metadata_license>
 	<project_license>GPL-3.0-or-later</project_license>
   <releases>
-    <release date="2019-05-15" version="1.0.2"/>
+    <release date="2019-05-15" version="1.0.3"/>
   </releases>
-  <version>1.0.2</version>
+  <version>1.0.3</version>
   ​<categories>
       <category>Audio</category>
   </categories>
@@ -35,7 +35,7 @@
   </screenshots>
   <update_contact>ismael.lachheb@protonmail.com</update_contact>
   <developer_name>Ismaël Lachheb</developer_name>
-  <launchable type="desktop-id">com.lachhebo.Gabtag.desktop</launchable>
+  <launchable type="desktop-id">com.github.lachhebo.Gabtag.desktop</launchable>
   <url type="homepage">https://github.com/lachhebo/gabtag</url>
   <url type="bugtracker">https://github.com/lachhebo/gabtag/issues</url>
   <url type="donation">https://paypal.me/lachhebo</url>

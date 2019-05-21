@@ -1,4 +1,4 @@
-# <img width="30" src="data/icons/hicolor/scalable/apps/com.lachhebo.Gabtag.svg"/> Marker GabTag [![Build Status](https://travis-ci.com/lachhebo/GabTag.svg?branch=master)](https://travis-ci.com/lachhebo/GabTag) 
+# <img width="30" src="data/icons/hicolor/scalable/apps/com.github.lachhebo.Gabtag.svg"/> Marker GabTag [![Build Status](https://travis-ci.com/lachhebo/GabTag.svg?branch=master)](https://travis-ci.com/lachhebo/GabTag) 
 
 
 ## Description :

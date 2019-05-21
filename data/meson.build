@@ -1,6 +1,6 @@
 desktop_file = i18n.merge_file(
-  input: 'com.lachhebo.Gabtag.desktop.in',
-  output: 'com.lachhebo.Gabtag.desktop',
+  input: 'com.github.lachhebo.Gabtag.desktop.in',
+  output: 'com.github.lachhebo.Gabtag.desktop',
   type: 'desktop',
   po_dir: '../po',
   install: true,
@@ -20,16 +20,16 @@ icon_sizes = ['scalable']
 
 foreach i : icon_sizes
   install_data(
-    join_paths('icons/hicolor', i , 'apps', 'com.lachhebo.Gabtag' + '.svg'),
+    join_paths('icons/hicolor', i , 'apps', 'com.github.lachhebo.Gabtag' + '.svg'),
     install_dir: join_paths(get_option('prefix'), get_option('datadir'), 'icons', 'hicolor', i , 'apps'),
-    rename: '@0@.svg'.format('com.lachhebo.Gabtag')
+    rename: '@0@.svg'.format('com.github.lachhebo.Gabtag')
   )
 endforeach
 
 
 appstream_file = i18n.merge_file(
-  input: 'com.lachhebo.Gabtag.appdata.xml.in',
-  output: 'com.lachhebo.Gabtag.appdata.xml',
+  input: 'com.github.lachhebo.Gabtag.appdata.xml.in',
+  output: 'com.github.lachhebo.Gabtag.appdata.xml',
   po_dir: '../po',
   install: true,
   install_dir: join_paths(get_option('datadir'), 'appdata')
@@ -42,7 +42,7 @@ if appstream_util.found()
   )
 endif
 
-install_data('com.lachhebo.Gabtag.gschema.xml',
+install_data('com.github.lachhebo.Gabtag.gschema.xml',
   install_dir: join_paths(get_option('datadir'), 'glib-2.0/schemas')
 )
 

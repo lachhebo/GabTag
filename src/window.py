@@ -24,7 +24,7 @@ from .gi_composites import GtkTemplate
 from .model import Model
 from .view import View
 
-@GtkTemplate(ui='/com/lachhebo/Gabtag/window.ui')
+@GtkTemplate(ui='/com/github/lachhebo/Gabtag/window.ui')
 class GabtagWindow(Gtk.ApplicationWindow):
     __gtype_name__ = 'GabtagWindow'
 
