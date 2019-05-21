@@ -87,7 +87,7 @@ class View:
 
 
         def show_cover_from_file(self,namefile):
-            with  Image.open(name_file) as img :
+            with  Image.open(namefile) as img :
                 glibbytes = GLib.Bytes.new(img.tobytes())
 
                 pixbuf = GdkPixbuf.Pixbuf.new_from_bytes(glibbytes,
