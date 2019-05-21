@@ -1,4 +1,4 @@
-project('gabtag', version: '0.8.0',
+project('gabtag', version: '1.0.4',
   meson_version: '>= 0.50.1',
 )
 
