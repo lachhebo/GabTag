@@ -67,7 +67,6 @@
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="text" translatable="yes">Reset All File</property>
-            <property name="centered">True</property>
             <signal name="clicked" handler="reset_all_clicked" swapped="no"/>
           </object>
           <packing>
@@ -82,7 +81,6 @@
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="text" translatable="yes">About</property>
-            <property name="centered">True</property>
             <signal name="clicked" handler="about_clicked" swapped="no"/>
           </object>
           <packing>

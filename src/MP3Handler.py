@@ -55,7 +55,7 @@ class MP3Handler(AudioBasics):
 
         # NOT tags but file information
         elif tag_key == "size":
-            return str(os.path.getsize(self.path_file)/1000000) + " Mb"
+            return str(round(os.path.getsize(self.path_file)/1000000,1)) + " Mb"
         elif tag_key == "length":
             return str(int(self.audio.info.length/60)) + " minutes " + str(int(self.audio.info.length%60)) + " seconds"
 

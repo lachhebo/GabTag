@@ -57,7 +57,6 @@ class GabtagWindow(Gtk.ApplicationWindow):
         self.realselection = 0
         self.selectionned = None
 
-
     @GtkTemplate.Callback
     def but_saved_cliqued(self, widget):
         model = Model.getInstance()

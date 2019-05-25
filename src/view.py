@@ -50,13 +50,21 @@ class View:
                 self.title.set_editable(1)
                 self.title.set_text(title)
 
-        def set_editability_size(self, multiple_rows, size):
+        def set_editability_track(self, multiple_rows, track):
+            if multiple_rows == 1 :
+                self.track.set_text("")
+                self.track.set_editable(0)
+            else :
+                self.track.set_editable(1)
+                self.track.set_text(track)
+
+        def set_size(self, multiple_rows, size):
             if multiple_rows == 1 :
                 self.size.set_text("")
             else :
                 self.size.set_text(size)
 
-        def set_editability_length(self, multiple_rows, length):
+        def set_length(self, multiple_rows, length):
             if multiple_rows == 1 :
                 self.length.set_text("")
             else :
@@ -106,17 +114,20 @@ class View:
 
         def show(self,tagdico, multiple_rows):
 
-            # We show those tags uniquely if there ais only one row selected #TODO is it reallly usefull ? I don't think so
+            # We show those tags uniquely if there is only one row selected #TODO is it reallly usefull ? I don't think so
             self.set_editibility_title(multiple_rows,tagdico["title"]["value"])
-            self.set_editability_size(multiple_rows,tagdico["size"]["value"])
-            self.set_editability_length(multiple_rows,tagdico["length"]["value"])
+            self.set_editability_track(multiple_rows,tagdico["track"]["value"])
+
+            # Same thing for the labels # TODO show size and length for the concatenation of songs selectionned
+            self.set_size(multiple_rows,tagdico["size"]["value"])
+            self.set_length(multiple_rows,tagdico["length"]["value"])
+
 
             # We show the tag currently in tagdico
             self.genre.set_text(tagdico["genre"]["value"])
             self.album.set_text(tagdico["album"]["value"])
             self.artist.set_text(tagdico["artist"]["value"])
             self.year.set_text(tagdico["year"]["value"])
-            self.track.set_text(tagdico["track"]["value"])
 
 
             if tagdico["cover"]["value"] != "": # A test to handle if there is a cover
