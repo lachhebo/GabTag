@@ -2,6 +2,7 @@ from os import walk
 from .moteur import Moteur
 from .view import View
 from .data_scrapper import Data_Scrapper
+import asyncio
 
 class Model:
 
@@ -108,7 +109,7 @@ class Model:
 
             multiple_line_selected = self.getTags(model,listiter) # return a bool
 
-            self.data_scrapper.getTags(model,listiter,self.tagdico)
+            #self.data_scrapper.getTags(model,listiter,self.tagdico)
 
             self.view.show(self.tagdico, multiple_line_selected)
 

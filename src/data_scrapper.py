@@ -13,5 +13,5 @@ class Data_Scrapper :
 
         namefile = model[listiter][0]
 
-        print(mb.search_releases(artist=tagdico["artist"]["value"],limit=5))
+        #print(mb.search_releases(artist=tagdico["artist"]["value"],limit=5))
     

@@ -29,6 +29,7 @@ class View:
             # The size of the cover
             self.cover_width = 300
             self.cover_height = 300
+            self.last_cover = ""
 
         def erase(self):
             '''
@@ -131,13 +132,19 @@ class View:
 
 
             if tagdico["cover"]["value"] != "": # A test to handle if there is a cover
-                if len(tagdico["cover"]["value"])>100 : # A test to detect bytes file
-                    self.show_cover_from_bytes(tagdico["cover"]["value"])
-                else:
-                    self.show_cover_from_file(tagdico["cover"]["value"])
+                if(tagdico["cover"]["value"] != self.last_cover):
+                    if len(tagdico["cover"]["value"])>100 : # A test to detect bytes file
+                        self.show_cover_from_bytes(tagdico["cover"]["value"])
+                        self.last_cover = tagdico["cover"]["value"]
+                    else:
+                        self.show_cover_from_file(tagdico["cover"]["value"])
+                        self.last_cover = tagdico["cover"]["value"]
+                else :
+                    pass
             else :
 
                 self.cover.set_from_icon_name('gtk-missing-image',6)
+                self.last_cover = ""
 
 
         def add_column(self, name):
