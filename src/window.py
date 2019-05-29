@@ -24,6 +24,12 @@ from .gi_composites import GtkTemplate
 from .model import Model
 from .view import View
 
+from .data_scrapper import Data_Scrapper
+#import asyncio
+import threading
+import time
+
+
 @GtkTemplate(ui='/com/github/lachhebo/Gabtag/window.ui')
 class GabtagWindow(Gtk.ApplicationWindow):
     __gtype_name__ = 'GabtagWindow'
@@ -52,6 +58,7 @@ class GabtagWindow(Gtk.ApplicationWindow):
 
         self.tree_view_id.set_model(self.liststore1)
 
+        self.data_scrapper = Data_Scrapper.getInstance()
         view.add_column("Title")
 
         self.realselection = 0
@@ -105,6 +112,10 @@ class GabtagWindow(Gtk.ApplicationWindow):
         model = Model.getInstance()
         if response == Gtk.ResponseType.OK:
             model.update_directory(dialog.get_filename())
+            thread_mbz = threading.Thread(target = self.data_scrapper.getTags, args=(dialog.get_filename(),))
+            thread_mbz.start()
+
+
 
         dialog.destroy()
 
@@ -114,6 +125,8 @@ class GabtagWindow(Gtk.ApplicationWindow):
         liststore1 = GtkTemplate.Child()
 
         model.update_list(self.liststore1)
+
+
 
 
 

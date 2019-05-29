@@ -2,7 +2,10 @@ from os import walk
 from .moteur import Moteur
 from .view import View
 from .data_scrapper import Data_Scrapper
-import asyncio
+#import asyncio
+import threading
+import time
+
 
 class Model:
 
@@ -27,8 +30,8 @@ class Model:
                         "length":{ "value": ""},
                         "size"  :{ "value": ""}
                         }
-            self.data_scrapper = Data_Scrapper()
 
+            self.data_scrapper = Data_Scrapper.getInstance()
 
         def update_directory(self,directory):
             '''
@@ -102,14 +105,16 @@ class Model:
             and show them.
             '''
 
+            model, listiter = selection.get_selected_rows()
+
             self.view.erase()
             self.erasetag()
 
-            model, listiter = selection.get_selected_rows()
 
             multiple_line_selected = self.getTags(model,listiter) # return a bool
 
-            #self.data_scrapper.getTags(model,listiter,self.tagdico)
+
+            print(self.data_scrapper.get_one_tag(model[listiter][0]))
 
             self.view.show(self.tagdico, multiple_line_selected)
 
