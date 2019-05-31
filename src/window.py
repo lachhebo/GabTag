@@ -34,25 +34,58 @@ import time
 class GabtagWindow(Gtk.ApplicationWindow):
     __gtype_name__ = 'GabtagWindow'
 
-    tree_view_id = GtkTemplate.Child()
-    liststore1 = GtkTemplate.Child()
-    id_album = GtkTemplate.Child()
-    id_artist = GtkTemplate.Child()
-    id_type = GtkTemplate.Child()
-    id_title  = GtkTemplate.Child()
-    id_cover = GtkTemplate.Child()
-    id_year = GtkTemplate.Child()
-    id_track = GtkTemplate.Child()
-    id_info_length = GtkTemplate.Child()
-    id_info_size = GtkTemplate.Child()
+
+    ##HeaderBar
     id_popover_menu = GtkTemplate.Child()
     id_about_window = GtkTemplate.Child()
+
+    ##Table
+    tree_view_id = GtkTemplate.Child()
+    liststore1 = GtkTemplate.Child()
+
+    ## Tags
+    id_album    = GtkTemplate.Child()
+    id_artist   = GtkTemplate.Child()
+    id_type     = GtkTemplate.Child()
+    id_title    = GtkTemplate.Child()
+    id_cover    = GtkTemplate.Child()
+    id_year     = GtkTemplate.Child()
+    id_track    = GtkTemplate.Child()
+
+    ## Infos
+    id_info_length  = GtkTemplate.Child()
+    id_info_size    = GtkTemplate.Child()
+
+    ##MusicBrainz
+
+    id_album_mbz    = GtkTemplate.Child()
+    id_artist_mbz   = GtkTemplate.Child()
+    id_genre_mbz    = GtkTemplate.Child()
+    id_title_mbz    = GtkTemplate.Child()
+    id_cover_mbz    = GtkTemplate.Child()
+    id_year_mbz     = GtkTemplate.Child()
+    id_track_mbz    = GtkTemplate.Child()
+
+
+
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.init_template()
 
-        View(self.tree_view_id, self.id_title, self.id_album, self.id_artist, self.id_type, self.id_cover, self.id_track, self.id_year, self.id_info_length, self.id_info_size)
+        View(
+            self.tree_view_id,
+            self.id_title,
+            self.id_album,
+            self.id_artist,
+            self.id_type,
+            self.id_cover,
+            self.id_track,
+            self.id_year,
+            self.id_info_length,
+            self.id_info_size,
+            [self.id_title_mbz, self.id_album_mbz, self.id_artist_mbz, self.id_genre_mbz, self.id_cover_mbz, self.id_track_mbz, self.id_year_mbz]
+        )
 
         view = View.getInstance()
 
@@ -112,9 +145,6 @@ class GabtagWindow(Gtk.ApplicationWindow):
         model = Model.getInstance()
         if response == Gtk.ResponseType.OK:
             model.update_directory(dialog.get_filename())
-            thread_mbz = threading.Thread(target = self.data_scrapper.getTags, args=(dialog.get_filename(),))
-            thread_mbz.start()
-
 
 
         dialog.destroy()
@@ -219,4 +249,14 @@ class GabtagWindow(Gtk.ApplicationWindow):
 
         self.realselection = 1
 
+
+    @GtkTemplate.Callback
+    def on_set_mbz(self, widget):
+        if self.realselection == 1 :
+            self.realselection = 0
+
+            model = Model.getInstance()
+            #model.get_data_scrapped(selection)
+
+            self.realselection = 1
 

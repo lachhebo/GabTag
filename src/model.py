@@ -39,6 +39,8 @@ class Model:
             '''
             self.directory = directory
             self.modification = {}
+            thread_mbz = threading.Thread(target = self.data_scrapper.scrap_tags, args=(directory,)) #Writing data
+            thread_mbz.start()
 
         def reset_all(self,selection):
             '''
@@ -113,10 +115,10 @@ class Model:
 
             multiple_line_selected = self.getTags(model,listiter) # return a bool
 
-
-            print(self.data_scrapper.get_one_tag(model[listiter][0]))
+            data_scrapped = self.data_scrapper.get_tags(model[listiter][0], multiple_line_selected)
 
             self.view.show(self.tagdico, multiple_line_selected)
+            self.view.show_mbz(data_scrapped)
 
         def update_modifications(self,selection, tag_changed, new_value):
             '''
