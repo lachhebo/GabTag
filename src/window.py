@@ -256,7 +256,17 @@ class GabtagWindow(Gtk.ApplicationWindow):
             self.realselection = 0
 
             model = Model.getInstance()
-            #model.get_data_scrapped(selection)
+            model.set_data_scrapped(self.selectionned)
+            model.update_view(self.selectionned)
 
             self.realselection = 1
 
+    @GtkTemplate.Callback
+    def on_search_mb(self, widget):
+        if self.realselection == 1 :
+            self.realselection = 0
+            model = Model.getInstance()
+            model.update_search()
+            self.realselection = 1
+
+        

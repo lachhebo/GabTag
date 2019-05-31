@@ -5,7 +5,7 @@ from .data_scrapper import Data_Scrapper
 #import asyncio
 import threading
 import time
-
+import os
 
 class Model:
 
@@ -39,7 +39,7 @@ class Model:
             '''
             self.directory = directory
             self.modification = {}
-            thread_mbz = threading.Thread(target = self.data_scrapper.scrap_tags, args=(directory,)) #Writing data
+            thread_mbz = threading.Thread(target = self.data_scrapper.scrap_tags, args=(directory,0,)) #Writing data
             thread_mbz.start()
 
         def reset_all(self,selection):
@@ -115,10 +115,38 @@ class Model:
 
             multiple_line_selected = self.getTags(model,listiter) # return a bool
 
-            data_scrapped = self.data_scrapper.get_tags(model[listiter][0], multiple_line_selected)
+            data_scrapped = self.data_scrapper.get_tags(model, listiter, multiple_line_selected)
 
             self.view.show(self.tagdico, multiple_line_selected)
             self.view.show_mbz(data_scrapped)
+
+        def update_search(self):
+
+            self.rename_file()
+
+            thread_mbz = threading.Thread(target = self.data_scrapper.scrap_tags, args=(self.directory,1,)) #Writing data
+            thread_mbz.start()
+
+
+        def rename_file(self):
+
+
+            filelist = []
+            for (dirpath, dirnames, filenames) in walk(self.directory):
+                filelist.extend(filenames)
+                break
+
+            for namefile in filelist:
+                if self.moteur.check_extension(namefile) :
+                    audio = self.moteur.getFile(namefile,self.directory)
+                    new_name = {}
+                    for key in self.tagdico :
+                        new_name[key] = audio.getTag(key)
+                    #print("okay done !")
+                    #os.rename(namefile,  new_name["title"]+"-"+new_name["album"]+"-"+new_name["artist"])
+                    #print(" renaming done !")
+
+
 
         def update_modifications(self,selection, tag_changed, new_value):
             '''
@@ -147,6 +175,43 @@ class Model:
                         self.modification[model[listiter[i]][0]] = {}
                         alpha = self.modification[model[listiter[i]][0]]
                         alpha[tag_changed] = new_value
+
+        def set_data_scrapped(self,selection):
+
+            model, listiter = selection.get_selected_rows()
+
+            if len(listiter)> 1 :
+                multiple_line_selected = 1
+            else :
+                multiple_line_selected = 0
+
+            data_scrapped = self.data_scrapper.get_tags(model, listiter, multiple_line_selected)
+
+            if len(listiter) == 1:
+                if model[listiter][0] in self.modification :
+                    alpha = self.modification[model[listiter][0]]
+                    for key in data_scrapped :
+                        alpha[key] = data_scrapped[key]
+                else :
+                    self.modification[model[listiter][0]] = {}
+                    alpha = self.modification[model[listiter][0]]
+                    for key in data_scrapped :
+                        alpha[key] = data_scrapped[key]
+
+            elif len(listiter) > 1:
+                for i in range(0,len(listiter)):
+                    if model[listiter[i]][0] in self.modification :
+                        alpha = self.modification[model[listiter[i]][0]]
+                        for key in data_scrapped :
+                            alpha[key] = data_scrapped[key]
+
+                    else :
+                        self.modification[model[listiter[i]][0]] = {}
+                        alpha = self.modification[model[listiter[i]][0]]
+                        for key in data_scrapped :
+                            alpha[key] = data_scrapped[key]
+
+
 
         def erasetag(self):
             '''

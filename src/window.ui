@@ -76,6 +76,20 @@
           </packing>
         </child>
         <child>
+          <object class="GtkModelButton" id="id_search_again">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="text" translatable="yes">MusicBrainz</property>
+            <signal name="clicked" handler="on_search_mb" swapped="no"/>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
           <object class="GtkModelButton" id="id_about">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
@@ -86,7 +100,7 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">1</property>
+            <property name="position">2</property>
           </packing>
         </child>
       </object>
@@ -593,7 +607,9 @@
                             <property name="margin_top">2</property>
                             <property name="margin_bottom">2</property>
                             <property name="label" translatable="yes">Title </property>
-                            <property name="justify">fill</property>
+                            <property name="ellipsize">end</property>
+                            <property name="width_chars">10</property>
+                            <property name="max_width_chars">15</property>
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
@@ -609,6 +625,9 @@
                             <property name="margin_top">2</property>
                             <property name="margin_bottom">2</property>
                             <property name="label" translatable="yes">Album </property>
+                            <property name="ellipsize">end</property>
+                            <property name="width_chars">10</property>
+                            <property name="max_width_chars">15</property>
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
@@ -623,6 +642,9 @@
                             <property name="margin_top">2</property>
                             <property name="margin_bottom">2</property>
                             <property name="label" translatable="yes">Artist </property>
+                            <property name="ellipsize">end</property>
+                            <property name="width_chars">10</property>
+                            <property name="max_width_chars">15</property>
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
@@ -637,6 +659,9 @@
                             <property name="margin_top">2</property>
                             <property name="margin_bottom">2</property>
                             <property name="label" translatable="yes">Genre </property>
+                            <property name="ellipsize">end</property>
+                            <property name="width_chars">10</property>
+                            <property name="max_width_chars">15</property>
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
@@ -651,6 +676,9 @@
                             <property name="margin_top">2</property>
                             <property name="margin_bottom">2</property>
                             <property name="label" translatable="yes">Track  </property>
+                            <property name="ellipsize">end</property>
+                            <property name="width_chars">10</property>
+                            <property name="max_width_chars">15</property>
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
@@ -665,6 +693,9 @@
                             <property name="margin_top">2</property>
                             <property name="margin_bottom">2</property>
                             <property name="label" translatable="yes">Year </property>
+                            <property name="ellipsize">end</property>
+                            <property name="width_chars">10</property>
+                            <property name="max_width_chars">15</property>
                           </object>
                           <packing>
                             <property name="left_attach">0</property>

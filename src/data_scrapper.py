@@ -14,7 +14,7 @@ class Data_Scrapper :
             self.tag_finder = {}
 
 
-        def scrap_tags(self,directory):
+        def scrap_tags(self,directory,improving):
             filelist = []
             for (dirpath, dirnames, filenames) in walk(directory):
                 filelist.extend(filenames)
@@ -23,13 +23,29 @@ class Data_Scrapper :
             for namefile in filelist:
                 if Moteur().check_extension(namefile) :
                     mzquery = self.remove_extension(namefile)
+                    if improving == 1:
+                        mzquery = mzquery[0].split("-")
                     self.tag_finder[namefile] = self.reorder_data(mb.search_recordings(query = mzquery,limit=1))
 
-        def get_tags(self,namefile,multiple_line_selected):
+        def get_tags(self,model,listiter, multiline_selected):
+
+            namefile = model[listiter][0]
             if namefile in self.tag_finder :
-                return self.tag_finder[namefile]
+                alpha =  self.tag_finder[namefile]
             else :
                 return { "title":"", "artist":"", "album":"", "track":"", "year":"", "genre":"", "cover":""}
+
+
+            if multiline_selected == 1 :
+                 for i in range(1,len(listiter)):
+                    beta = model[listiter[i]][0]
+                    if beta in self.tag_finder :
+                        for tagi in ["artist","album","year","genre","cover"] :
+                            if alpha[tagi] != self.tag_finder[beta][tagi] :
+                                alpha[tagi] = ""
+
+
+            return alpha
 
         def reorder_data(self,mzdata):
             '''
