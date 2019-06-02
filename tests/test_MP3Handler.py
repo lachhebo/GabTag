@@ -33,7 +33,7 @@ class MP3HandlerTest(unittest.TestCase):
 
     def test_savemodif(self):
         result = 1
-
+        pass
 
 if __name__ == '__main__':
     unittest.main()
