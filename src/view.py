@@ -27,8 +27,8 @@ class View:
             self.length = length
             self.size = size
             # The size of the cover
-            self.cover_width = 300
-            self.cover_height = 300
+            self.cover_width = 250
+            self.cover_height = 250
             self.last_cover = ""
 
             if mbz != None :

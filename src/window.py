@@ -144,6 +144,7 @@ class GabtagWindow(Gtk.ApplicationWindow):
 
         model = Model.getInstance()
         if response == Gtk.ResponseType.OK:
+            self.opened_directory = True
             model.update_directory(dialog.get_filename())
 
 
@@ -263,10 +264,9 @@ class GabtagWindow(Gtk.ApplicationWindow):
 
     @GtkTemplate.Callback
     def on_search_mb(self, widget):
-        if self.realselection == 1 :
-            self.realselection = 0
+        if self.opened_directory == True :
             model = Model.getInstance()
-            model.update_search()
-            self.realselection = 1
+            model.rename_files()
+            model.update_list(self.liststore1)
 
         

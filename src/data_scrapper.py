@@ -14,18 +14,42 @@ class Data_Scrapper :
             self.tag_finder = {}
 
 
-        def scrap_tags(self,directory,improving):
+        def scrap_one_tag(self,namefile, directory):
+            if Moteur().check_extension(namefile) :
+                    audio = Moteur().getFile(namefile,directory)
+
+                    tags = audio.get_tag_research()
+
+                    if tags[0] == "" and tags[1] == "" and tags[2] == "" :
+                        ## Either filename if no_tags
+                        print("     ","case 1")
+                        mzquery = self.remove_extension(namefile)
+                        #mzquery = mzquery[0].split("-")
+                    else :
+                        ## Using tags title artist and album if they are present
+                        print("     ","case 2")
+                        if "" in tags :
+                            tags.remove("")
+                        if "" in tags :
+                            tags.remove("")
+                        mzquery = tags
+
+            self.tag_finder[namefile] = self.reorder_data(mb.search_recordings(query = mzquery,limit=1))
+
+
+        def update_tag_finder(self,modifications, directory):
+            for namefile in modications :
+                self.scrap_one_tag(namefile,directory)
+
+
+        def scrap_tags(self,directory):
             filelist = []
             for (dirpath, dirnames, filenames) in walk(directory):
                 filelist.extend(filenames)
                 break
 
             for namefile in filelist:
-                if Moteur().check_extension(namefile) :
-                    mzquery = self.remove_extension(namefile)
-                    if improving == 1:
-                        mzquery = mzquery[0].split("-")
-                    self.tag_finder[namefile] = self.reorder_data(mb.search_recordings(query = mzquery,limit=1))
+                self.scrap_one_tag(namefile,directory)
 
         def get_tags(self,model,listiter, multiline_selected):
 
@@ -43,6 +67,8 @@ class Data_Scrapper :
                         for tagi in ["artist","album","year","genre","cover"] :
                             if alpha[tagi] != self.tag_finder[beta][tagi] :
                                 alpha[tagi] = ""
+                        alpha["title"] = ""
+                        alpha["track"] = ""
 
 
             return alpha
@@ -79,6 +105,7 @@ class Data_Scrapper :
                 dictionnary["album"]    = ""
                 dictionnary["track"]    = ""
                 dictionnary["year"]     = ""
+                dictionnary["cover"]    = ""
 
             return dictionnary
 
@@ -90,7 +117,7 @@ class Data_Scrapper :
             return the filename without the extension
             '''
             namelist = filename.split('.')
-            print(namelist)
+            #print(namelist)
             return namelist[0:-1]
 
 

@@ -20,6 +20,9 @@ class MP3Handler(AudioBasics):
         self.id3 = self.audio.tags
 
 
+    def getextensiontype(self):
+        return ".mp3"
+
     def get_one_tag(self,id3_nametag,data_type):
         '''
         A function to return the first tag of an id3 label
@@ -32,6 +35,14 @@ class MP3Handler(AudioBasics):
                 return tag[0].data
         else:
             return ""
+
+
+    def get_tag_research(self):
+        return [
+             self.get_one_tag('TIT2',"text"),
+             self.get_one_tag('TALB',"text"),
+             self.get_one_tag('TPE1',"text")
+        ]
 
 
     def getTag(self,tag_key):
@@ -97,19 +108,31 @@ class MP3Handler(AudioBasics):
     def setTag(self,tag_key,tag_value):
 
         if tag_key == "cover":
-            extension_image  = self.get_extension_image(tag_value)
 
             self.id3.delall('APIC')
-
-            self.id3.add(
-                APIC(
-                    encoding = 3,  # UTF-8
-                    mime= extension_image,   # '/image/png'
-                    type= 3,  # 3 is for album art
-                    desc='Cover',
-                    data= open(tag_value, 'rb').read()
+            print(tag_value)
+            if type(tag_value) == bytes :
+                self.id3.add(
+                    APIC(
+                        encoding = 3,  # UTF-8
+                        mime= "/image/png",   # '/image/png'
+                        type= 3,  # 3 is for album art
+                        desc='Cover',
+                        data= tag_value
+                    )
                 )
-            )
+            else :
+                extension_image  = self.get_extension_image(tag_value)
+
+                self.id3.add(
+                    APIC(
+                        encoding = 3,  # UTF-8
+                        mime= extension_image,   # '/image/png'
+                        type= 3,  # 3 is for album art
+                        desc='Cover',
+                        data= open(tag_value, 'rb').read()
+                    )
+                )
         elif tag_key == "title":
             self.id3.delall("TIT2")
             self.id3.add(TIT2(encoding=3, text=tag_value))

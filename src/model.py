@@ -39,7 +39,7 @@ class Model:
             '''
             self.directory = directory
             self.modification = {}
-            thread_mbz = threading.Thread(target = self.data_scrapper.scrap_tags, args=(directory,0,)) #Writing data
+            thread_mbz = threading.Thread(target = self.data_scrapper.scrap_tags, args=(directory,)) #Writing data
             thread_mbz.start()
 
         def reset_all(self,selection):
@@ -81,6 +81,8 @@ class Model:
                         audio.setTag(key,filemodifs[key])
 
                 audio.savemodif()
+
+                self.data_scrapper.scrap_one_tag(namefile, self.directory)
                 self.modification[namefile] = {}
 
 
@@ -120,15 +122,8 @@ class Model:
             self.view.show(self.tagdico, multiple_line_selected)
             self.view.show_mbz(data_scrapped)
 
-        def update_search(self):
 
-            self.rename_file()
-
-            thread_mbz = threading.Thread(target = self.data_scrapper.scrap_tags, args=(self.directory,1,)) #Writing data
-            thread_mbz.start()
-
-
-        def rename_file(self):
+        def rename_files(self):
 
 
             filelist = []
@@ -142,10 +137,9 @@ class Model:
                     new_name = {}
                     for key in self.tagdico :
                         new_name[key] = audio.getTag(key)
-                    #print("okay done !")
-                    #os.rename(namefile,  new_name["title"]+"-"+new_name["album"]+"-"+new_name["artist"])
-                    #print(" renaming done !")
-
+                    os.rename(os.path.join(self.directory,namefile),os.path.join(self.directory,new_name["title"]+"-"+new_name["album"]+"-"+new_name["artist"]+audio.getextensiontype()))
+                    ## TODO remove this useless function and use a correct one)
+                    #print(" renaming done ! ",os.path.join(self.directory,namefile), ", ",os.path.join(self.directory,new_name["title"]+"-"+new_name["album"]+"-"+new_name["artist"]))
 
 
         def update_modifications(self,selection, tag_changed, new_value):
@@ -235,6 +229,8 @@ class Model:
                         audio.setTag(key,filemodifs[key])
 
                 audio.savemodif()
+
+            self.data_scrapper.update_tag_finder(self.modification, self.directory)
 
             self.modification = {}
 
