@@ -1,7 +1,9 @@
 import musicbrainzngs as mb
 from os import walk
 from .moteur import Moteur
-
+import threading
+from .view import View
+from gi.repository import Gtk
 
 class Data_Scrapper :
 
@@ -12,6 +14,7 @@ class Data_Scrapper :
         def __init__(self):
             mb.set_useragent("GabTag", version = "1.0.5", contact = "ismael.lachheb@protonmail.com")
             self.tag_finder = {}
+            self.view = View.getInstance()
 
 
         def scrap_one_tag(self,namefile, directory):
@@ -36,19 +39,24 @@ class Data_Scrapper :
                         print("BIG ISSUE")
 
 
-        def update_tag_finder(self,modifications, directory):
+        def update_tag_finder(self,modifications, directory,store):
             for namefile in modifications :
                 self.scrap_one_tag(namefile,directory)
 
 
-        def scrap_tags(self,directory):
+        def scrap_tags(self,directory,store):
             filelist = []
             for (dirpath, dirnames, filenames) in walk(directory):
                 filelist.extend(filenames)
                 break
 
+            i = 0
             for namefile in filelist:
                 self.scrap_one_tag(namefile,directory)
+                path = Gtk.TreePath(i)
+                listiter = store.get_iter(path)
+                store.set_value(listiter,1,"Yes")
+                i = i+1
 
         def get_tags(self,model,listiter, multiline_selected):
 

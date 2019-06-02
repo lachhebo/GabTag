@@ -90,12 +90,15 @@ class GabtagWindow(Gtk.ApplicationWindow):
         view = View.getInstance()
 
         self.tree_view_id.set_model(self.liststore1)
+        view.add_column("Name",0)
+        view.add_column("Scraped",1)
+
 
         self.data_scrapper = Data_Scrapper.getInstance()
-        view.add_column("Title")
 
         self.realselection = 0
         self.selectionned = None
+        self.opened_directory = False
 
     @GtkTemplate.Callback
     def but_saved_cliqued(self, widget):
@@ -147,17 +150,13 @@ class GabtagWindow(Gtk.ApplicationWindow):
         if response == Gtk.ResponseType.OK:
             self.opened_directory = True
             print(dialog.get_filename())
-            model.update_directory(dialog.get_filename())
+            model.update_directory(dialog.get_filename(),self.liststore1)
 
 
         dialog.destroy()
 
         # List mp3 file on the folder on the tree view :
 
-        tree_view_id = GtkTemplate.Child()
-        liststore1 = GtkTemplate.Child()
-
-        model.update_list(self.liststore1)
         self.realselection = 1
 
 

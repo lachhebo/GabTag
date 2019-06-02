@@ -114,6 +114,8 @@
     <columns>
       <!-- column-name Name -->
       <column type="gchararray"/>
+      <!-- column-name Scraped -->
+      <column type="gchararray"/>
     </columns>
   </object>
   <template class="GabtagWindow" parent="GtkApplicationWindow">

@@ -198,15 +198,14 @@ class View:
                 self.last_cover = ""
 
 
-        def add_column(self, name):
+        def add_column(self, name,text):
             '''
             A function to add a new column in the left panel treen useless in the code
             for the moment
             '''
             renderer = Gtk.CellRendererText()
-            column = Gtk.TreeViewColumn(name, renderer, text=0)
+            column = Gtk.TreeViewColumn(name, renderer, text=text)
             self.tree_view.append_column(column)
-
 
 
     __instance = None

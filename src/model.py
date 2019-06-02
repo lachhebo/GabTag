@@ -33,13 +33,14 @@ class Model:
 
             self.data_scrapper = Data_Scrapper.getInstance()
 
-        def update_directory(self,directory):
+        def update_directory(self,directory,store):
             '''
             we the user open a new directory, we remove all waiting modifications
             '''
             self.directory = directory
+            self.update_list(store)
             self.modification = {}
-            thread_mbz = threading.Thread(target = self.data_scrapper.scrap_tags, args=(directory,)) #Writing data
+            thread_mbz = threading.Thread(target = self.data_scrapper.scrap_tags, args=(directory,store)) #Writing data
             thread_mbz.start()
 
         def reset_all(self,selection):
@@ -94,6 +95,8 @@ class Model:
             handled by GabTag
             '''
 
+            #self.store = store
+
             store.clear()
 
             filelist = []
@@ -103,7 +106,9 @@ class Model:
 
             for namefile in filelist:
                 if self.moteur.check_extension(namefile) :
-                    store.append([namefile])
+                    store.append([namefile,"No"])
+
+            #print(store)
 
         def update_view(self,selection):
             '''
