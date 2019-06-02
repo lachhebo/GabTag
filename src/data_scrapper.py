@@ -106,12 +106,14 @@ class Data_Scrapper :
                 else :
                     dictionnary["genre"] = ""
 
-
                 if 'release-list' in mzdata['recording-list'][0] :
-                    try :
-                        dictionnary["cover"]    = mb.get_image(mbid = mzdata['recording-list'][0]["release-list"][0]["id"],coverid = "front", size = 250)
-                    except :
-                        dictionnary["cover"] = ""
+                    for i in range(len(mzdata['recording-list'][0]["release-list"])):
+                        try :
+                            dictionnary["cover"] = mb.get_image(mbid = mzdata['recording-list'][0]["release-list"][i]["id"],coverid = "front", size = 250)
+                            if type(dictionnary) == bytes :
+                                break
+                        except :
+                            dictionnary["cover"] = ""
 
                     dictionnary["album"]    = mzdata['recording-list'][0]['release-list'][0]["release-group"]["title"] #album
                     dictionnary["track"]    = mzdata['recording-list'][0]['release-list'][0]["medium-list"][0]['track-list'][0]["number"]
