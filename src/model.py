@@ -74,15 +74,17 @@ class Model:
             for i in range(len(listiter)):
                 namefile = model[listiter[i]][0]
                 audio = self.moteur.getFile(namefile, self.directory)
-                filemodifs = self.modification[namefile]
+                if namefile in self.modification :
+                    filemodifs = self.modification[namefile]
 
-                for key in self.tagdico :
-                    if key in filemodifs:
-                        audio.setTag(key,filemodifs[key])
+                    for key in self.tagdico :
+                        if key in filemodifs:
+                            audio.setTag(key,filemodifs[key])
 
-                audio.savemodif()
+                    audio.savemodif()
 
-                self.data_scrapper.scrap_one_tag(namefile, self.directory)
+                thread_mbz = threading.Thread(target = self.data_scrapper.scrap_one_tag, args=(namefile,self.directory)) #Writing data
+                thread_mbz.start()
                 self.modification[namefile] = {}
 
 
@@ -230,7 +232,9 @@ class Model:
 
                 audio.savemodif()
 
-            self.data_scrapper.update_tag_finder(self.modification, self.directory)
+
+            thread_mbz = threading.Thread(target = self.data_scrapper.update_tag_finder, args=(self.modification,self.directory)) #Writing data
+            thread_mbz.start()
 
             self.modification = {}
 

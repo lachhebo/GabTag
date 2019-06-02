@@ -5,9 +5,9 @@
 	<metadata_license>CC0-1.0</metadata_license>
 	<project_license>GPL-3.0-or-later</project_license>
   <releases>
-    <release date="2019-05-15" version="1.0.4"/>
+    <release date="2019-06-02" version="1.1.0"/>
   </releases>
-  <version>1.0.4</version>
+  <version>1.1.0</version>
   ​<categories>
       <category>Audio</category>
   </categories>
@@ -19,17 +19,16 @@
     and efficiency.
     </p>
     <p>
-    It consists of two main components, a file tree and a grid box. It allow
-    users to select several file and modify their tags. Actually it is possible
-    to set the title, album, artist, cover, track release and track number.
+    It allow users to select several file and modify their tags, It is also possible to directly let GabTag automatically
+    find tags for the audio files using online data.
     </p>
     <p>
-    GabTag is written in Python 3 and uses Mutagen API to handle audio tags.
+    GabTag is written in Python 3, uses Mutagen to handle audio tags and MusicBrainz database to find audio tags online.
     </p>
   </description>
     <screenshots>
     <screenshot type="default" height="647" width="800">
-      <image>https://raw.githubusercontent.com/lachhebo/GabTag/screenshots/Image3.png</image>
+      <image>https://raw.githubusercontent.com/lachhebo/GabTag/screenshots/GabTag_V1_1.png</image>
       <caption/>
     </screenshot>
   </screenshots>

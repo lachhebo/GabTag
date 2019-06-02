@@ -17,7 +17,7 @@
     <property name="title" translatable="yes">About</property>
     <property name="type_hint">dialog</property>
     <property name="program_name">GabTag</property>
-    <property name="version">1.0.4</property>
+    <property name="version">1.1.0</property>
     <property name="comments" translatable="yes">GabTag is an  open-source audio tagging tool written in gtk3.</property>
     <property name="authors">Ismaël Lachheb</property>
     <property name="logo_icon_name">com.github.lachhebo.Gabtag</property>
@@ -66,7 +66,7 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
-            <property name="text" translatable="yes">Reset All File</property>
+            <property name="text" translatable="yes">Reset files</property>
             <signal name="clicked" handler="reset_all_clicked" swapped="no"/>
           </object>
           <packing>
@@ -76,12 +76,12 @@
           </packing>
         </child>
         <child>
-          <object class="GtkModelButton" id="id_search_again">
+          <object class="GtkModelButton" id="id_rename_files">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
-            <property name="text" translatable="yes">MusicBrainz</property>
-            <signal name="clicked" handler="on_search_mb" swapped="no"/>
+            <property name="text" translatable="yes">Rename files</property>
+            <signal name="clicked" handler="on_rename_files" swapped="no"/>
           </object>
           <packing>
             <property name="expand">False</property>

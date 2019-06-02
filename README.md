@@ -15,13 +15,13 @@ It uses Mutagen to handle tags. I hope to make it available on Flathub as soon a
 - [x] MP3  File handled
 - [ ] Flac File handled
 - [ ] bold font on modified tags and files
-- [ ] Automatic completion of tags (from web data)
+- [x] Automatic completion of tags (from web data)
 - [ ] Multi-folder modification
 
 
 ## Screenshots:
 
-![ScreenShot](https://raw.githubusercontent.com/lachhebo/GabTag/screenshots/Image3.png)
+![ScreenShot](https://raw.githubusercontent.com/lachhebo/GabTag/screenshots/GabTag_V1_1.png)
 
 
 ## Installation :

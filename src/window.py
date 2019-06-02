@@ -134,6 +134,7 @@ class GabtagWindow(Gtk.ApplicationWindow):
 
     @GtkTemplate.Callback
     def open_clicked(self, widget):
+        self.realselection = 0
         dialog = Gtk.FileChooserDialog("Please choose a folder", self,
         Gtk.FileChooserAction.SELECT_FOLDER,
         (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
@@ -145,6 +146,7 @@ class GabtagWindow(Gtk.ApplicationWindow):
         model = Model.getInstance()
         if response == Gtk.ResponseType.OK:
             self.opened_directory = True
+            print(dialog.get_filename())
             model.update_directory(dialog.get_filename())
 
 
@@ -156,7 +158,7 @@ class GabtagWindow(Gtk.ApplicationWindow):
         liststore1 = GtkTemplate.Child()
 
         model.update_list(self.liststore1)
-
+        self.realselection = 1
 
 
 
@@ -241,14 +243,14 @@ class GabtagWindow(Gtk.ApplicationWindow):
 
     @GtkTemplate.Callback
     def selected_changed(self, selection):
+        if self.realselection == 1 :
+            self.realselection = 0
+            self.selectionned = selection
 
-        self.realselection = 0
-        self.selectionned = selection
+            model = Model.getInstance()
+            model.update_view(selection)
 
-        model = Model.getInstance()
-        model.update_view(selection)
-
-        self.realselection = 1
+            self.realselection = 1
 
 
     @GtkTemplate.Callback
@@ -263,7 +265,7 @@ class GabtagWindow(Gtk.ApplicationWindow):
             self.realselection = 1
 
     @GtkTemplate.Callback
-    def on_search_mb(self, widget):
+    def on_rename_files(self, widget):
         if self.opened_directory == True :
             model = Model.getInstance()
             model.rename_files()

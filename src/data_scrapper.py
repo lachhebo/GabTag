@@ -16,29 +16,28 @@ class Data_Scrapper :
 
         def scrap_one_tag(self,namefile, directory):
             if Moteur().check_extension(namefile) :
-                    audio = Moteur().getFile(namefile,directory)
+                audio = Moteur().getFile(namefile,directory)
 
-                    tags = audio.get_tag_research()
+                tags = audio.get_tag_research()
 
-                    if tags[0] == "" and tags[1] == "" and tags[2] == "" :
-                        ## Either filename if no_tags
-                        print("     ","case 1")
-                        mzquery = self.remove_extension(namefile)
-                        #mzquery = mzquery[0].split("-")
+                if tags[0] == "" and tags[1] == "" :
+                    ## Either filename if no_tags
+                    mzquery = self.remove_extension(namefile)
+                    self.tag_finder[namefile] = self.reorder_data(mb.search_recordings(query = mzquery,limit=1))
+                else :
+                    ## Using tags title artist and album if they are present
+                    if tags[0] != "" and tags[1] != 0 :
+                        self.tag_finder[namefile] = self.reorder_data(mb.search_recordings(recording = tags[0], artistname = tags[1],limit=1))
+                    elif tags[1] == "" :
+                        self.tag_finder[namefile] = self.reorder_data(mb.search_recordings(recording = tags[0], release = tags[2],limit=1))
+                    elif tags[0] == "" :
+                        self.tag_finder[namefile] = self.reorder_data(mb.search_recordings(query = self.remove_extension(namefile), artistname = tags[1],limit=1))
                     else :
-                        ## Using tags title artist and album if they are present
-                        print("     ","case 2")
-                        if "" in tags :
-                            tags.remove("")
-                        if "" in tags :
-                            tags.remove("")
-                        mzquery = tags
-
-            self.tag_finder[namefile] = self.reorder_data(mb.search_recordings(query = mzquery,limit=1))
+                        print("BIG ISSUE")
 
 
         def update_tag_finder(self,modifications, directory):
-            for namefile in modications :
+            for namefile in modifications :
                 self.scrap_one_tag(namefile,directory)
 
 
@@ -78,34 +77,42 @@ class Data_Scrapper :
             take a bunch of data from mz and make it in the form { title = , ...}
             '''
 
-            dictionnary = {}
+            dictionnary = {
+                "title":"",
+                "artist": "",
+                "genre":"",
+                "cover":"",
+                "album":"",
+                "track":"",
+                "year":""}
 
-            dictionnary["title"]    = mzdata['recording-list'][0]['title']
-            dictionnary["artist"]   = mzdata['recording-list'][0]['artist-credit'][0]["artist"]["name"]
+            if len(mzdata['recording-list']) >= 1 :
+                dictionnary["title"]    = mzdata['recording-list'][0]['title']
+                dictionnary["artist"]   = mzdata['recording-list'][0]['artist-credit'][0]["artist"]["name"]
 
-            if 'disambiguation' in mzdata['recording-list'][0]['artist-credit'][0]["artist"]:
-                dictionnary["genre"] = mzdata['recording-list'][0]['artist-credit'][0]["artist"]["disambiguation"]
-            else :
-                dictionnary["genre"] = ""
-
-
-            if 'release-list' in mzdata['recording-list'][0] :
-                try :
-                    dictionnary["cover"]    = mb.get_image(mbid = mzdata['recording-list'][0]["release-list"][0]["id"],coverid = "front", size = 250)
-                except :
-                    dictionnary["cover"] = ""
-
-                dictionnary["album"]    = mzdata['recording-list'][0]['release-list'][0]["release-group"]["title"] #album
-                dictionnary["track"]    = mzdata['recording-list'][0]['release-list'][0]["medium-list"][0]['track-list'][0]["number"]
-                if 'date' in mzdata['recording-list'][0]['release-list'][0] :
-                    dictionnary["year"] = mzdata['recording-list'][0]['release-list'][0]["date"].split("-")[0]
+                if 'disambiguation' in mzdata['recording-list'][0]['artist-credit'][0]["artist"]:
+                    dictionnary["genre"] = mzdata['recording-list'][0]['artist-credit'][0]["artist"]["disambiguation"]
                 else :
-                    dictionnary["year"] = ""
-            else :
-                dictionnary["album"]    = ""
-                dictionnary["track"]    = ""
-                dictionnary["year"]     = ""
-                dictionnary["cover"]    = ""
+                    dictionnary["genre"] = ""
+
+
+                if 'release-list' in mzdata['recording-list'][0] :
+                    try :
+                        dictionnary["cover"]    = mb.get_image(mbid = mzdata['recording-list'][0]["release-list"][0]["id"],coverid = "front", size = 250)
+                    except :
+                        dictionnary["cover"] = ""
+
+                    dictionnary["album"]    = mzdata['recording-list'][0]['release-list'][0]["release-group"]["title"] #album
+                    dictionnary["track"]    = mzdata['recording-list'][0]['release-list'][0]["medium-list"][0]['track-list'][0]["number"]
+                    if 'date' in mzdata['recording-list'][0]['release-list'][0] :
+                        dictionnary["year"] = mzdata['recording-list'][0]['release-list'][0]["date"].split("-")[0]
+                    else :
+                        dictionnary["year"] = ""
+                else :
+                    dictionnary["album"]    = ""
+                    dictionnary["track"]    = ""
+                    dictionnary["year"]     = ""
+                    dictionnary["cover"]    = ""
 
             return dictionnary
 

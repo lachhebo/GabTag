@@ -40,8 +40,8 @@ class MP3Handler(AudioBasics):
     def get_tag_research(self):
         return [
              self.get_one_tag('TIT2',"text"),
-             self.get_one_tag('TALB',"text"),
-             self.get_one_tag('TPE1',"text")
+             self.get_one_tag('TPE1',"text"),
+             self.get_one_tag('TALB',"text")
         ]
 
 
@@ -110,8 +110,10 @@ class MP3Handler(AudioBasics):
         if tag_key == "cover":
 
             self.id3.delall('APIC')
-            print(tag_value)
-            if type(tag_value) == bytes :
+
+            if tag_value == "" :
+                pass
+            elif type(tag_value) == bytes :
                 self.id3.add(
                     APIC(
                         encoding = 3,  # UTF-8
@@ -123,7 +125,7 @@ class MP3Handler(AudioBasics):
                 )
             else :
                 extension_image  = self.get_extension_image(tag_value)
-
+                print("type of tag_value : ",type(tag_value))
                 self.id3.add(
                     APIC(
                         encoding = 3,  # UTF-8
@@ -133,6 +135,7 @@ class MP3Handler(AudioBasics):
                         data= open(tag_value, 'rb').read()
                     )
                 )
+
         elif tag_key == "title":
             self.id3.delall("TIT2")
             self.id3.add(TIT2(encoding=3, text=tag_value))
