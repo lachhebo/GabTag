@@ -20,15 +20,16 @@ class MP3HandlerTest(unittest.TestCase):
         pass
 
     def test_check_tag_existence(self):
-        audio = MP3Handler()
-        result = check_tag_existence(key)
+        #audio = MP3Handler()
+        #result = check_tag_existence(key)
 
         # assert :
+        pass
 
     def test_setTag(self):
-        audio = MP3Handler()
-        result = setTag(tag_key,tag_value)
-
+        #audio = MP3Handler()
+        #result = setTag(tag_key,tag_value)
+        pass
 
     def test_savemodif(self):
         result = 1
