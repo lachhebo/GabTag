@@ -213,6 +213,20 @@ class Model:
                             alpha[key] = data_scrapped[key]
 
 
+        def set_online_tags(self):
+            tag_finded = self.data_scrapper.tag_finder
+
+            for namefile in tag_finded :
+                if namefile in self.modification :
+                    for key in tag_finded[namefile] :
+                            self.modification[namefile][key] = tag_finded[namefile][key]
+
+                else :
+                    self.modification[namefile] = {}
+                    for key in tag_finded[namefile] :
+                            self.modification[namefile][key] = tag_finded[namefile][key]
+
+
 
         def erasetag(self):
             '''

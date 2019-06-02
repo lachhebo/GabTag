@@ -90,6 +90,20 @@
           </packing>
         </child>
         <child>
+          <object class="GtkModelButton" id="id_auto_tag">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="text" translatable="yes">Set online tags</property>
+            <signal name="clicked" handler="on_set_online_tags" swapped="no"/>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
           <object class="GtkModelButton" id="id_about">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
@@ -100,7 +114,7 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">2</property>
+            <property name="position">3</property>
           </packing>
         </child>
       </object>

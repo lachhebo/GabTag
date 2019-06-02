@@ -266,8 +266,23 @@ class GabtagWindow(Gtk.ApplicationWindow):
     @GtkTemplate.Callback
     def on_rename_files(self, widget):
         if self.opened_directory == True :
+            self.realselection = 0
             model = Model.getInstance()
             model.rename_files()
             model.update_list(self.liststore1)
+            thread_mbz = threading.Thread(target = self.data_scrapper.scrap_tags, args=(model.directory,self.liststore1)) #Writing data
+            thread_mbz.start()
+            self.realselection = 1
 
         
+
+    @GtkTemplate.Callback
+    def on_set_online_tags(self,widget):
+        if self.opened_directory == True :
+
+            model = Model.getInstance()
+
+            model.set_online_tags()
+
+            if self.selectionned != None :
+                model.update_view(self.selectionned)

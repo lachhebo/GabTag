@@ -45,6 +45,8 @@ class Data_Scrapper :
 
 
         def scrap_tags(self,directory,store):
+            self.tag_finder = {}
+
             filelist = []
             for (dirpath, dirnames, filenames) in walk(directory):
                 filelist.extend(filenames)
@@ -52,11 +54,12 @@ class Data_Scrapper :
 
             i = 0
             for namefile in filelist:
-                self.scrap_one_tag(namefile,directory)
-                path = Gtk.TreePath(i)
-                listiter = store.get_iter(path)
-                store.set_value(listiter,1,"Yes")
-                i = i+1
+                if Moteur().check_extension(namefile) :
+                    self.scrap_one_tag(namefile,directory)
+                    path = Gtk.TreePath(i)
+                    listiter = store.get_iter(path)
+                    store.set_value(listiter,1,"Yes")
+                    i = i+1
 
         def get_tags(self,model,listiter, multiline_selected):
 
