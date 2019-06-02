@@ -24,38 +24,81 @@ from .gi_composites import GtkTemplate
 from .model import Model
 from .view import View
 
+from .data_scrapper import Data_Scrapper
+#import asyncio
+import threading
+import time
+
+
 @GtkTemplate(ui='/com/github/lachhebo/Gabtag/window.ui')
 class GabtagWindow(Gtk.ApplicationWindow):
     __gtype_name__ = 'GabtagWindow'
 
-    tree_view_id = GtkTemplate.Child()
-    liststore1 = GtkTemplate.Child()
-    id_album = GtkTemplate.Child()
-    id_artist = GtkTemplate.Child()
-    id_type = GtkTemplate.Child()
-    id_title  = GtkTemplate.Child()
-    id_cover = GtkTemplate.Child()
-    id_year = GtkTemplate.Child()
-    id_track = GtkTemplate.Child()
-    id_info_length = GtkTemplate.Child()
-    id_info_size = GtkTemplate.Child()
+
+    ##HeaderBar
     id_popover_menu = GtkTemplate.Child()
     id_about_window = GtkTemplate.Child()
+
+    ##Table
+    tree_view_id = GtkTemplate.Child()
+    liststore1 = GtkTemplate.Child()
+
+    ## Tags
+    id_album    = GtkTemplate.Child()
+    id_artist   = GtkTemplate.Child()
+    id_type     = GtkTemplate.Child()
+    id_title    = GtkTemplate.Child()
+    id_cover    = GtkTemplate.Child()
+    id_year     = GtkTemplate.Child()
+    id_track    = GtkTemplate.Child()
+
+    ## Infos
+    id_info_length  = GtkTemplate.Child()
+    id_info_size    = GtkTemplate.Child()
+
+    ##MusicBrainz
+
+    id_album_mbz    = GtkTemplate.Child()
+    id_artist_mbz   = GtkTemplate.Child()
+    id_genre_mbz    = GtkTemplate.Child()
+    id_title_mbz    = GtkTemplate.Child()
+    id_cover_mbz    = GtkTemplate.Child()
+    id_year_mbz     = GtkTemplate.Child()
+    id_track_mbz    = GtkTemplate.Child()
+
+
+
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.init_template()
 
-        View(self.tree_view_id, self.id_title, self.id_album, self.id_artist, self.id_type, self.id_cover, self.id_track, self.id_year, self.id_info_length, self.id_info_size)
+        View(
+            self.tree_view_id,
+            self.id_title,
+            self.id_album,
+            self.id_artist,
+            self.id_type,
+            self.id_cover,
+            self.id_track,
+            self.id_year,
+            self.id_info_length,
+            self.id_info_size,
+            [self.id_title_mbz, self.id_album_mbz, self.id_artist_mbz, self.id_genre_mbz, self.id_cover_mbz, self.id_track_mbz, self.id_year_mbz]
+        )
 
         view = View.getInstance()
 
         self.tree_view_id.set_model(self.liststore1)
+        view.add_column("Name",0)
+        view.add_column("Scraped",1)
 
-        view.add_column("Title")
+
+        self.data_scrapper = Data_Scrapper.getInstance()
 
         self.realselection = 0
         self.selectionned = None
+        self.opened_directory = False
 
     @GtkTemplate.Callback
     def but_saved_cliqued(self, widget):
@@ -94,6 +137,7 @@ class GabtagWindow(Gtk.ApplicationWindow):
 
     @GtkTemplate.Callback
     def open_clicked(self, widget):
+        self.realselection = 0
         dialog = Gtk.FileChooserDialog("Please choose a folder", self,
         Gtk.FileChooserAction.SELECT_FOLDER,
         (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
@@ -104,16 +148,17 @@ class GabtagWindow(Gtk.ApplicationWindow):
 
         model = Model.getInstance()
         if response == Gtk.ResponseType.OK:
-            model.update_directory(dialog.get_filename())
+            self.opened_directory = True
+            print(dialog.get_filename())
+            model.update_directory(dialog.get_filename(),self.liststore1)
+
 
         dialog.destroy()
 
         # List mp3 file on the folder on the tree view :
 
-        tree_view_id = GtkTemplate.Child()
-        liststore1 = GtkTemplate.Child()
+        self.realselection = 1
 
-        model.update_list(self.liststore1)
 
 
 
@@ -197,13 +242,47 @@ class GabtagWindow(Gtk.ApplicationWindow):
 
     @GtkTemplate.Callback
     def selected_changed(self, selection):
+        if self.realselection == 1 :
+            self.realselection = 0
+            self.selectionned = selection
 
-        self.realselection = 0
-        self.selectionned = selection
+            model = Model.getInstance()
+            model.update_view(selection)
 
-        model = Model.getInstance()
-        model.update_view(selection)
-
-        self.realselection = 1
+            self.realselection = 1
 
 
+    @GtkTemplate.Callback
+    def on_set_mbz(self, widget):
+        if self.realselection == 1 :
+            self.realselection = 0
+
+            model = Model.getInstance()
+            model.set_data_scrapped(self.selectionned)
+            model.update_view(self.selectionned)
+
+            self.realselection = 1
+
+    @GtkTemplate.Callback
+    def on_rename_files(self, widget):
+        if self.opened_directory == True :
+            self.realselection = 0
+            model = Model.getInstance()
+            model.rename_files()
+            model.update_list(self.liststore1)
+            thread_mbz = threading.Thread(target = self.data_scrapper.scrap_tags, args=(model.directory,self.liststore1)) #Writing data
+            thread_mbz.start()
+            self.realselection = 1
+
+        
+
+    @GtkTemplate.Callback
+    def on_set_online_tags(self,widget):
+        if self.opened_directory == True :
+
+            model = Model.getInstance()
+
+            model.set_online_tags()
+
+            if self.selectionned != None :
+                model.update_view(self.selectionned)

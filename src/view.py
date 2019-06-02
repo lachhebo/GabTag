@@ -11,7 +11,7 @@ class View:
 
     class __View:
 
-        def __init__(self, tree_view, title, album, artist, genre, cover, track, year, length, size):
+        def __init__(self, tree_view, title, album, artist, genre, cover, track, year, length, size, mbz):
             '''
             Here, we initiliase the widget we are going to use in the future.
             '''
@@ -27,8 +27,60 @@ class View:
             self.length = length
             self.size = size
             # The size of the cover
-            self.cover_width = 300
-            self.cover_height = 300
+            self.cover_width = 250
+            self.cover_height = 250
+            self.last_cover = ""
+
+            if mbz != None :
+                self.title_mbz  = mbz[0]
+                self.album_mbz  = mbz[1]
+                self.artist_mbz = mbz[2]
+                self.genre_mbz  = mbz[3]
+                self.cover_mbz  = mbz[4]
+                self.track_mbz  = mbz[5]
+                self.year_mbz   = mbz[6]
+
+
+        def show_mbz(self, data_scrapped):
+
+            # We show the tag currently in tagdico
+            self.title_mbz.set_text(data_scrapped["title"])
+            self.track_mbz.set_text(data_scrapped["track"])
+            self.genre_mbz.set_text(data_scrapped["genre"])
+            self.album_mbz.set_text(data_scrapped["album"])
+            self.artist_mbz.set_text(data_scrapped["artist"])
+            self.year_mbz.set_text(data_scrapped["year"])
+
+
+            if data_scrapped["cover"] != "" :
+                with  Image.open(io.BytesIO(data_scrapped["cover"])) as img :
+                        glibbytes = GLib.Bytes.new(img.tobytes())
+
+                        width = img.width  ##The best fix i could find for the moment
+                        height = img.height
+
+                        if glibbytes.get_size() < width * height * 3 :
+                            width = math.sqrt(glibbytes.get_size()/3)
+                            height = math.sqrt(glibbytes.get_size()/3)
+
+
+                        try :
+                            pixbuf = GdkPixbuf.Pixbuf.new_from_bytes(glibbytes, # TODO ERROR HAPPENS WITH SOME COVER
+                                                                GdkPixbuf.Colorspace.RGB,
+                                                                False,
+                                                                8,
+                                                                img.width,
+                                                                img.height,
+                                                                len(img.getbands())*img.width)
+
+                            pixbuf = pixbuf.scale_simple(250, 250, GdkPixbuf.InterpType.BILINEAR)
+
+                            self.cover_mbz.set_from_pixbuf(pixbuf)
+                        except :
+                            self.cover_mbz.set_from_icon_name('gtk-missing-image',6)
+            else :
+                self.cover_mbz.set_from_icon_name('gtk-missing-image',6)
+
 
         def erase(self):
             '''
@@ -131,40 +183,45 @@ class View:
 
 
             if tagdico["cover"]["value"] != "": # A test to handle if there is a cover
-                if len(tagdico["cover"]["value"])>100 : # A test to detect bytes file
-                    self.show_cover_from_bytes(tagdico["cover"]["value"])
-                else:
-                    self.show_cover_from_file(tagdico["cover"]["value"])
+                if(tagdico["cover"]["value"] != self.last_cover):
+                    if len(tagdico["cover"]["value"])>100 : # A test to detect bytes file
+                        self.show_cover_from_bytes(tagdico["cover"]["value"])
+                        self.last_cover = tagdico["cover"]["value"]
+                    else:
+                        self.show_cover_from_file(tagdico["cover"]["value"])
+                        self.last_cover = tagdico["cover"]["value"]
+                else :
+                    pass
             else :
 
                 self.cover.set_from_icon_name('gtk-missing-image',6)
+                self.last_cover = ""
 
 
-        def add_column(self, name):
+        def add_column(self, name,text):
             '''
             A function to add a new column in the left panel treen useless in the code
             for the moment
             '''
             renderer = Gtk.CellRendererText()
-            column = Gtk.TreeViewColumn(name, renderer, text=0)
+            column = Gtk.TreeViewColumn(name, renderer, text=text)
             self.tree_view.append_column(column)
-
 
 
     __instance = None
 
-    def __init__(self, tree_view, title, album, artist, genre, cover, track, year, length, size):
+    def __init__(self, tree_view, title, album, artist, genre, cover, track, year, length, size, mbz):
         """ Virtually private constructor. """
         if View.__instance != None:
             raise Exception("This class is a singleton!")
         else:
-            View.__instance = View.__View(tree_view, title, album, artist, genre, cover, track, year, length, size)
+            View.__instance = View.__View(tree_view, title, album, artist, genre, cover, track, year, length, size, mbz)
 
 
     @staticmethod
     def getInstance():
         """ Static access method. """
         if View.__instance == None:
-            View(None,None,None,None,None, None, None, None, None, None)
+            View(None,None,None,None,None, None, None, None, None, None, None)
         return View.__instance
 

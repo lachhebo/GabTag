@@ -6,6 +6,7 @@
     "command": "gabtag",
     "finish-args": [
         "--filesystem=home",
+        "--share=network",
         "--share=ipc",
         "--socket=x11",
         "--socket=wayland",
@@ -41,18 +42,32 @@
 	    ]
 	},
 	{
-    "name": "python3-Pillow",
-    "buildsystem": "simple",
-    "build-commands": [
-        "pip3 install --no-index --find-links=\"file://${PWD}\" --prefix=${FLATPAK_DEST} Pillow"
-    ],
-    "sources": [
-        {
-            "type": "file",
-            "url": "https://files.pythonhosted.org/packages/81/1a/6b2971adc1bca55b9a53ed1efa372acff7e8b9913982a396f3fa046efaf8/Pillow-6.0.0.tar.gz",
-            "sha256": "809c0a2ce9032cbcd7b5313f71af4bdc5c8c771cb86eb7559afd954cab82ebb5"
-        }
-    ]
+	    "name": "python3-musicbrainzngs",
+	    "buildsystem": "simple",
+	    "build-commands": [
+		"pip3 install --no-index --find-links=\"file://${PWD}\" --prefix=${FLATPAK_DEST} musicbrainzngs"
+	    ],
+	    "sources": [
+		{
+		    "type": "file",
+		    "url": "https://files.pythonhosted.org/packages/63/cc/67ad422295750e2b9ee57c27370dc85d5b85af2454afe7077df6b93d5938/musicbrainzngs-0.6.tar.gz",
+		    "sha256": "28ef261a421dffde0a25281dab1ab214e1b407eec568cd05a53e73256f56adb5"
+		}
+	    ]
+	},
+	{
+	    "name": "python3-Pillow",
+	    "buildsystem": "simple",
+	    "build-commands": [
+		"pip3 install --no-index --find-links=\"file://${PWD}\" --prefix=${FLATPAK_DEST} Pillow"
+	    ],
+	    "sources": [
+		{
+		    "type": "file",
+		    "url": "https://files.pythonhosted.org/packages/81/1a/6b2971adc1bca55b9a53ed1efa372acff7e8b9913982a396f3fa046efaf8/Pillow-6.0.0.tar.gz",
+		    "sha256": "809c0a2ce9032cbcd7b5313f71af4bdc5c8c771cb86eb7559afd954cab82ebb5"
+		}
+	    ]
 	},
         {
             "name": "gabtag",
@@ -62,7 +77,7 @@
             "sources": [
                 {
                     "type": "git",
-                    "tag": "v1.0.5",
+                    "tag": "v1.1.0",
                     "url": "https://github.com/lachhebo/GabTag"
                 }
             ]
