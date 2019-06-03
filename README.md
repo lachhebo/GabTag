@@ -15,7 +15,8 @@ It uses Mutagen to handle tags. I hope to make it available on Flathub as soon a
 - [x] MP3  File handled
 - [ ] Flac File handled
 - [ ] bold font on modified tags and files
-- [x] Automatic completion of tags (from web data)
+- [x] Automatic completion of tags (from online data)
+- [x] Lyrics (from online data)
 - [ ] Multi-folder modification
 
 
