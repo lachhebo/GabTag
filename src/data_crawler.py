@@ -1,24 +1,32 @@
-import musicbrainzngs as mb
-from os import walk
-from .moteur import Moteur
-import threading
-from .view import View
 from gi.repository import Gtk
+from os import walk
+import threading
 
-class Data_Scrapper :
+import musicbrainzngs as mb
+from PyLyrics import *
+
+from .moteur import Moteur
+from .view import View
+
+class Data_Crawler :
 
 
-    class __Data_Scrapper :
+    class __Data_Crawler :
 
 
         def __init__(self):
-            mb.set_useragent("GabTag", version = "1.0.5", contact = "ismael.lachheb@protonmail.com")
+            try :
+                mb.set_useragent("GabTag", version = "1.0.5", contact = "ismael.lachheb@protonmail.com")
+                self.internet = True
+            except :
+                self.internet = False
             self.tag_finder = {}
+            self.lyrics = {}
             self.view = View.getInstance()
 
 
-        def scrap_one_tag(self,namefile, directory):
-            if Moteur().check_extension(namefile) :
+        def crawl_one_file(self,namefile, directory):
+            if Moteur().check_extension(namefile) and self.internet == True :
                 audio = Moteur().getFile(namefile,directory)
 
                 tags = audio.get_tag_research()
@@ -30,22 +38,50 @@ class Data_Scrapper :
                 else :
                     ## Using tags title artist and album if they are present
                     if tags[0] != "" and tags[1] != 0 :
-                        self.tag_finder[namefile] = self.reorder_data(mb.search_recordings(recording = tags[0], artistname = tags[1],limit=1))
+                        try :
+                            self.tag_finder[namefile] = self.reorder_data(mb.search_recordings(recording = tags[0], artistname = tags[1],limit=1))
+                        except : ## TODO Check Internet Connection
+                            pass
+
                     elif tags[1] == "" :
-                        self.tag_finder[namefile] = self.reorder_data(mb.search_recordings(recording = tags[0], release = tags[2],limit=1))
+                        try :
+                            self.tag_finder[namefile] = self.reorder_data(mb.search_recordings(recording = tags[0], release = tags[2],limit=1))
+                        except :
+                            pass
+
                     elif tags[0] == "" :
-                        self.tag_finder[namefile] = self.reorder_data(mb.search_recordings(query = self.remove_extension(namefile), artistname = tags[1],limit=1))
+                        try :
+                            self.tag_finder[namefile] = self.reorder_data(mb.search_recordings(query = self.remove_extension(namefile), artistname = tags[1],limit=1))
+                        except :
+                            pass
                     else :
-                        print("BIG ISSUE")
+                        pass
+
+        def crawl_lyrics(self, namefile, directory):
+            if Moteur().check_extension(namefile)  and self.internet == True :
+                audio = Moteur().getFile(namefile,directory)
+
+                tags = audio.get_tag_research()
 
 
-        def update_tag_finder(self,modifications, directory,store):
+                if tags[0]=="" or tags[1]=="" :
+                    pass
+                else :
+                    try :
+                        self.lyrics[namefile] =  PyLyrics.getLyrics(tags[1],tags[0])
+                    except :
+                        self.lyrics[namefile] = ""
+
+
+        def update_data_crawled(self,modifications, directory):
             for namefile in modifications :
-                self.scrap_one_tag(namefile,directory)
+                self.crawl_one_file(namefile,directory)
+                self.crawl_lyrics(namefile,directory)
 
 
-        def scrap_tags(self,directory,store):
+        def crawl_data(self,directory,store):
             self.tag_finder = {}
+            self.lyrics = {}
 
             filelist = []
             for (dirpath, dirnames, filenames) in walk(directory):
@@ -54,12 +90,26 @@ class Data_Scrapper :
 
             i = 0
             for namefile in filelist:
-                if Moteur().check_extension(namefile) :
-                    self.scrap_one_tag(namefile,directory)
+                if Moteur().check_extension(namefile) and self.internet == True  :
+
+                    self.crawl_one_file(namefile,directory)
+                    self.crawl_lyrics(namefile,directory)
+
+
                     path = Gtk.TreePath(i)
                     listiter = store.get_iter(path)
                     store.set_value(listiter,1,"Yes")
                     i = i+1
+
+        def get_lyrics(self,model,listiter, multiline_selected):
+            if multiline_selected :
+                return ""
+            else :
+                namefile = model[listiter][0]
+                if namefile in self.lyrics :
+                    return self.lyrics[namefile]
+                else :
+                    return ""
 
         def get_tags(self,model,listiter, multiline_selected):
 
@@ -142,20 +192,20 @@ class Data_Scrapper :
 
 
 
-    
+
     __instance = None
 
     def __init__(self):
         """ Virtually private constructor. """
-        if Data_Scrapper.__instance != None:
+        if Data_Crawler.__instance != None:
             raise Exception("This class is a singleton!")
         else:
-            Data_Scrapper.__instance = Data_Scrapper.__Data_Scrapper()
+            Data_Crawler.__instance = Data_Crawler.__Data_Crawler()
 
 
     @staticmethod
     def getInstance():
         """ Static access method. """
-        if Data_Scrapper.__instance == None:
-            Data_Scrapper()
-        return Data_Scrapper.__instance
+        if Data_Crawler.__instance == None:
+            Data_Crawler()
+        return Data_Crawler.__instance

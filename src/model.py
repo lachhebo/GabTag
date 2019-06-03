@@ -1,7 +1,7 @@
 from os import walk
 from .moteur import Moteur
 from .view import View
-from .data_scrapper import Data_Scrapper
+from .data_crawler import Data_Crawler
 #import asyncio
 import threading
 import time
@@ -28,10 +28,11 @@ class Model:
                         "year"  :{ "value": ""},
                         "track" :{ "value": ""},
                         "length":{ "value": ""},
-                        "size"  :{ "value": ""}
+                        "size"  :{ "value": ""},
+                        "lyrics":{ "value": ""}
                         }
 
-            self.data_scrapper = Data_Scrapper.getInstance()
+            self.data_crawler = Data_Crawler.getInstance()
 
         def update_directory(self,directory,store):
             '''
@@ -40,7 +41,8 @@ class Model:
             self.directory = directory
             self.update_list(store)
             self.modification = {}
-            thread_mbz = threading.Thread(target = self.data_scrapper.scrap_tags, args=(directory,store)) #Writing data
+
+            thread_mbz = threading.Thread(target = self.data_crawler.crawl_data, args=(directory,store)) #Writing data
             thread_mbz.start()
 
         def reset_all(self,selection):
@@ -84,7 +86,7 @@ class Model:
 
                     audio.savemodif()
 
-                thread_mbz = threading.Thread(target = self.data_scrapper.scrap_one_tag, args=(namefile,self.directory)) #Writing data
+                thread_mbz = threading.Thread(target = self.data_crawler.update_data_crawled, args=([namefile],self.directory)) #Writing data
                 thread_mbz.start()
                 self.modification[namefile] = {}
 
@@ -108,7 +110,6 @@ class Model:
                 if self.moteur.check_extension(namefile) :
                     store.append([namefile,"No"])
 
-            #print(store)
 
         def update_view(self,selection):
             '''
@@ -124,10 +125,12 @@ class Model:
 
             multiple_line_selected = self.getTags(model,listiter) # return a bool
 
-            data_scrapped = self.data_scrapper.get_tags(model, listiter, multiple_line_selected)
+            data_scrapped = self.data_crawler.get_tags(model, listiter, multiple_line_selected)
+            lyrics_scrapped = self.data_crawler.get_lyrics(model, listiter, multiple_line_selected)
 
-            self.view.show(self.tagdico, multiple_line_selected)
+            self.view.show_tags(self.tagdico, multiple_line_selected)
             self.view.show_mbz(data_scrapped)
+            self.view.show_lyrics(lyrics_scrapped)
 
 
         def rename_files(self):
@@ -146,7 +149,7 @@ class Model:
                         new_name[key] = audio.getTag(key)
                     os.rename(os.path.join(self.directory,namefile),os.path.join(self.directory,new_name["title"]+"-"+new_name["album"]+"-"+new_name["artist"]+audio.getextensiontype()))
                     ## TODO remove this useless function and use a correct one)
-                    #print(" renaming done ! ",os.path.join(self.directory,namefile), ", ",os.path.join(self.directory,new_name["title"]+"-"+new_name["album"]+"-"+new_name["artist"]))
+
 
 
         def update_modifications(self,selection, tag_changed, new_value):
@@ -177,7 +180,7 @@ class Model:
                         alpha = self.modification[model[listiter[i]][0]]
                         alpha[tag_changed] = new_value
 
-        def set_data_scrapped(self,selection):
+        def set_data_lyrics(self,selection):
 
             model, listiter = selection.get_selected_rows()
 
@@ -186,7 +189,29 @@ class Model:
             else :
                 multiple_line_selected = 0
 
-            data_scrapped = self.data_scrapper.get_tags(model, listiter, multiple_line_selected)
+
+            if len(listiter) == 1 :
+                lyrics = self.data_crawler.get_lyrics(model,listiter, multiple_line_selected)
+
+                if model[listiter][0] in self.modification :
+                    alpha = self.modification[model[listiter][0]]
+                    alpha["lyrics"] = lyrics
+                else :
+                    self.modification[model[listiter][0]] = {}
+                    alpha = self.modification[model[listiter][0]]
+                    alpha["lyrics"] = lyrics
+
+
+        def set_data_crawled(self,selection):
+
+            model, listiter = selection.get_selected_rows()
+
+            if len(listiter)> 1 :
+                multiple_line_selected = 1
+            else :
+                multiple_line_selected = 0
+
+            data_scrapped = self.data_crawler.get_tags(model, listiter, multiple_line_selected)
 
             if len(listiter) == 1:
                 if model[listiter][0] in self.modification :
@@ -214,7 +239,7 @@ class Model:
 
 
         def set_online_tags(self):
-            tag_finded = self.data_scrapper.tag_finder
+            tag_finded = self.data_crawler.tag_finder
 
             for namefile in tag_finded :
                 if namefile in self.modification :
@@ -252,7 +277,7 @@ class Model:
                 audio.savemodif()
 
 
-            thread_mbz = threading.Thread(target = self.data_scrapper.update_tag_finder, args=(self.modification,self.directory)) #Writing data
+            thread_mbz = threading.Thread(target = self.data_crawler.update_data_crawled, args=(self.modification,self.directory)) #Writing data
             thread_mbz.start()
 
             self.modification = {}

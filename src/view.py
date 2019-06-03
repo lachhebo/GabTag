@@ -11,7 +11,7 @@ class View:
 
     class __View:
 
-        def __init__(self, tree_view, title, album, artist, genre, cover, track, year, length, size, mbz):
+        def __init__(self, tree_view, title, album, artist, genre, cover, track, year, length, size, mbz, lyrics):
             '''
             Here, we initiliase the widget we are going to use in the future.
             '''
@@ -39,6 +39,13 @@ class View:
                 self.cover_mbz  = mbz[4]
                 self.track_mbz  = mbz[5]
                 self.year_mbz   = mbz[6]
+
+            self.lyrics = lyrics
+
+
+        def show_lyrics(self, lyrics_scrapped):
+            buf = self.lyrics.get_buffer()
+            buf.set_text(lyrics_scrapped)
 
 
         def show_mbz(self, data_scrapped):
@@ -164,7 +171,7 @@ class View:
 
 
 
-        def show(self,tagdico, multiple_rows):
+        def show_tags(self,tagdico, multiple_rows):
 
             # We show those tags uniquely if there is only one row selected #TODO is it reallly usefull ? I don't think so
             self.set_editibility_title(multiple_rows,tagdico["title"]["value"])
@@ -180,6 +187,7 @@ class View:
             self.album.set_text(tagdico["album"]["value"])
             self.artist.set_text(tagdico["artist"]["value"])
             self.year.set_text(tagdico["year"]["value"])
+            #self.show_lyrics(tagdico["lyrics"]["value"]) #TODO : print tags lyrics in case of missing internet lyrics
 
 
             if tagdico["cover"]["value"] != "": # A test to handle if there is a cover
@@ -210,18 +218,18 @@ class View:
 
     __instance = None
 
-    def __init__(self, tree_view, title, album, artist, genre, cover, track, year, length, size, mbz):
+    def __init__(self, tree_view, title, album, artist, genre, cover, track, year, length, size, mbz, lyrics):
         """ Virtually private constructor. """
         if View.__instance != None:
             raise Exception("This class is a singleton!")
         else:
-            View.__instance = View.__View(tree_view, title, album, artist, genre, cover, track, year, length, size, mbz)
+            View.__instance = View.__View(tree_view, title, album, artist, genre, cover, track, year, length, size, mbz, lyrics)
 
 
     @staticmethod
     def getInstance():
         """ Static access method. """
         if View.__instance == None:
-            View(None,None,None,None,None, None, None, None, None, None, None)
+            View(None,None,None,None,None, None, None, None, None, None, None,None)
         return View.__instance
 

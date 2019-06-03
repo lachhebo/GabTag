@@ -24,7 +24,7 @@ from .gi_composites import GtkTemplate
 from .model import Model
 from .view import View
 
-from .data_scrapper import Data_Scrapper
+from .data_crawler import Data_Crawler
 #import asyncio
 import threading
 import time
@@ -66,6 +66,10 @@ class GabtagWindow(Gtk.ApplicationWindow):
     id_year_mbz     = GtkTemplate.Child()
     id_track_mbz    = GtkTemplate.Child()
 
+    ## Pylyrics
+
+    id_lyrics = GtkTemplate.Child()
+
 
 
 
@@ -84,17 +88,18 @@ class GabtagWindow(Gtk.ApplicationWindow):
             self.id_year,
             self.id_info_length,
             self.id_info_size,
-            [self.id_title_mbz, self.id_album_mbz, self.id_artist_mbz, self.id_genre_mbz, self.id_cover_mbz, self.id_track_mbz, self.id_year_mbz]
+            [self.id_title_mbz, self.id_album_mbz, self.id_artist_mbz, self.id_genre_mbz, self.id_cover_mbz, self.id_track_mbz, self.id_year_mbz],
+            self.id_lyrics
         )
 
         view = View.getInstance()
 
         self.tree_view_id.set_model(self.liststore1)
         view.add_column("Name",0)
-        view.add_column("Scraped",1)
+        view.add_column("Data Crawled",1)
 
 
-        self.data_scrapper = Data_Scrapper.getInstance()
+        self.data_crawler = Data_Crawler.getInstance()
 
         self.realselection = 0
         self.selectionned = None
@@ -149,7 +154,6 @@ class GabtagWindow(Gtk.ApplicationWindow):
         model = Model.getInstance()
         if response == Gtk.ResponseType.OK:
             self.opened_directory = True
-            print(dialog.get_filename())
             model.update_directory(dialog.get_filename(),self.liststore1)
 
 
@@ -164,7 +168,7 @@ class GabtagWindow(Gtk.ApplicationWindow):
 
     @GtkTemplate.Callback
     def on_menu_but_toggled(self, widget):
-        print("The button menu was clicked")
+        pass
 
 
     @GtkTemplate.Callback
@@ -258,7 +262,7 @@ class GabtagWindow(Gtk.ApplicationWindow):
             self.realselection = 0
 
             model = Model.getInstance()
-            model.set_data_scrapped(self.selectionned)
+            model.set_data_crawled(self.selectionned)
             model.update_view(self.selectionned)
 
             self.realselection = 1
@@ -270,7 +274,7 @@ class GabtagWindow(Gtk.ApplicationWindow):
             model = Model.getInstance()
             model.rename_files()
             model.update_list(self.liststore1)
-            thread_mbz = threading.Thread(target = self.data_scrapper.scrap_tags, args=(model.directory,self.liststore1)) #Writing data
+            thread_mbz = threading.Thread(target = self.data_crawler.crawl_data, args=(model.directory,self.liststore1)) #Writing data
             thread_mbz.start()
             self.realselection = 1
 
@@ -286,3 +290,15 @@ class GabtagWindow(Gtk.ApplicationWindow):
 
             if self.selectionned != None :
                 model.update_view(self.selectionned)
+
+    @GtkTemplate.Callback
+    def on_set_lyrics(self,widget):
+        if self.opened_directory == True :
+            if self.realselection == 1 :
+                self.realselection = 0
+
+                model = Model.getInstance()
+                model.set_data_lyrics(self.selectionned)
+
+
+                self.realselection = 1

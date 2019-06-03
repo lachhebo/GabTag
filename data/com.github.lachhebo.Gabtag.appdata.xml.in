@@ -5,9 +5,9 @@
 	<metadata_license>CC0-1.0</metadata_license>
 	<project_license>GPL-3.0-or-later</project_license>
   <releases>
-    <release date="2019-06-02" version="1.1.1"/>
+    <release date="2019-06-03" version="1.2.0"/>
   </releases>
-  <version>1.1.1</version>
+  <version>1.2.0</version>
   ​<categories>
       <category>Audio</category>
   </categories>
@@ -15,15 +15,15 @@
 	  <description>
     <p>
     GabTag is a Linux audio tagging tool written in GTK 3, which makes
-    it very suitable for gtk based desktop users. Its practical design is aimed at simplicity
-    and efficiency.
+    it very suitable for gtk based desktop users.
     </p>
     <p>
     It allow users to select several file and modify their tags, It is also possible to directly let GabTag automatically
-    find tags for the audio files using online data.
+    find tags and lyrics for the audio files using online data.
     </p>
     <p>
-    GabTag is written in Python 3, uses Mutagen to handle audio tags and MusicBrainz database to find audio tags online.
+    GabTag is written in Python 3, uses Mutagen to handle audio tag. It also uses MusicBrainz database to find audio tags
+    and lyrics.wikia.com to find lyrics online.
     </p>
   </description>
     <screenshots>

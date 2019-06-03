@@ -17,7 +17,7 @@
     <property name="title" translatable="yes">About</property>
     <property name="type_hint">dialog</property>
     <property name="program_name">GabTag</property>
-    <property name="version">1.1.1</property>
+    <property name="version">1.2.0</property>
     <property name="comments" translatable="yes">GabTag is an  open-source audio tagging tool written in gtk3.</property>
     <property name="authors">Ismaël Lachheb</property>
     <property name="logo_icon_name">com.github.lachhebo.Gabtag</property>
@@ -259,9 +259,12 @@
                             <property name="can_focus">False</property>
                             <property name="margin_left">5</property>
                             <property name="margin_right">1</property>
-                            <property name="margin_top">10</property>
-                            <property name="margin_bottom">10</property>
+                            <property name="margin_top">5</property>
+                            <property name="margin_bottom">5</property>
                             <property name="label" translatable="yes">Album</property>
+                            <attributes>
+                              <attribute name="font-desc" value="Cantarell 12"/>
+                            </attributes>
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
@@ -274,9 +277,12 @@
                             <property name="can_focus">False</property>
                             <property name="margin_left">5</property>
                             <property name="margin_right">5</property>
-                            <property name="margin_top">10</property>
-                            <property name="margin_bottom">10</property>
+                            <property name="margin_top">5</property>
+                            <property name="margin_bottom">5</property>
                             <property name="label" translatable="yes">Artist</property>
+                            <attributes>
+                              <attribute name="font-desc" value="Cantarell 12"/>
+                            </attributes>
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
@@ -289,9 +295,12 @@
                             <property name="can_focus">False</property>
                             <property name="margin_left">5</property>
                             <property name="margin_right">5</property>
-                            <property name="margin_top">10</property>
-                            <property name="margin_bottom">10</property>
+                            <property name="margin_top">5</property>
+                            <property name="margin_bottom">5</property>
                             <property name="label" translatable="yes">Genre</property>
+                            <attributes>
+                              <attribute name="font-desc" value="Cantarell 12"/>
+                            </attributes>
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
@@ -304,9 +313,12 @@
                             <property name="can_focus">False</property>
                             <property name="margin_left">5</property>
                             <property name="margin_right">5</property>
-                            <property name="margin_top">10</property>
-                            <property name="margin_bottom">10</property>
+                            <property name="margin_top">5</property>
+                            <property name="margin_bottom">5</property>
                             <property name="label" translatable="yes">Title</property>
+                            <attributes>
+                              <attribute name="font-desc" value="Cantarell 12"/>
+                            </attributes>
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
@@ -392,6 +404,9 @@
                             <property name="margin_top">10</property>
                             <property name="margin_bottom">5</property>
                             <property name="label" translatable="yes">Cover</property>
+                            <attributes>
+                              <attribute name="font-desc" value="Cantarell 12"/>
+                            </attributes>
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
@@ -410,7 +425,7 @@
                             <property name="margin_left">5</property>
                             <property name="margin_right">5</property>
                             <property name="margin_top">5</property>
-                            <property name="margin_bottom">10</property>
+                            <property name="margin_bottom">5</property>
                             <property name="relief">half</property>
                             <signal name="clicked" handler="load_cover_clicked" swapped="no"/>
                           </object>
@@ -428,7 +443,7 @@
                             <property name="margin_left">5</property>
                             <property name="margin_right">10</property>
                             <property name="margin_top">10</property>
-                            <property name="margin_bottom">10</property>
+                            <property name="margin_bottom">5</property>
                             <property name="stock">gtk-missing-image</property>
                             <property name="icon_size">6</property>
                           </object>
@@ -444,9 +459,12 @@
                             <property name="can_focus">False</property>
                             <property name="margin_left">5</property>
                             <property name="margin_right">5</property>
-                            <property name="margin_top">10</property>
-                            <property name="margin_bottom">10</property>
+                            <property name="margin_top">5</property>
+                            <property name="margin_bottom">5</property>
                             <property name="label" translatable="yes">Track number</property>
+                            <attributes>
+                              <attribute name="font-desc" value="Cantarell 12"/>
+                            </attributes>
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
@@ -459,9 +477,12 @@
                             <property name="can_focus">False</property>
                             <property name="margin_left">5</property>
                             <property name="margin_right">5</property>
-                            <property name="margin_top">10</property>
-                            <property name="margin_bottom">10</property>
+                            <property name="margin_top">5</property>
+                            <property name="margin_bottom">5</property>
                             <property name="label" translatable="yes">Year</property>
+                            <attributes>
+                              <attribute name="font-desc" value="Cantarell 12"/>
+                            </attributes>
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
@@ -508,7 +529,7 @@
                             <property name="can_focus">False</property>
                             <property name="margin_left">10</property>
                             <property name="margin_right">10</property>
-                            <property name="margin_top">5</property>
+                            <property name="margin_top">7</property>
                             <property name="margin_bottom">5</property>
                             <property name="label" translatable="yes">Length</property>
                           </object>
@@ -523,7 +544,7 @@
                             <property name="can_focus">False</property>
                             <property name="margin_left">10</property>
                             <property name="margin_right">10</property>
-                            <property name="margin_top">7</property>
+                            <property name="margin_top">5</property>
                             <property name="margin_bottom">7</property>
                             <property name="label" translatable="yes">Size</property>
                           </object>
@@ -569,8 +590,8 @@
                             <property name="opacity">0.80000000000000004</property>
                             <property name="margin_left">10</property>
                             <property name="margin_right">10</property>
-                            <property name="margin_top">8</property>
-                            <property name="margin_bottom">8</property>
+                            <property name="margin_top">5</property>
+                            <property name="margin_bottom">5</property>
                             <signal name="clicked" handler="reset_one_clicked" swapped="no"/>
                           </object>
                           <packing>
@@ -589,8 +610,8 @@
                             <property name="valign">center</property>
                             <property name="margin_left">10</property>
                             <property name="margin_right">10</property>
-                            <property name="margin_top">8</property>
-                            <property name="margin_bottom">8</property>
+                            <property name="margin_top">5</property>
+                            <property name="margin_bottom">5</property>
                             <signal name="clicked" handler="clicked_save_one" swapped="no"/>
                           </object>
                           <packing>
@@ -602,11 +623,11 @@
                           <object class="GtkLabel" id="id_label_mbz">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="margin_top">5</property>
+                            <property name="margin_top">10</property>
                             <property name="margin_bottom">5</property>
-                            <property name="label" translatable="yes">MusicBrainz Data</property>
+                            <property name="label" translatable="yes">MusicBrainz Tags</property>
                             <attributes>
-                              <attribute name="font-desc" value="Sans Bold 12"/>
+                              <attribute name="font-desc" value="Cantarell Bold 13"/>
                             </attributes>
                           </object>
                           <packing>
@@ -626,6 +647,9 @@
                             <property name="ellipsize">end</property>
                             <property name="width_chars">10</property>
                             <property name="max_width_chars">15</property>
+                            <attributes>
+                              <attribute name="font-desc" value="Cantarell 12"/>
+                            </attributes>
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
@@ -644,6 +668,9 @@
                             <property name="ellipsize">end</property>
                             <property name="width_chars">10</property>
                             <property name="max_width_chars">15</property>
+                            <attributes>
+                              <attribute name="font-desc" value="Cantarell Italic 10"/>
+                            </attributes>
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
@@ -661,6 +688,9 @@
                             <property name="ellipsize">end</property>
                             <property name="width_chars">10</property>
                             <property name="max_width_chars">15</property>
+                            <attributes>
+                              <attribute name="font-desc" value="Cantarell Bold Italic 10"/>
+                            </attributes>
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
@@ -678,6 +708,9 @@
                             <property name="ellipsize">end</property>
                             <property name="width_chars">10</property>
                             <property name="max_width_chars">15</property>
+                            <attributes>
+                              <attribute name="font-desc" value="Cantarell Light 10"/>
+                            </attributes>
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
@@ -695,6 +728,9 @@
                             <property name="ellipsize">end</property>
                             <property name="width_chars">10</property>
                             <property name="max_width_chars">15</property>
+                            <attributes>
+                              <attribute name="font-desc" value="Cantarell Light 10"/>
+                            </attributes>
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
@@ -712,6 +748,9 @@
                             <property name="ellipsize">end</property>
                             <property name="width_chars">10</property>
                             <property name="max_width_chars">15</property>
+                            <attributes>
+                              <attribute name="font-desc" value="Cantarell Light 10"/>
+                            </attributes>
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
@@ -720,7 +759,7 @@
                         </child>
                         <child>
                           <object class="GtkButton" id="id_setmbz_but">
-                            <property name="label" translatable="yes">Set</property>
+                            <property name="label" translatable="yes">Set Tags</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
@@ -746,6 +785,53 @@
                             <property name="left_attach">1</property>
                             <property name="top_attach">12</property>
                             <property name="height">6</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="margin_top">10</property>
+                            <property name="margin_bottom">5</property>
+                            <property name="label" translatable="yes">Lyrics </property>
+                            <attributes>
+                              <attribute name="font-desc" value="Cantarell Bold 12"/>
+                            </attributes>
+                          </object>
+                          <packing>
+                            <property name="left_attach">0</property>
+                            <property name="top_attach">19</property>
+                            <property name="width">2</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkTextView" id="id_lyrics">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="editable">False</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">0</property>
+                            <property name="top_attach">20</property>
+                            <property name="width">2</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="id_st_lyrics_but">
+                            <property name="label" translatable="yes">Set Lyrics</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <property name="halign">center</property>
+                            <property name="valign">baseline</property>
+                            <property name="margin_top">5</property>
+                            <property name="margin_bottom">5</property>
+                            <signal name="clicked" handler="on_set_lyrics" swapped="no"/>
+                          </object>
+                          <packing>
+                            <property name="left_attach">0</property>
+                            <property name="top_attach">21</property>
+                            <property name="width">2</property>
                           </packing>
                         </child>
                       </object>

@@ -27,12 +27,12 @@ class MP3Handler(AudioBasics):
         '''
         A function to return the first tag of an id3 label
         '''
-        tag = self.id3.getall(id3_nametag)
-        if len(tag)>0:
+        tagneeded = self.id3.getall(id3_nametag)
+        if len(tagneeded)>0:
             if data_type == "text":
-                return tag[0].text[0]
+                return tagneeded[0].text[0]
             elif data_type == "data":
-                return tag[0].data
+                return tagneeded[0].data
         else:
             return ""
 
@@ -61,6 +61,13 @@ class MP3Handler(AudioBasics):
             return self.get_one_tag('TCON',"text")
         elif tag_key == "track":
             return self.get_one_tag('TRCK',"text")
+        elif tag_key == "lyrics":
+            tagneeded = self.id3.getall('USLT')
+            if len(tagneeded)>0:
+                return tagneeded[0].text
+            else:
+                return ""
+
         elif tag_key == "year":
             return str(self.get_one_tag('TDRC',"text"))
 
@@ -82,26 +89,29 @@ class MP3Handler(AudioBasics):
     def check_tag_existence(self,key):
         ''' Every thing is in the title'''
         if key != "title":
-            tag = self.id3.getall('TIT2')
-            return len(tag)>0
+            tag_title = self.id3.getall('TIT2')
+            return len(tag_title)>0
         elif key == "cover" :
-            tag = self.id3.getall('APIC')
-            return len(cover_tag)>0
+            tag_cover = self.id3.getall('APIC')
+            return len(tag_cover)>0
         elif key == "album":
-            tag = self.id3.getall('TALB')
-            return len(cover_tag)>0
+            tag_album = self.id3.getall('TALB')
+            return len(tag_album)>0
         elif key == "artist":
-            tag = self.id3.getall('TPE1')
-            return len(cover_tag)>0
+            tag_artist = self.id3.getall('TPE1')
+            return len(tag_artist)>0
         elif key == "genre":
-            tag = self.id3.getall('TCON')
-            return len(cover_tag)>0
+            tag_genre = self.id3.getall('TCON')
+            return len(tag_genre)>0
         elif key == "track":
-            tag = self.id3.getall('TRCK')
-            return len(cover_tag)>0
+            tag_track = self.id3.getall('TRCK')
+            return len(tag_track)>0
         elif key == "year":
-            tag = self.id3.getall('TDRC')
-            return len(cover_tag)>0
+            tag_year = self.id3.getall('TDRC')
+            return len(tag_year)>0
+        elif key == "lyrics":
+            tag_lyrics =self.id3.getall('USLT')
+            return len(tag_lyrics)>0
 
 
 
@@ -125,7 +135,6 @@ class MP3Handler(AudioBasics):
                 )
             else :
                 extension_image  = self.get_extension_image(tag_value)
-                print("type of tag_value : ",type(tag_value))
                 self.id3.add(
                     APIC(
                         encoding = 3,  # UTF-8
@@ -154,6 +163,9 @@ class MP3Handler(AudioBasics):
         elif tag_key == "year":
             self.id3.delall('TDRC')
             self.id3.add(TDRC(encoding=3, text=tag_value))
+        elif tag_key == "lyrics":
+            self.id3.delall('USLT')
+            self.id3.add(USLT(encoding=3, text=tag_value))
         else :
             print("NO_TAG",tag_key)
 

@@ -28,47 +28,96 @@
     ],
     "modules": [
     	{
-	    "name": "python3-mutagen",
-	    "buildsystem": "simple",
-	    "build-commands": [
-		"pip3 install --no-index --find-links=\"file://${PWD}\" --prefix=${FLATPAK_DEST} mutagen"
-	    ],
-	    "sources": [
-		{
-		    "type": "file",
-		    "url": "https://files.pythonhosted.org/packages/30/4c/5ad1a6e1ccbcfaf6462db727989c302d9d721beedd9b09c11e6f0c7065b0/mutagen-1.42.0.tar.gz",
-		    "sha256": "bb61e2456f59a9a4a259fbc08def6d01ba45a42da8eeaa97d00633b0ec5de71c"
-		}
-	    ]
-	},
-	{
-	    "name": "python3-musicbrainzngs",
-	    "buildsystem": "simple",
-	    "build-commands": [
-		"pip3 install --no-index --find-links=\"file://${PWD}\" --prefix=${FLATPAK_DEST} musicbrainzngs"
-	    ],
-	    "sources": [
-		{
-		    "type": "file",
-		    "url": "https://files.pythonhosted.org/packages/63/cc/67ad422295750e2b9ee57c27370dc85d5b85af2454afe7077df6b93d5938/musicbrainzngs-0.6.tar.gz",
-		    "sha256": "28ef261a421dffde0a25281dab1ab214e1b407eec568cd05a53e73256f56adb5"
-		}
-	    ]
-	},
-	{
-	    "name": "python3-Pillow",
-	    "buildsystem": "simple",
-	    "build-commands": [
-		"pip3 install --no-index --find-links=\"file://${PWD}\" --prefix=${FLATPAK_DEST} Pillow"
-	    ],
-	    "sources": [
-		{
-		    "type": "file",
-		    "url": "https://files.pythonhosted.org/packages/81/1a/6b2971adc1bca55b9a53ed1efa372acff7e8b9913982a396f3fa046efaf8/Pillow-6.0.0.tar.gz",
-		    "sha256": "809c0a2ce9032cbcd7b5313f71af4bdc5c8c771cb86eb7559afd954cab82ebb5"
-		}
-	    ]
-	},
+            "name": "python3-mutagen",
+            "buildsystem": "simple",
+            "build-commands": [
+            "pip3 install --no-index --find-links=\"file://${PWD}\" --prefix=${FLATPAK_DEST} mutagen"
+            ],
+            "sources": [
+            {
+                "type": "file",
+                "url": "https://files.pythonhosted.org/packages/30/4c/5ad1a6e1ccbcfaf6462db727989c302d9d721beedd9b09c11e6f0c7065b0/mutagen-1.42.0.tar.gz",
+                "sha256": "bb61e2456f59a9a4a259fbc08def6d01ba45a42da8eeaa97d00633b0ec5de71c"
+            }
+            ]
+	    },
+        {
+            "name": "python3-musicbrainzngs",
+            "buildsystem": "simple",
+            "build-commands": [
+            "pip3 install --no-index --find-links=\"file://${PWD}\" --prefix=${FLATPAK_DEST} musicbrainzngs"
+            ],
+            "sources": [
+            {
+                "type": "file",
+                "url": "https://files.pythonhosted.org/packages/63/cc/67ad422295750e2b9ee57c27370dc85d5b85af2454afe7077df6b93d5938/musicbrainzngs-0.6.tar.gz",
+                "sha256": "28ef261a421dffde0a25281dab1ab214e1b407eec568cd05a53e73256f56adb5"
+            }
+            ]
+        },
+        {
+            "name": "python3-Pillow",
+            "buildsystem": "simple",
+            "build-commands": [
+            "pip3 install --no-index --find-links=\"file://${PWD}\" --prefix=${FLATPAK_DEST} Pillow"
+            ],
+            "sources": [
+            {
+                "type": "file",
+                "url": "https://files.pythonhosted.org/packages/81/1a/6b2971adc1bca55b9a53ed1efa372acff7e8b9913982a396f3fa046efaf8/Pillow-6.0.0.tar.gz",
+                "sha256": "809c0a2ce9032cbcd7b5313f71af4bdc5c8c771cb86eb7559afd954cab82ebb5"
+            }
+            ]
+        },
+        {
+            "name": "python3-Pylyrics",
+            "buildsystem": "simple",
+            "build-commands": [
+                "pip3 install --no-index --find-links=\"file://${PWD}\" --prefix=${FLATPAK_DEST} Pylyrics"
+            ],
+            "sources": [
+                {
+                    "type": "file",
+                    "url": "https://files.pythonhosted.org/packages/06/b8/d1ea38513c22e8c906275d135818fee16ad8495985956a9b7e2bb21942a1/certifi-2019.3.9.tar.gz",
+                    "sha256": "b26104d6835d1f5e49452a26eb2ff87fe7090b89dfcaee5ea2212697e1e1d7ae"
+                },
+                {
+                    "type": "file",
+                    "url": "https://files.pythonhosted.org/packages/4c/13/2386233f7ee40aa8444b47f7463338f3cbdf00c316627558784e3f542f07/urllib3-1.25.3.tar.gz",
+                    "sha256": "dbe59173209418ae49d485b87d1681aefa36252ee85884c31346debd19463232"
+                },
+                {
+                    "type": "file",
+                    "url": "https://files.pythonhosted.org/packages/ad/13/eb56951b6f7950cadb579ca166e448ba77f9d24efc03edd7e55fa57d04b7/idna-2.8.tar.gz",
+                    "sha256": "c357b3f628cf53ae2c4c05627ecc484553142ca23264e593d327bcde5e9c3407"
+                },
+                {
+                    "type": "file",
+                    "url": "https://files.pythonhosted.org/packages/fc/bb/a5768c230f9ddb03acc9ef3f0d4a3cf93462473795d18e9535498c8f929d/chardet-3.0.4.tar.gz",
+                    "sha256": "84ab92ed1c4d4f16916e05906b6b75a6c0fb5db821cc65e70cbd64a3e2a5eaae"
+                },
+                {
+                    "type": "file",
+                    "url": "https://files.pythonhosted.org/packages/fb/9e/2e236603b058daa6820193d4d95f4dcfbbbd0d3c709bec8c6ef1b1902501/soupsieve-1.9.1.tar.gz",
+                    "sha256": "b20eff5e564529711544066d7dc0f7661df41232ae263619dede5059799cdfca"
+                },
+                {
+                    "type": "file",
+                    "url": "https://files.pythonhosted.org/packages/01/62/ddcf76d1d19885e8579acb1b1df26a852b03472c0e46d2b959a714c90608/requests-2.22.0.tar.gz",
+                    "sha256": "11e007a8a2aa0323f5a921e9e6a2d7e4e67d9877e85773fba9ba6419025cbeb4"
+                },
+                {
+                    "type": "file",
+                    "url": "https://files.pythonhosted.org/packages/80/f2/f6aca7f1b209bb9a7ef069d68813b091c8c3620642b568dac4eb0e507748/beautifulsoup4-4.7.1.tar.gz",
+                    "sha256": "945065979fb8529dd2f37dbb58f00b661bdbcbebf954f93b32fdf5263ef35348"
+                },
+                {
+                    "type": "file",
+                    "url": "https://files.pythonhosted.org/packages/9d/74/8e92322cb1425739849eb719c3b5d8ca05a6b1f027829fd56b4db7c4b7c7/PyLyrics-1.1.0.zip",
+                    "sha256": "c5f36e8ef0ed3b487a9242ce34c19f9684e418a5bbffd5d367dc1d1604b4cd0b"
+                }
+            ]
+        },
         {
             "name": "gabtag",
             "buildsystem": "meson",
@@ -77,7 +126,7 @@
             "sources": [
                 {
                     "type": "git",
-                    "tag": "v1.1.0",
+                    "tag": "v1.2.0",
                     "url": "https://github.com/lachhebo/GabTag"
                 }
             ]
