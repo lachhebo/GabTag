@@ -27,9 +27,11 @@
     </p>
   </description>
     <screenshots>
-    <screenshot type="default" height="647" width="847">
-      <image>https://raw.githubusercontent.com/lachhebo/GabTag/screenshots/GabTag_V1_1.png</image>
-      <caption/>
+    <screenshot type="default" height="682" width="921">
+      <image>https://raw.githubusercontent.com/lachhebo/GabTag/screenshots/Gabtag-V1_2-1.png</image>
+    </screenshot>
+      <screenshot type="default" height="682" width="921">
+      <image>https://raw.githubusercontent.com/lachhebo/GabTag/screenshots/Gabtag-V1_2-2.png</image>
     </screenshot>
   </screenshots>
   <update_contact>ismael.lachheb@protonmail.com</update_contact>
