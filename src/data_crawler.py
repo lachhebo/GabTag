@@ -103,13 +103,16 @@ class Data_Crawler :
 
         def get_lyrics(self,model,listiter, multiline_selected):
             if multiline_selected :
-                return ""
+                return "No lyrics on Multiple File"
             else :
                 namefile = model[listiter][0]
                 if namefile in self.lyrics :
-                    return self.lyrics[namefile]
+                    if self.lyrics[namefile] != "":
+                        return self.lyrics[namefile]
+                    else :
+                        return "Lyrics not avalaible"
                 else :
-                    return ""
+                    return "File not crawled yet on lyrics.wikia"
 
         def get_tags(self,model,listiter, multiline_selected):
 

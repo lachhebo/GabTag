@@ -283,13 +283,16 @@ class GabtagWindow(Gtk.ApplicationWindow):
     @GtkTemplate.Callback
     def on_set_online_tags(self,widget):
         if self.opened_directory == True :
+            if self.realselection == 1 :
+                self.realselection = 0
+                model = Model.getInstance()
 
-            model = Model.getInstance()
+                model.set_online_tags()
 
-            model.set_online_tags()
+                if self.selectionned != None :
+                    model.update_view(self.selectionned)
 
-            if self.selectionned != None :
-                model.update_view(self.selectionned)
+                self.realselection = 1
 
     @GtkTemplate.Callback
     def on_set_lyrics(self,widget):
