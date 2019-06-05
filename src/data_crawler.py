@@ -1,12 +1,15 @@
 from gi.repository import Gtk
 from os import walk
-import threading
+from threading import Thread, RLock
 
 import musicbrainzngs as mb
 from PyLyrics import *
 
 from .moteur import Moteur
 from .view import View
+
+
+verrou = RLock()
 
 class Data_Crawler :
 
@@ -23,83 +26,108 @@ class Data_Crawler :
             self.tag_finder = {}
             self.lyrics = {}
             self.view = View.getInstance()
+            self.directory = ''
 
 
         def crawl_one_file(self,namefile, directory):
-            if Moteur().check_extension(namefile) and self.internet == True :
-                audio = Moteur().getFile(namefile,directory)
+            with verrou :
+                if Moteur().check_extension(namefile) and self.internet == True :
+                    audio = Moteur().getFile(namefile,directory)
 
-                tags = audio.get_tag_research()
+                    tags = audio.get_tag_research()
 
-                if tags[0] == "" and tags[1] == "" :
-                    ## Either filename if no_tags
-                    mzquery = self.remove_extension(namefile)
-                    self.tag_finder[namefile] = self.reorder_data(mb.search_recordings(query = mzquery,limit=1))
-                else :
-                    ## Using tags title artist and album if they are present
-                    if tags[0] != "" and tags[1] != 0 :
-                        try :
-                            self.tag_finder[namefile] = self.reorder_data(mb.search_recordings(recording = tags[0], artistname = tags[1],limit=1))
-                        except : ## TODO Check Internet Connection
-                            pass
-
-                    elif tags[1] == "" :
-                        try :
-                            self.tag_finder[namefile] = self.reorder_data(mb.search_recordings(recording = tags[0], release = tags[2],limit=1))
-                        except :
-                            pass
-
-                    elif tags[0] == "" :
-                        try :
-                            self.tag_finder[namefile] = self.reorder_data(mb.search_recordings(query = self.remove_extension(namefile), artistname = tags[1],limit=1))
-                        except :
-                            pass
+                    if tags[0] == "" and tags[1] == "" :
+                        ## Either filename if no_tags
+                        mzquery = self.remove_extension(namefile)
+                        self.tag_finder[namefile] = self.reorder_data(mb.search_recordings(query = mzquery,limit=1))
                     else :
-                        pass
+                        ## Using tags title artist and album if they are present
+                        if tags[0] != "" and tags[1] != 0 :
+                            try :
+                                self.tag_finder[namefile] = self.reorder_data(mb.search_recordings(recording = tags[0], artistname = tags[1],limit=1))
+                            except : ## TODO Check Internet Connection
+                                pass
+
+                        elif tags[1] == "" :
+                            try :
+                                self.tag_finder[namefile] = self.reorder_data(mb.search_recordings(recording = tags[0], release = tags[2],limit=1))
+                            except :
+                                pass
+
+                        elif tags[0] == "" :
+                            try :
+                                self.tag_finder[namefile] = self.reorder_data(mb.search_recordings(query = self.remove_extension(namefile), artistname = tags[1],limit=1))
+                            except :
+                                pass
+                        else :
+                            pass
 
         def crawl_lyrics(self, namefile, directory):
-            if Moteur().check_extension(namefile)  and self.internet == True :
-                audio = Moteur().getFile(namefile,directory)
+            with verrou :
+                if Moteur().check_extension(namefile)  and self.internet == True :
+                    audio = Moteur().getFile(namefile,directory)
 
-                tags = audio.get_tag_research()
+                    tags = audio.get_tag_research()
 
 
-                if tags[0]=="" or tags[1]=="" :
-                    pass
-                else :
-                    try :
-                        self.lyrics[namefile] =  PyLyrics.getLyrics(tags[1],tags[0])
-                    except :
-                        self.lyrics[namefile] = ""
+                    if tags[0]=="" or tags[1]=="" :
+                        pass
+                    else :
+                        try :
+                            self.lyrics[namefile] =  PyLyrics.getLyrics(tags[1],tags[0])
+                        except :
+                            self.lyrics[namefile] = ""
 
 
         def update_data_crawled(self,modifications, directory):
-            for namefile in modifications :
-                self.crawl_one_file(namefile,directory)
-                self.crawl_lyrics(namefile,directory)
-
-
-        def crawl_data(self,directory,store):
-            self.tag_finder = {}
-            self.lyrics = {}
-
-            filelist = []
-            for (dirpath, dirnames, filenames) in walk(directory):
-                filelist.extend(filenames)
-                break
-
-            i = 0
-            for namefile in filelist:
-                if Moteur().check_extension(namefile) and self.internet == True  :
-
+            with verrou :
+                for namefile in modifications :
+                    if self.stop():
+                        break
                     self.crawl_one_file(namefile,directory)
+                    if self.stop():
+                        break
                     self.crawl_lyrics(namefile,directory)
 
 
-                    path = Gtk.TreePath(i)
-                    listiter = store.get_iter(path)
-                    store.set_value(listiter,1,"Yes")
-                    i = i+1
+        def crawl_data(self,directory,store):
+            with verrou :
+                self.directory = directory
+                self.tag_finder = {}
+                self.lyrics = {}
+
+                filelist = []
+                for (dirpath, dirnames, filenames) in walk(directory):
+                    filelist.extend(filenames)
+                    break
+
+                i = 0
+                for namefile in filelist:
+                    if Moteur().check_extension(namefile) and self.internet == True  :
+
+                        if self.stop(directory):
+                            break
+
+                        self.crawl_one_file(namefile,directory)
+                        self.crawl_lyrics(namefile,directory)
+
+
+                        if self.stop(directory):
+                            break
+
+                        path = Gtk.TreePath(i)
+                        listiter = store.get_iter(path)
+                        store.set_value(listiter,1,"Yes")
+                        i = i+1
+
+        def stop(self, directory):
+            if self.directory == directory :
+                return False
+            else :
+                return True
+
+        def update_directory(self,directory):
+            self.directory = directory
 
         def get_lyrics(self,model,listiter, multiline_selected):
             if multiline_selected :
@@ -120,7 +148,6 @@ class Data_Crawler :
             if namefile in self.tag_finder :
                 candidat =  self.tag_finder[namefile].copy()
             else :
-                print("soucis !!!")
                 return { "title":"", "artist":"", "album":"", "track":"", "year":"", "genre":"", "cover":""}
 
 
@@ -130,7 +157,6 @@ class Data_Crawler :
                     if beta in self.tag_finder :
                         for tagi in ["artist","album","year","genre","cover"] :
                             if candidat[tagi] != self.tag_finder[beta][tagi] :
-                                print("soucis !!! 2")
                                 candidat[tagi] = ""
                         candidat["title"] = ""
                         candidat["track"] = ""

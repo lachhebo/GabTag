@@ -2,9 +2,8 @@ from os import walk
 from .moteur import Moteur
 from .view import View
 from .data_crawler import Data_Crawler
-#import asyncio
 import threading
-import time
+
 import os
 
 class Model:
@@ -86,8 +85,10 @@ class Model:
 
                     audio.savemodif()
 
+                '''
                 thread_mbz = threading.Thread(target = self.data_crawler.update_data_crawled, args=([namefile],self.directory)) #Writing data
                 thread_mbz.start()
+                '''
                 self.modification[namefile] = {}
 
 

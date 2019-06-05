@@ -405,7 +405,8 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
-                            <property name="opacity">0.59999999999999998</property>
+                            <property name="tooltip_text" translatable="yes">Load a cover (jpeg or png)</property>
+                            <property name="opacity">0.80000000000000004</property>
                             <property name="halign">center</property>
                             <property name="valign">center</property>
                             <property name="margin_left">5</property>
@@ -573,6 +574,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
+                            <property name="tooltip_text" translatable="yes">Remove modification made to fields.</property>
                             <property name="opacity">0.80000000000000004</property>
                             <property name="margin_left">10</property>
                             <property name="margin_right">10</property>
@@ -591,6 +593,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
+                            <property name="tooltip_text" translatable="yes">Save the modification made to this file.</property>
                             <property name="opacity">0.80000000000000004</property>
                             <property name="halign">center</property>
                             <property name="valign">center</property>
@@ -749,6 +752,8 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
+                            <property name="tooltip_text" translatable="yes">Use the MusicBrainz tags</property>
+                            <property name="opacity">0.80000000000000004</property>
                             <property name="halign">center</property>
                             <property name="valign">center</property>
                             <property name="margin_top">2</property>
@@ -808,6 +813,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
+                            <property name="opacity">0.80000000000000004</property>
                             <property name="halign">center</property>
                             <property name="valign">baseline</property>
                             <property name="margin_top">5</property>

@@ -25,9 +25,6 @@ from .model import Model
 from .view import View
 
 from .data_crawler import Data_Crawler
-#import asyncio
-import threading
-import time
 
 
 @GtkTemplate(ui='/com/github/lachhebo/Gabtag/window.ui')
@@ -69,7 +66,6 @@ class GabtagWindow(Gtk.ApplicationWindow):
     ## Pylyrics
 
     id_lyrics = GtkTemplate.Child()
-
 
 
 
@@ -154,6 +150,7 @@ class GabtagWindow(Gtk.ApplicationWindow):
         model = Model.getInstance()
         if response == Gtk.ResponseType.OK:
             self.opened_directory = True
+            self.data_crawler.update_directory(dialog.get_filename())
             model.update_directory(dialog.get_filename(),self.liststore1)
 
 
@@ -274,8 +271,8 @@ class GabtagWindow(Gtk.ApplicationWindow):
             model = Model.getInstance()
             model.rename_files()
             model.update_list(self.liststore1)
-            thread_mbz = threading.Thread(target = self.data_crawler.crawl_data, args=(model.directory,self.liststore1)) #Writing data
-            thread_mbz.start()
+            #thread_mbz = threading.Thread(target = self.data_crawler.crawl_data, args=(model.directory,self.liststore1)) #Writing data
+            #thread_mbz.start()
             self.realselection = 1
 
         
@@ -302,6 +299,5 @@ class GabtagWindow(Gtk.ApplicationWindow):
 
                 model = Model.getInstance()
                 model.set_data_lyrics(self.selectionned)
-
 
                 self.realselection = 1
