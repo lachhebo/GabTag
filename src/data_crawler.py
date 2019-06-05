@@ -118,8 +118,9 @@ class Data_Crawler :
 
             namefile = model[listiter][0]
             if namefile in self.tag_finder :
-                alpha =  self.tag_finder[namefile]
+                candidat =  self.tag_finder[namefile].copy()
             else :
+                print("soucis !!!")
                 return { "title":"", "artist":"", "album":"", "track":"", "year":"", "genre":"", "cover":""}
 
 
@@ -128,13 +129,14 @@ class Data_Crawler :
                     beta = model[listiter[i]][0]
                     if beta in self.tag_finder :
                         for tagi in ["artist","album","year","genre","cover"] :
-                            if alpha[tagi] != self.tag_finder[beta][tagi] :
-                                alpha[tagi] = ""
-                        alpha["title"] = ""
-                        alpha["track"] = ""
+                            if candidat[tagi] != self.tag_finder[beta][tagi] :
+                                print("soucis !!! 2")
+                                candidat[tagi] = ""
+                        candidat["title"] = ""
+                        candidat["track"] = ""
 
 
-            return alpha
+            return candidat
 
         def reorder_data(self,mzdata):
             '''
