@@ -126,7 +126,7 @@
             "sources": [
                 {
                     "type": "git",
-                    "tag": "v1.2.1",
+                    "tag": "master",
                     "url": "https://github.com/lachhebo/GabTag"
                 }
             ]
