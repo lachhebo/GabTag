@@ -60,9 +60,9 @@ class Model:
             model, listiter = selection.get_selected_rows()
 
             for i in range(0,len(listiter)):
-                namefile = model[listiter[i]][0]
+                namefile  = model[listiter[i]][0]
                 if namefile in self.modification:
-                    del self.modification[namefile]
+                    self.modification[namefile] = {}
 
             self.update_view(selection)
 
@@ -158,16 +158,17 @@ class Model:
             If the namefile is already a key in the directory, add or update the modified tags
             else create a new key in modification
             '''
-            
             model, listiter = selection.get_selected_rows()
 
+            namefile = model[listiter][0]
+
             if len(listiter) == 1: #TODO try to merge the case ==1 and >1
-                if model[listiter][0] in self.modification :
-                    alpha = self.modification[model[listiter][0]]
+                if namefile in self.modification :
+                    alpha = self.modification[namefile]
                     alpha[tag_changed] = new_value
                 else :
-                    self.modification[model[listiter][0]] = {}
-                    alpha = self.modification[model[listiter][0]]
+                    self.modification[namefile] = {}
+                    alpha = self.modification[namefile]
                     alpha[tag_changed] = new_value
 
             elif len(listiter) > 1:
@@ -180,6 +181,9 @@ class Model:
                         self.modification[model[listiter[i]][0]] = {}
                         alpha = self.modification[model[listiter[i]][0]]
                         alpha[tag_changed] = new_value
+
+            if tag_changed == "cover":
+                self.update_view(selection)
 
         def set_data_lyrics(self,selection):
 

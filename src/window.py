@@ -171,39 +171,50 @@ class GabtagWindow(Gtk.ApplicationWindow):
     @GtkTemplate.Callback
     def title_changed(self, widget):
         if self.realselection == 1 :
+            self.realselection = 0
             model = Model.getInstance()
             model.update_modifications(self.selectionned,"title",widget.get_text())
+            self.realselection = 1
 
     @GtkTemplate.Callback
     def artist_changed(self, widget):
         if self.realselection == 1 :
+            self.realselection = 0
             model = Model.getInstance()
             model.update_modifications(self.selectionned,"artist",widget.get_text())
+            self.realselection = 1
 
     @GtkTemplate.Callback
     def album_changed(self, widget):
         if self.realselection == 1 :
+            self.realselection = 0
             model = Model.getInstance()
             model.update_modifications(self.selectionned,"album",widget.get_text())
+            self.realselection = 1
 
     @GtkTemplate.Callback
     def type_changed(self, widget):
         if self.realselection == 1 :
+            self.realselection = 0
             model = Model.getInstance()
             model.update_modifications(self.selectionned,"genre",widget.get_text())
+            self.realselection = 1
 
     @GtkTemplate.Callback
     def track_changed(self,widget):
         if self.realselection == 1:
+            self.realselection = 0
             model = Model.getInstance()
             model.update_modifications(self.selectionned,"track",widget.get_text())
+            self.realselection = 1
 
     @GtkTemplate.Callback
     def year_changed(self,widget):
         if self.realselection == 1:
+            self.realselection = 0
             model = Model.getInstance()
             model.update_modifications(self.selectionned,"year",widget.get_text())
-
+            self.realselection = 1
 
     def add_filters(self, dialog):
         filter_png = Gtk.FileFilter()
@@ -221,6 +232,7 @@ class GabtagWindow(Gtk.ApplicationWindow):
     @GtkTemplate.Callback
     def load_cover_clicked(self, widget):
         if self.realselection == 1:
+            self.realselection = 0
             model = Model.getInstance()
             view = View.getInstance()
 
@@ -236,10 +248,9 @@ class GabtagWindow(Gtk.ApplicationWindow):
             if response == Gtk.ResponseType.OK:
                 file_cover = dialog.get_filename()
                 model.update_modifications(self.selectionned,"cover",file_cover)
-                view.show_cover_from_file(file_cover)
 
             dialog.destroy()
-
+            self.realselection = 1
 
     @GtkTemplate.Callback
     def selected_changed(self, selection):

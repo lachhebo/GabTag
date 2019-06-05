@@ -195,7 +195,7 @@ class View:
 
             if tagdico["cover"]["value"] != "": # A test to handle if there is a cover
                 if(tagdico["cover"]["value"] != self.last_cover):
-                    if len(tagdico["cover"]["value"])>100 : # A test to detect bytes file
+                    if type(tagdico["cover"]["value"]) == bytes : # A test to detect bytes file
                         self.show_cover_from_bytes(tagdico["cover"]["value"])
                         self.last_cover = tagdico["cover"]["value"]
                     else:
