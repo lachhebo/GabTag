@@ -13,6 +13,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: src/window.ui:21
+#: src/window.ui:22
 msgid  "GabTag is an  open-source audio tagging tool written in gtk3."
 msgstr  "GabTag est un logiciel libre"
