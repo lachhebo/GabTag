@@ -1,47 +1,51 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# Portuguese translations for GabTag package.
+# Copyright (C) 2019 Ismaël Lachheb
 # This file is distributed under the same license as the gabtag package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Automatically generated, 2019.
+# Cleiton Floss <cleitonfloss@gmail.com>, 2019.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: gabtag\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-06-06 15:04-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"PO-Revision-Date: 2019-06-06 15:15-0400\n"
+"Last-Translator: Cleiton Floss <cleitonfloss@gmail.com>\n"
+"Language-Team: Portuguese <cleitonfloss@gmail.com>\n"
+"Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"X-Generator: Gtranslator 3.32.1\n"
 
 #: data/com.github.lachhebo.Gabtag.desktop.in:3
 msgid "Gabtag"
-msgstr ""
+msgstr "Gabtag"
 
 #: data/com.github.lachhebo.Gabtag.desktop.in:4
 msgid "Modify audio tags"
-msgstr ""
+msgstr "Modifique as etiquetas de áudio"
 
 #: data/com.github.lachhebo.Gabtag.desktop.in:5
 msgid "com.github.lachhebo.Gabtag"
-msgstr ""
+msgstr "com.github.lachhebo.Gabtag"
 
 #: data/com.github.lachhebo.Gabtag.appdata.xml.in:4
 msgid "GabTag"
-msgstr ""
+msgstr "GabTag"
 
 #: data/com.github.lachhebo.Gabtag.appdata.xml.in:14
 msgid "An audio tagging tool"
-msgstr ""
+msgstr "Uma ferramenta de marcação de áudio"
 
 #: data/com.github.lachhebo.Gabtag.appdata.xml.in:16
 msgid ""
 "GabTag is a Linux audio tagging tool written in GTK 3, which makes it very "
 "suitable for gtk based desktop users."
 msgstr ""
+"O GabTag é uma ferramenta de marcação de áudio para Linux escrita em GTK 3, "
+"o que o torna adequado para usuários de desktop baseados em gtk."
 
 #: data/com.github.lachhebo.Gabtag.appdata.xml.in:20
 msgid ""
@@ -49,6 +53,9 @@ msgid ""
 "possible to directly let GabTag automatically find tags and lyrics for the "
 "audio files using online data."
 msgstr ""
+"Ele permite que os usuários selecionem vários arquivos e modifiquem suas "
+"etiquetas. Também é possível permitir que o GabTag encontre automaticamente "
+"etiquetas e letras dos áudios usando dados da internet."
 
 #: data/com.github.lachhebo.Gabtag.appdata.xml.in:24
 msgid ""
@@ -56,143 +63,148 @@ msgid ""
 "uses MusicBrainz database to find audio tags and lyrics.wikia.com to find "
 "lyrics online."
 msgstr ""
+"GabTag é escrito em Python 3, usa Mutagen para lidar com etiquetas de áudio. "
+"Ele também usa o banco de dados MusicBrainz para encontrar etiquetas de "
+"áudio e lyrics.wikia.com para encontrar as letras online."
 
 #: data/com.github.lachhebo.Gabtag.appdata.xml.in:38
 msgid "Ismaël Lachheb"
-msgstr ""
+msgstr "Ismaël Lachheb"
 
 #: src/window.ui:17 src/window.ui:97
 msgid "About"
-msgstr ""
+msgstr "Sobre"
 
 #: src/window.ui:21
 msgid "GabTag is an  open-source audio tagging tool written in gtk3."
 msgstr ""
+"GabTag é uma ferramenta de marcação de áudio de código aberto escrita em "
+"gtk3."
 
 #: src/window.ui:69
 msgid "Reset files"
-msgstr ""
+msgstr "Redefinir arquivos"
 
 #: src/window.ui:83
 msgid "Set online tags"
-msgstr ""
+msgstr "Definir etiquetas online"
 
 #: src/window.ui:132
 msgid "Add a Folder to modify tags"
-msgstr ""
+msgstr "Abra uma pasta para modificar etiquetas"
 
 #: src/window.ui:136
 msgid "Open"
-msgstr ""
+msgstr "Abrir"
 
 #: src/window.ui:165
 msgid "Save All"
-msgstr ""
+msgstr "Salvar Tudo"
 
 #: src/window.ui:209
 msgid "Name"
-msgstr ""
+msgstr "Nome"
 
 #: src/window.ui:250
 msgid "Album"
-msgstr ""
+msgstr "Álbum"
 
 #: src/window.ui:268
 msgid "Artist"
-msgstr ""
+msgstr "Artista"
 
 #: src/window.ui:286
 msgid "Genre"
-msgstr ""
+msgstr "Gênero"
 
 #: src/window.ui:304
 msgid "Title"
-msgstr ""
+msgstr "Título"
 
 #: src/window.ui:392
 msgid "Cover"
-msgstr ""
+msgstr "Capa"
 
 #: src/window.ui:404
 msgid "Load"
-msgstr ""
+msgstr "Carregar"
 
 #: src/window.ui:408
 msgid "Load a cover (jpeg or png)"
-msgstr ""
+msgstr "Carregar uma capa (jpeg ou png)"
 
 #: src/window.ui:451
 msgid "Track number"
-msgstr ""
+msgstr "Número da musica"
 
 #: src/window.ui:469
 msgid "Year"
-msgstr ""
+msgstr "Ano"
 
 #: src/window.ui:521
 msgid "Length"
-msgstr ""
+msgstr "Duração"
 
 #: src/window.ui:536
 msgid "Size"
-msgstr ""
+msgstr "Tamanho"
 
 #: src/window.ui:573
 msgid "Reset Modification"
-msgstr ""
+msgstr "Redefinir modificação"
 
 #: src/window.ui:577
 msgid "Remove modification made to fields."
-msgstr ""
+msgstr "Redefinir modificação feitas aos campos."
 
 #: src/window.ui:592
 msgid "Save Modification"
-msgstr ""
+msgstr "Salvar modificações"
 
 #: src/window.ui:596
 msgid "Save the modification made to this file."
-msgstr ""
+msgstr "Salvar as modificações feitas a esse arquivo."
 
 #: src/window.ui:617
 msgid "MusicBrainz Tags"
-msgstr ""
+msgstr "Etiquetas do MusicBrainz"
 
 #: src/window.ui:635
 msgid "Title "
-msgstr ""
+msgstr "Título"
 
 #: src/window.ui:656
 msgid "Album "
-msgstr ""
+msgstr "Álbum"
 
 #: src/window.ui:676
 msgid "Artist "
-msgstr ""
+msgstr "Artista"
 
 #: src/window.ui:696
 msgid "Genre "
-msgstr ""
+msgstr "Gênero"
 
 #: src/window.ui:716
 msgid "Track  "
-msgstr ""
+msgstr "Número"
 
 #: src/window.ui:736
 msgid "Year "
-msgstr ""
+msgstr "Ano"
 
 #: src/window.ui:751
 msgid "Set Tags"
-msgstr ""
+msgstr "Definir etiquetas"
 
 #: src/window.ui:755
 msgid "Use the MusicBrainz tags"
-msgstr ""
+msgstr "Usar etiquetas do MusicBrainz"
 
 #: src/window.ui:787
 msgid "Lyrics "
-msgstr ""
+msgstr "Letra "
 
 #: src/window.ui:812
 msgid "Set Lyrics"
-msgstr ""
+msgstr "Definir letra"
