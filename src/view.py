@@ -42,8 +42,9 @@ class View:
 
             self.lyrics = lyrics
 
-            self.lyrics.set_justification(2) # CENTER
-            self.lyrics.set_wrap_mode(2) # Cut between Word
+            if self.lyrics != None :
+                self.lyrics.set_justification(2) # CENTER
+                self.lyrics.set_wrap_mode(2) # Cut between Word
 
 
         def show_lyrics(self, lyrics_scrapped):
