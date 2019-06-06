@@ -1,185 +1,198 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the gabtag package.
-
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
 #, fuzzy
 msgid ""
 msgstr ""
-
 "Project-Id-Version: gabtag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-06:13+0100\n"
+"POT-Creation-Date: 2019-06-06 15:04-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE \n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: data/com.github.lachhebo.Gabtag.desktop.in:3
+msgid "Gabtag"
+msgstr ""
 
-#: src/window.ui:21
-msgid  "GabTag is an  open-source audio tagging tool written in gtk3."
-msgstr  ""
+#: data/com.github.lachhebo.Gabtag.desktop.in:4
+msgid "Modify audio tags"
+msgstr ""
 
-#: src/window.ui:16
+#: data/com.github.lachhebo.Gabtag.desktop.in:5
+msgid "com.github.lachhebo.Gabtag"
+msgstr ""
+
+#: data/com.github.lachhebo.Gabtag.appdata.xml.in:4
+msgid "GabTag"
+msgstr ""
+
+#: data/com.github.lachhebo.Gabtag.appdata.xml.in:14
+msgid "An audio tagging tool"
+msgstr ""
+
+#: data/com.github.lachhebo.Gabtag.appdata.xml.in:16
+msgid ""
+"GabTag is a Linux audio tagging tool written in GTK 3, which makes it very "
+"suitable for gtk based desktop users."
+msgstr ""
+
+#: data/com.github.lachhebo.Gabtag.appdata.xml.in:20
+msgid ""
+"It allow users to select several file and modify their tags, It is also "
+"possible to directly let GabTag automatically find tags and lyrics for the "
+"audio files using online data."
+msgstr ""
+
+#: data/com.github.lachhebo.Gabtag.appdata.xml.in:24
+msgid ""
+"GabTag is written in Python 3, uses Mutagen to handle audio tag. It also "
+"uses MusicBrainz database to find audio tags and lyrics.wikia.com to find "
+"lyrics online."
+msgstr ""
+
+#: data/com.github.lachhebo.Gabtag.appdata.xml.in:38
+msgid "Ismaël Lachheb"
+msgstr ""
+
+#: src/window.ui:17 src/window.ui:97
 msgid "About"
 msgstr ""
 
+#: src/window.ui:21
+msgid "GabTag is an  open-source audio tagging tool written in gtk3."
+msgstr ""
 
-#: src/window.ui:68
+#: src/window.ui:69
 msgid "Reset files"
 msgstr ""
 
-#: src/window.ui:82
+#: src/window.ui:83
 msgid "Set online tags"
 msgstr ""
 
-#: src/window.ui:96
-msgid "About"
-msgstr ""
-
-#: src/window.ui:131
+#: src/window.ui:132
 msgid "Add a Folder to modify tags"
 msgstr ""
 
-
-#: src/window.ui:135
+#: src/window.ui:136
 msgid "Open"
 msgstr ""
 
-#: src/window.ui:164
+#: src/window.ui:165
 msgid "Save All"
 msgstr ""
 
-
-#: src/window.ui:208
+#: src/window.ui:209
 msgid "Name"
 msgstr ""
 
-#: src/window.ui:249
+#: src/window.ui:250
 msgid "Album"
 msgstr ""
 
-#: src/window.ui:267
+#: src/window.ui:268
 msgid "Artist"
 msgstr ""
 
-#: src/window.ui:285
+#: src/window.ui:286
 msgid "Genre"
 msgstr ""
 
-#: src/window.ui:303
+#: src/window.ui:304
 msgid "Title"
 msgstr ""
 
-#: src/window.ui:391
+#: src/window.ui:392
 msgid "Cover"
 msgstr ""
 
-
-#: src/window.ui:403
+#: src/window.ui:404
 msgid "Load"
 msgstr ""
 
-
-
-#: src/window.ui:407
+#: src/window.ui:408
 msgid "Load a cover (jpeg or png)"
 msgstr ""
 
-
-#: src/window.ui:450
+#: src/window.ui:451
 msgid "Track number"
 msgstr ""
 
-
-#: src/window.ui:468
+#: src/window.ui:469
 msgid "Year"
 msgstr ""
 
-
-#: src/window.ui:520
+#: src/window.ui:521
 msgid "Length"
 msgstr ""
 
-
-#: src/window.ui:535
+#: src/window.ui:536
 msgid "Size"
 msgstr ""
 
-
-#: src/window.ui:572
+#: src/window.ui:573
 msgid "Reset Modification"
 msgstr ""
 
-
-#: src/window.ui:576
+#: src/window.ui:577
 msgid "Remove modification made to fields."
 msgstr ""
 
-
-#: src/window.ui:591
+#: src/window.ui:592
 msgid "Save Modification"
 msgstr ""
 
-
-#: src/window.ui:595
+#: src/window.ui:596
 msgid "Save the modification made to this file."
 msgstr ""
 
-
-
-#: src/window.ui:616
+#: src/window.ui:617
 msgid "MusicBrainz Tags"
 msgstr ""
 
-
-#: src/window.ui:634
-msgid "Title"
+#: src/window.ui:635
+msgid "Title "
 msgstr ""
 
-
-#: src/window.ui:655
-msgid "Album"
+#: src/window.ui:656
+msgid "Album "
 msgstr ""
 
-
-#: src/window.ui:675
-msgid "Artist"
+#: src/window.ui:676
+msgid "Artist "
 msgstr ""
 
-
-#: src/window.ui:695
-msgid "Genre"
+#: src/window.ui:696
+msgid "Genre "
 msgstr ""
 
-
-#: src/window.ui:715
-msgid "Track"
+#: src/window.ui:716
+msgid "Track  "
 msgstr ""
 
-
-#: src/window.ui:735
-msgid "Year"
+#: src/window.ui:736
+msgid "Year "
 msgstr ""
 
-
-#: src/window.ui:750
+#: src/window.ui:751
 msgid "Set Tags"
 msgstr ""
 
-
-#: src/window.ui:754
+#: src/window.ui:755
 msgid "Use the MusicBrainz tags"
 msgstr ""
 
-
-#: src/window.ui:786
-msgid "Lyrics"
+#: src/window.ui:787
+msgid "Lyrics "
 msgstr ""
 
-
-#: src/window.ui:811
+#: src/window.ui:812
 msgid "Set Lyrics"
 msgstr ""
-
-
