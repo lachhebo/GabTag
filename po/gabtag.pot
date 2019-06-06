@@ -16,6 +16,173 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 
-#: src/window.ui:22
+#: src/window.ui:21
 msgid  "GabTag is an  open-source audio tagging tool written in gtk3."
 msgstr  ""
+
+# src/window.ui:17
+msgid "About"
+msgstr ""
+
+
+# src/window.ui:69
+msgid "Reset files"
+msgstr ""
+
+# src/window.ui:83
+msgid "Set online tags"
+msgstr ""
+
+# src/window.ui:97
+msgid "About"
+msgstr ""
+
+# src/window.ui:132
+msgid "Add a Folder to modify tags"
+msgstr ""
+
+# src/window.ui:132
+msgid "Add a Folder to modify tags"
+msgstr ""
+
+# src/window.ui:136
+msgid "Open"
+msgstr ""
+
+# src/window.ui:165
+msgid "Save All"
+msgstr ""
+
+
+# src/window.ui:209
+msgid "Name"
+msgstr ""
+
+# src/window.ui:250
+msgid "Album"
+msgstr ""
+
+# src/window.ui:268
+msgid "Artist"
+msgstr ""
+
+# src/window.ui:286
+msgid "Genre"
+msgstr ""
+
+# src/window.ui:304
+msgid "Title"
+msgstr ""
+
+# src/window.ui:392
+msgid "Cover"
+msgstr ""
+
+
+# src/window.ui:404
+msgid "Load"
+msgstr ""
+
+
+
+# src/window.ui:408
+msgid "Load a cover (jpeg or png)"
+msgstr ""
+
+
+# src/window.ui:451
+msgid "Track number"
+msgstr ""
+
+
+# src/window.ui:469
+msgid "Year"
+msgstr ""
+
+
+# src/window.ui:521
+msgid "Length"
+msgstr ""
+
+
+# src/window.ui:536
+msgid "Size"
+msgstr ""
+
+
+# src/window.ui:573
+msgid "Reset Modification"
+msgstr ""
+
+
+# src/window.ui:577
+msgid "Remove modification made to fields."
+msgstr ""
+
+
+# src/window.ui:592
+msgid "Save Modification"
+msgstr ""
+
+
+# src/window.ui:596
+msgid "Save the modification made to this file."
+msgstr ""
+
+
+
+# src/window.ui:617
+msgid "MusicBrainz Tags"
+msgstr ""
+
+
+# src/window.ui:635
+msgid "Title"
+msgstr ""
+
+
+# src/window.ui:656
+msgid "Album"
+msgstr ""
+
+
+# src/window.ui:676
+msgid "Artist"
+msgstr ""
+
+
+# src/window.ui:696
+msgid "Genre"
+msgstr ""
+
+
+# src/window.ui:716
+msgid "Track"
+msgstr ""
+
+
+# src/window.ui:736
+msgid "Year"
+msgstr ""
+
+
+# src/window.ui:751
+msgid "Set Tags"
+msgstr ""
+
+
+# src/window.ui:755
+msgid "Use the MusicBrainz tags"
+msgstr ""
+
+
+# src/window.ui:787
+msgid "Lyrics"
+msgstr ""
+
+
+# src/window.ui:812
+msgid "Set Lyrics"
+msgstr ""
+
+
