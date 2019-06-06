@@ -35,8 +35,9 @@ gabtag_sources = [
   'moteur.py',
   'audiobasics.py',
   'MP3Handler.py',
-  'data_crawler.py'
-
+  'data_crawler.py',
+  'Crawler_dir.py',
+  'Crawler_modif.py'
 ]
 
 install_data(gabtag_sources, install_dir: moduledir)

@@ -2,7 +2,6 @@ from os import walk
 from .moteur import Moteur
 from .view import View
 from .data_crawler import Data_Crawler
-import threading
 
 import os
 
@@ -40,9 +39,10 @@ class Model:
             self.directory = directory
             self.update_list(store)
             self.modification = {}
-
+            '''
             thread_mbz = threading.Thread(target = self.data_crawler.crawl_data, args=(directory,store)) #Writing data
             thread_mbz.start()
+            '''
 
         def reset_all(self,selection):
             '''
@@ -73,7 +73,7 @@ class Model:
             '''
             model, listiter = selection.get_selected_rows()
 
-            for i in range(len(listiter)):
+            for i in range(len(listiter)): ## TODO
                 namefile = model[listiter[i]][0]
                 audio = self.moteur.getFile(namefile, self.directory)
                 if namefile in self.modification :
@@ -85,10 +85,11 @@ class Model:
 
                     audio.savemodif()
 
-                '''
-                thread_mbz = threading.Thread(target = self.data_crawler.update_data_crawled, args=([namefile],self.directory)) #Writing data
-                thread_mbz.start()
-                '''
+                    '''
+                    thread_mbz = threading.Thread(target = self.data_crawler.update_data_crawled, args=([namefile],self.directory)) #Writing data
+                    thread_mbz.start()
+                    '''
+
                 self.modification[namefile] = {}
 
 
@@ -117,6 +118,9 @@ class Model:
             Erase the view and the current tag value then get tags for selected row (or rows)
             and show them.
             '''
+
+            self.selection = selection
+            print("new value for selection")
 
             model, listiter = selection.get_selected_rows()
 
@@ -182,8 +186,7 @@ class Model:
                         alpha = self.modification[model[listiter[i]][0]]
                         alpha[tag_changed] = new_value
 
-            if tag_changed == "cover":
-                self.update_view(selection)
+
 
         def set_data_lyrics(self,selection):
 
@@ -257,6 +260,9 @@ class Model:
                             self.modification[namefile][key] = tag_finded[namefile][key]
 
 
+        def set_online_lyrics(self): #TODO
+            pass
+
 
         def erasetag(self):
             '''
@@ -265,7 +271,7 @@ class Model:
             for key in self.tagdico:
                 self.tagdico[key]["value"] = ""
 
-        def save_modifications(self):
+        def save_modifications(self, selection):
             '''
             For each key file in modification, we get the tags inside the nested dictionnary and
             integer them on the audio tag file. Eventually we save the audio tag file.
@@ -281,9 +287,10 @@ class Model:
 
                 audio.savemodif()
 
-
+            '''
             thread_mbz = threading.Thread(target = self.data_crawler.update_data_crawled, args=(self.modification,self.directory)) #Writing data
             thread_mbz.start()
+            '''
 
             self.modification = {}
 

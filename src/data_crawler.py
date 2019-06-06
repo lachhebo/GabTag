@@ -1,6 +1,5 @@
 from gi.repository import Gtk
 from os import walk
-from threading import Thread, RLock
 
 import musicbrainzngs as mb
 from PyLyrics import *
@@ -9,7 +8,6 @@ from .moteur import Moteur
 from .view import View
 
 
-verrou = RLock()
 
 class Data_Crawler :
 
@@ -30,95 +28,93 @@ class Data_Crawler :
 
 
         def crawl_one_file(self,namefile, directory):
-            with verrou :
-                if Moteur().check_extension(namefile) and self.internet == True :
-                    audio = Moteur().getFile(namefile,directory)
+            if Moteur().check_extension(namefile) and self.internet == True :
+                audio = Moteur().getFile(namefile,directory)
 
-                    tags = audio.get_tag_research()
+                tags = audio.get_tag_research()
 
-                    if tags[0] == "" and tags[1] == "" :
-                        ## Either filename if no_tags
-                        mzquery = self.remove_extension(namefile)
-                        self.tag_finder[namefile] = self.reorder_data(mb.search_recordings(query = mzquery,limit=1))
-                    else :
-                        ## Using tags title artist and album if they are present
-                        if tags[0] != "" and tags[1] != 0 :
-                            try :
-                                self.tag_finder[namefile] = self.reorder_data(mb.search_recordings(recording = tags[0], artistname = tags[1],limit=1))
-                            except : ## TODO Check Internet Connection
-                                pass
-
-                        elif tags[1] == "" :
-                            try :
-                                self.tag_finder[namefile] = self.reorder_data(mb.search_recordings(recording = tags[0], release = tags[2],limit=1))
-                            except :
-                                pass
-
-                        elif tags[0] == "" :
-                            try :
-                                self.tag_finder[namefile] = self.reorder_data(mb.search_recordings(query = self.remove_extension(namefile), artistname = tags[1],limit=1))
-                            except :
-                                pass
-                        else :
+                if tags[0] == "" and tags[1] == "" :
+                    ## Either filename if no_tags
+                    mzquery = self.remove_extension(namefile)
+                    self.tag_finder[namefile] = self.reorder_data(mb.search_recordings(query = mzquery,limit=1))
+                else :
+                    ## Using tags title artist and album if they are present
+                    if tags[0] != "" and tags[1] != 0 :
+                        try :
+                            print(" we change the value of tag finder")
+                            self.tag_finder[namefile] = self.reorder_data(mb.search_recordings(recording = tags[0], artistname = tags[1],limit=1))
+                            print(self.tag_finder[namefile]["title"])
+                        except : ## TODO Check Internet Connection
                             pass
 
-        def crawl_lyrics(self, namefile, directory):
-            with verrou :
-                if Moteur().check_extension(namefile)  and self.internet == True :
-                    audio = Moteur().getFile(namefile,directory)
-
-                    tags = audio.get_tag_research()
-
-
-                    if tags[0]=="" or tags[1]=="" :
-                        pass
-                    else :
+                    elif tags[1] == "" :
                         try :
-                            self.lyrics[namefile] =  PyLyrics.getLyrics(tags[1],tags[0])
+                            self.tag_finder[namefile] = self.reorder_data(mb.search_recordings(recording = tags[0], release = tags[2],limit=1))
                         except :
-                            self.lyrics[namefile] = ""
+                            pass
+
+                    elif tags[0] == "" :
+                        try :
+                            self.tag_finder[namefile] = self.reorder_data(mb.search_recordings(query = self.remove_extension(namefile), artistname = tags[1],limit=1))
+                        except :
+                            pass
+                    else :
+                        pass
+
+        def crawl_lyrics(self, namefile, directory):
+            if Moteur().check_extension(namefile)  and self.internet == True :
+                audio = Moteur().getFile(namefile,directory)
+
+                tags = audio.get_tag_research()
+
+
+                if tags[0]=="" or tags[1]=="" :
+                    pass
+                else :
+                    try :
+                        self.lyrics[namefile] =  PyLyrics.getLyrics(tags[1],tags[0])
+                    except :
+                        self.lyrics[namefile] = ""
 
 
         def update_data_crawled(self,modifications, directory):
-            with verrou :
-                for namefile in modifications :
-                    if self.stop():
+            for namefile in modifications :
+                print("we update tags :",namefile)
+                if self.stop(directory):
+                    break
+                self.crawl_one_file(namefile,directory)
+                if self.stop(directory):
+                    break
+                self.crawl_lyrics(namefile,directory)
+
+        def crawl_data(self,directory,store):
+            self.directory = directory
+            self.tag_finder = {}
+            self.lyrics = {}
+
+            filelist = []
+            for (dirpath, dirnames, filenames) in walk(directory):
+                filelist.extend(filenames)
+                break
+
+            i = 0
+            for namefile in filelist:
+                if Moteur().check_extension(namefile) and self.internet == True  :
+
+                    if self.stop(directory):
                         break
+
                     self.crawl_one_file(namefile,directory)
-                    if self.stop():
-                        break
                     self.crawl_lyrics(namefile,directory)
 
 
-        def crawl_data(self,directory,store):
-            with verrou :
-                self.directory = directory
-                self.tag_finder = {}
-                self.lyrics = {}
+                    if self.stop(directory):
+                        break
 
-                filelist = []
-                for (dirpath, dirnames, filenames) in walk(directory):
-                    filelist.extend(filenames)
-                    break
-
-                i = 0
-                for namefile in filelist:
-                    if Moteur().check_extension(namefile) and self.internet == True  :
-
-                        if self.stop(directory):
-                            break
-
-                        self.crawl_one_file(namefile,directory)
-                        self.crawl_lyrics(namefile,directory)
-
-
-                        if self.stop(directory):
-                            break
-
-                        path = Gtk.TreePath(i)
-                        listiter = store.get_iter(path)
-                        store.set_value(listiter,1,"Yes")
-                        i = i+1
+                    path = Gtk.TreePath(i)
+                    listiter = store.get_iter(path)
+                    store.set_value(listiter,1,"Yes")
+                    i = i+1
 
         def stop(self, directory):
             if self.directory == directory :

@@ -23,7 +23,8 @@ from .gi_composites import GtkTemplate
 
 from .model import Model
 from .view import View
-
+from .Crawler_dir import Crawler_Dir
+from .Crawler_modif import Crawler_Modif
 from .data_crawler import Data_Crawler
 
 
@@ -103,15 +104,21 @@ class GabtagWindow(Gtk.ApplicationWindow):
 
     @GtkTemplate.Callback
     def but_saved_cliqued(self, widget):
-        model = Model.getInstance()
-        model.save_modifications()
+        if self.opened_directory == True :
+            model = Model.getInstance()
+            thread = Crawler_Modif(model.modification.copy(),self.liststore1,self.selectionned,0)
+            model.save_modifications(self.selectionned)
+            thread.start()
+
 
     @GtkTemplate.Callback
     def clicked_save_one(self,widget):
         if self.realselection == 1 :
             self.realselection = 0
             model = Model.getInstance()
+            thread = Crawler_Modif(model.modification.copy(),self.liststore1,self.selectionned,1)
             model.save_one(self.selectionned)
+            thread.start()
             self.realselection = 1
 
     @GtkTemplate.Callback
@@ -152,6 +159,14 @@ class GabtagWindow(Gtk.ApplicationWindow):
             self.opened_directory = True
             self.data_crawler.update_directory(dialog.get_filename())
             model.update_directory(dialog.get_filename(),self.liststore1)
+            '''
+            thread_mbz = threading.Thread(target = self.data_crawler.crawl_data, args=(dialog.get_filename(),self.liststore1)) #Writing data
+            thread_mbz.start()
+            '''
+            thread = Crawler_Dir(model.directory,self.liststore1)
+            thread.start()
+
+            model.save_modifications(self.selectionned)
 
 
         dialog.destroy()
@@ -248,6 +263,7 @@ class GabtagWindow(Gtk.ApplicationWindow):
             if response == Gtk.ResponseType.OK:
                 file_cover = dialog.get_filename()
                 model.update_modifications(self.selectionned,"cover",file_cover)
+                model.update_view(self.selectionned)
 
             dialog.destroy()
             self.realselection = 1
