@@ -16,172 +16,169 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 
-#: src/window.ui:22
+#: src/window.ui:21
 msgid  "GabTag is an  open-source audio tagging tool written in gtk3."
 msgstr  ""
 
-#: src/window.ui:17
+#: src/window.ui:16
 msgid "About"
 msgstr ""
 
 
-#: src/window.ui:69
+#: src/window.ui:68
 msgid "Reset files"
 msgstr ""
 
-#: src/window.ui:83
+#: src/window.ui:82
 msgid "Set online tags"
 msgstr ""
 
-#: src/window.ui:97
+#: src/window.ui:96
 msgid "About"
 msgstr ""
 
-#: src/window.ui:132
+#: src/window.ui:131
 msgid "Add a Folder to modify tags"
 msgstr ""
 
-#: src/window.ui:132
-msgid "Add a Folder to modify tags"
-msgstr ""
 
-#: src/window.ui:136
+#: src/window.ui:135
 msgid "Open"
 msgstr ""
 
-#: src/window.ui:165
+#: src/window.ui:164
 msgid "Save All"
 msgstr ""
 
 
-#: src/window.ui:209
+#: src/window.ui:208
 msgid "Name"
 msgstr ""
 
-#: src/window.ui:250
+#: src/window.ui:249
 msgid "Album"
 msgstr ""
 
-#: src/window.ui:268
+#: src/window.ui:267
 msgid "Artist"
 msgstr ""
 
-#: src/window.ui:286
+#: src/window.ui:285
 msgid "Genre"
 msgstr ""
 
-#: src/window.ui:304
+#: src/window.ui:303
 msgid "Title"
 msgstr ""
 
-#: src/window.ui:392
+#: src/window.ui:391
 msgid "Cover"
 msgstr ""
 
 
-#: src/window.ui:404
+#: src/window.ui:403
 msgid "Load"
 msgstr ""
 
 
 
-#: src/window.ui:408
+#: src/window.ui:407
 msgid "Load a cover (jpeg or png)"
 msgstr ""
 
 
-#: src/window.ui:451
+#: src/window.ui:450
 msgid "Track number"
 msgstr ""
 
 
-#: src/window.ui:469
+#: src/window.ui:468
 msgid "Year"
 msgstr ""
 
 
-#: src/window.ui:521
+#: src/window.ui:520
 msgid "Length"
 msgstr ""
 
 
-#: src/window.ui:536
+#: src/window.ui:535
 msgid "Size"
 msgstr ""
 
 
-#: src/window.ui:573
+#: src/window.ui:572
 msgid "Reset Modification"
 msgstr ""
 
 
-#: src/window.ui:577
+#: src/window.ui:576
 msgid "Remove modification made to fields."
 msgstr ""
 
 
-#: src/window.ui:592
+#: src/window.ui:591
 msgid "Save Modification"
 msgstr ""
 
 
-#: src/window.ui:596
+#: src/window.ui:595
 msgid "Save the modification made to this file."
 msgstr ""
 
 
 
-#: src/window.ui:617
+#: src/window.ui:616
 msgid "MusicBrainz Tags"
 msgstr ""
 
 
-#: src/window.ui:635
+#: src/window.ui:634
 msgid "Title"
 msgstr ""
 
 
-#: src/window.ui:656
+#: src/window.ui:655
 msgid "Album"
 msgstr ""
 
 
-#: src/window.ui:676
+#: src/window.ui:675
 msgid "Artist"
 msgstr ""
 
 
-#: src/window.ui:696
+#: src/window.ui:695
 msgid "Genre"
 msgstr ""
 
 
-#: src/window.ui:716
+#: src/window.ui:715
 msgid "Track"
 msgstr ""
 
 
-#: src/window.ui:736
+#: src/window.ui:735
 msgid "Year"
 msgstr ""
 
 
-#: src/window.ui:751
+#: src/window.ui:750
 msgid "Set Tags"
 msgstr ""
 
 
-#: src/window.ui:755
+#: src/window.ui:754
 msgid "Use the MusicBrainz tags"
 msgstr ""
 
 
-#: src/window.ui:787
+#: src/window.ui:786
 msgid "Lyrics"
 msgstr ""
 
 
-#: src/window.ui:812
+#: src/window.ui:811
 msgid "Set Lyrics"
 msgstr ""
 
