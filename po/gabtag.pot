@@ -1,0 +1,19 @@
+# This file is distributed under the same license as the gabtag package.
+
+#, fuzzy
+msgid ""
+msgstr ""
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-06-06:13+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator:Ismaël Lachheb\n"
+"Language-Team: francais \n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+
+#: src/windowd.ui:22
+msgid  "GabTag is an  open-source audio tagging tool written in gtk3."
+msgstr  ""

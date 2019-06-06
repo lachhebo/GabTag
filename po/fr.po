@@ -1,0 +1,18 @@
+msgid ""
+msgstr ""
+
+"Project-Id-Version: gabtag 1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-06-06 17:13+0100\n"
+"PO-Revision-Date: 2018-06-06 20:01+0200\n"
+"Last-Translator: Ismaïl Lachheb>\n"
+"Language-Team: français\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: src/window.ui:22
+msgid  "GabTag is an  open-source audio tagging tool written in gtk3."
+msgstr  "GabTag est un logiciel libre spécialisé dans le tri des fichiers audios"
