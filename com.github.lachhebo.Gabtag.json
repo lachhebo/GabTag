@@ -126,8 +126,7 @@
             "sources": [
                 {
                     "type": "git",
-                    "tag": "master",
-                    "url": "https://github.com/lachhebo/GabTag"
+                    "url": "file:///home/isma/Projets/GabTag"
                 }
             ]
         }
