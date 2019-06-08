@@ -2,6 +2,7 @@ from os import walk
 from .moteur import Moteur
 from .view import View
 from .data_crawler import Data_Crawler
+from .treeview import TreeView
 
 import os
 
@@ -39,10 +40,6 @@ class Model:
             self.directory = directory
             self.update_list(store)
             self.modification = {}
-            '''
-            thread_mbz = threading.Thread(target = self.data_crawler.crawl_data, args=(directory,store)) #Writing data
-            thread_mbz.start()
-            '''
 
         def reset_all(self,selection):
             '''
@@ -51,6 +48,9 @@ class Model:
             self.modification = {}
             self.view.erase()
             self.update_view(selection)
+
+            treehandler = TreeView.getInstance()
+            treehandler.remove_bold_font(self.filenames)
 
         def reset_one(self, selection):
             '''
@@ -64,6 +64,10 @@ class Model:
                 if namefile in self.modification:
                     self.modification[namefile] = {}
 
+                treehandler = TreeView.getInstance()
+                treehandler.remove_bold_font([namefile])
+
+
             self.update_view(selection)
 
         def save_one(self, selection):
@@ -72,6 +76,7 @@ class Model:
             We don't need to update the view after saving one file.
             '''
             model, listiter = selection.get_selected_rows()
+            treehandler = TreeView.getInstance()
 
             for i in range(len(listiter)): ## TODO
                 namefile = model[listiter[i]][0]
@@ -83,6 +88,7 @@ class Model:
                         if key in filemodifs:
                             audio.setTag(key,filemodifs[key])
 
+                    treehandler.remove_bold_font([namefile])
                     audio.savemodif()
 
                     '''
@@ -108,8 +114,11 @@ class Model:
                 filelist.extend(filenames)
                 break
 
+            self.filenames = []
+
             for namefile in filelist:
                 if self.moteur.check_extension(namefile) :
+                    self.filenames.append(namefile)
                     store.append([namefile,"No"])
 
 
@@ -175,6 +184,12 @@ class Model:
                     alpha = self.modification[namefile]
                     alpha[tag_changed] = new_value
 
+                treehandler = TreeView.getInstance()
+                if self.file_modified(namefile):
+                    treehandler.add_bold_font([namefile])
+                else :
+                    treehandler.remove_bold_font([namefile])
+
             elif len(listiter) > 1:
                 for i in range(0,len(listiter)):
                     if model[listiter[i]][0] in self.modification :
@@ -185,6 +200,35 @@ class Model:
                         self.modification[model[listiter[i]][0]] = {}
                         alpha = self.modification[model[listiter[i]][0]]
                         alpha[tag_changed] = new_value
+                    treehandler = TreeView.getInstance()
+                    if self.file_modified(namefile):
+                        treehandler.add_bold_font([ model[listiter[i]][0] ])
+                    else :
+                        treehandler.remove_bold_font([ model[listiter[i]][0] ])
+
+
+        def file_modified(self,namefile):
+
+            audio = self.moteur.getFile(namefile,self.directory)
+
+            audio_tag = {}
+            for key in self.tagdico :
+                audio_tag[key] = audio.getTag(key)
+
+            if namefile in self.modification :
+                tag_modified = self.modification[namefile]
+            else :
+                print("ERROR Debug !")
+
+            for key_tag in tag_modified :
+                if tag_modified[key_tag] != audio_tag[key_tag] :
+                    return True
+
+            return False
+
+
+
+
 
 
 
@@ -200,14 +244,7 @@ class Model:
 
             if len(listiter) == 1 :
                 lyrics = self.data_crawler.get_lyrics(model,listiter, multiple_line_selected)
-
-                if model[listiter][0] in self.modification :
-                    alpha = self.modification[model[listiter][0]]
-                    alpha["lyrics"] = lyrics
-                else :
-                    self.modification[model[listiter][0]] = {}
-                    alpha = self.modification[model[listiter][0]]
-                    alpha["lyrics"] = lyrics
+                self.update_modifications(selection, "lyrics", lyrics)
 
 
         def set_data_crawled(self,selection):
@@ -221,29 +258,23 @@ class Model:
 
             data_scrapped = self.data_crawler.get_tags(model, listiter, multiple_line_selected)
 
-            if len(listiter) == 1:
-                if model[listiter][0] in self.modification :
-                    alpha = self.modification[model[listiter][0]]
-                    for key in data_scrapped :
-                        alpha[key] = data_scrapped[key]
-                else :
-                    self.modification[model[listiter][0]] = {}
-                    alpha = self.modification[model[listiter][0]]
-                    for key in data_scrapped :
-                        alpha[key] = data_scrapped[key]
+            new_data_scrapped = {}
 
-            elif len(listiter) > 1:
-                for i in range(0,len(listiter)):
-                    if model[listiter[i]][0] in self.modification :
-                        alpha = self.modification[model[listiter[i]][0]]
-                        for key in data_scrapped :
-                            alpha[key] = data_scrapped[key]
+            for key in data_scrapped :
+                if data_scrapped[key] != "":
+                    new_data_scrapped[key] = data_scrapped[key]
 
-                    else :
-                        self.modification[model[listiter[i]][0]] = {}
-                        alpha = self.modification[model[listiter[i]][0]]
-                        for key in data_scrapped :
-                            alpha[key] = data_scrapped[key]
+            for key in new_data_scrapped :
+                self.update_modifications(selection, key, new_data_scrapped[key])
+
+        def update_modification_namefile(self,namefile,key,new_value):
+            self.modification[namefile][key] = new_value
+
+            treehandler = TreeView.getInstance()
+            if self.file_modified(namefile):
+                treehandler.add_bold_font([namefile])
+            else :
+                treehandler.remove_bold_font([namefile])
 
 
         def set_online_tags(self):
@@ -252,13 +283,12 @@ class Model:
             for namefile in tag_finded :
                 if namefile in self.modification :
                     for key in tag_finded[namefile] :
-                            self.modification[namefile][key] = tag_finded[namefile][key]
+                            self.update_modification_namefile(namefile,key, tag_finded[namefile][key])
 
                 else :
                     self.modification[namefile] = {}
                     for key in tag_finded[namefile] :
-                            self.modification[namefile][key] = tag_finded[namefile][key]
-
+                        self.update_modification_namefile(namefile,key, tag_finded[namefile][key])
 
         def set_online_lyrics(self): #TODO
             pass
@@ -276,6 +306,7 @@ class Model:
             For each key file in modification, we get the tags inside the nested dictionnary and
             integer them on the audio tag file. Eventually we save the audio tag file.
             '''
+            treehandler = TreeView.getInstance()
 
             for filename in self.modification:
                 audio = self.moteur.getFile(filename, self.directory)
@@ -285,12 +316,11 @@ class Model:
                     if key in filemodifs:
                         audio.setTag(key,filemodifs[key])
 
+                treehandler.remove_bold_font([filename])
+
                 audio.savemodif()
 
-            '''
-            thread_mbz = threading.Thread(target = self.data_crawler.update_data_crawled, args=(self.modification,self.directory)) #Writing data
-            thread_mbz.start()
-            '''
+
 
             self.modification = {}
 
@@ -307,6 +337,7 @@ class Model:
             for key in self.tagdico :
                 self.tagdico[key]["value"] = audio.getTag(key)
 
+            self.audio_tag = self.tagdico.copy()
             self.check_dictionnary(namefile)   # Look in Mofification
 
             if len(listiter) > 1:
@@ -322,7 +353,11 @@ class Model:
                     for key in contkey_dico :
                         if contkey_dico[key] == 1:
                             contkey_dico[key] = self.check_tag_equal_key_value(audio.check_tag_existence(key),audio.getTag(key),namefile,key,self.tagdico[key]["value"])
-
+                    '''
+                    for key in contkey :
+                        if self.audio_tag[key]["value"] != audio.getTag(key):
+                            self.audio_tag
+                    '''
                 for key in contkey_dico :
                     if contkey_dico[key] == 0 :
                         self.tagdico[key]["value"] = ""

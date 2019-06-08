@@ -7,7 +7,7 @@ from gi.repository import Gtk
 class ModelTest(unittest.TestCase):
 
 
-    def test_update_directory(self):
+    def test_update_directory(self): # The code have changed
         '''
         # Arrange
         testmodel = model.Model.getInstance()
@@ -26,6 +26,7 @@ class ModelTest(unittest.TestCase):
 
     def test_check_dictionnary(self):
 
+
         # Arrange
         testmodel = model.Model.getInstance()
         testmodel.modification = { "testkey" : { "album": "a", "artist": "c"} }
@@ -39,7 +40,9 @@ class ModelTest(unittest.TestCase):
         self.assertEqual("c",testmodel.tagdico["artist"]["value"])
 
 
+
     def test_check_tag_equal_key_value(self):
+
 
         # Arrange
         testmodel = model.Model.getInstance()
