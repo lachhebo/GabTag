@@ -4,6 +4,8 @@ from .view import View
 from .data_crawler import Data_Crawler
 from .treeview import TreeView
 
+from gi.repository import Pango
+
 import os
 
 class Model:
@@ -119,7 +121,7 @@ class Model:
             for namefile in filelist:
                 if self.moteur.check_extension(namefile) :
                     self.filenames.append(namefile)
-                    store.append([namefile,"No"])
+                    store.append([namefile,"No", 400])
 
 
         def update_view(self,selection):
@@ -129,7 +131,7 @@ class Model:
             '''
 
             self.selection = selection
-            print("new value for selection")
+            #print("new value for selection")
 
             model, listiter = selection.get_selected_rows()
 

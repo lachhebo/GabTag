@@ -14,8 +14,18 @@ class TreeView:
 
             if self.store !=None and self.view != None :
                 self.view.set_model(self.store)
-                self.add_column("Name",0)
-                self.add_column("Data Crawled",1)
+                #self.add_column("Name",0)
+                #self.add_column("Data Crawled",1)
+
+                #print("adding row")
+                renderer = Gtk.CellRendererText()
+                column = Gtk.TreeViewColumn("Name", renderer, text=0, weight = 2, weight_set = True)
+                self.view.append_column(column)
+
+                #print("adding row")
+                renderer = Gtk.CellRendererText()
+                column = Gtk.TreeViewColumn("Data Crawled", renderer, text=1, weight = 2, weight_set = True)
+                self.view.append_column(column)
 
 
         def remove_crawled(self,namefiles):
@@ -56,40 +66,46 @@ class TreeView:
                     self.store.set_value(listiter,1,"Yes")
 
 
-        def add_bold_font(self,namefile):
-            print("add bold fonts to ",namefile)
-            """
+        def add_bold_font(self,namefiles):
+            #print("add bold fonts to ",namefiles)
+
             finded = -1
             i = 0
 
             for filename in namefiles:
                 for row in self.store :
                     if row[0] == filename :
-                        print("found ",i)
+                        #print("found ",i)
                         finded = i
                     else :
                      i = i+1
 
                 if finded != -1 :
-                    print("set")
+                    #print("set")
                     path = Gtk.TreePath(finded)
                     listiter = self.store.get_iter(path)
-                    self.store.set_value(listiter,1,Pango.Weight.BOLD)
-            """
+                    self.store.set_value(listiter,2,700)
 
 
-        def remove_bold_font(self,namefile):
-            print("remove bold fonts to ",namefile)
+        def remove_bold_font(self,namefiles):
+            #print("remove bold fonts to ",namefiles)
 
+            finded = -1
+            i = 0
 
-        def add_column(self, namecolumn, text):
-            '''
-            A function to add a new column in the left panel treen useless in the code
-            for the moment
-            '''
-            renderer = Gtk.CellRendererText()
-            column = Gtk.TreeViewColumn(namecolumn, renderer, text=text)
-            self.view.append_column(column)
+            for filename in namefiles:
+                for row in self.store :
+                    if row[0] == filename :
+                        #print("found ",i)
+                        finded = i
+                    else :
+                     i = i+1
+
+                if finded != -1 :
+                    #print("set")
+                    path = Gtk.TreePath(finded)
+                    listiter = self.store.get_iter(path)
+                    self.store.set_value(listiter,2,400)
 
 
 

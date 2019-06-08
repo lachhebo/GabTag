@@ -89,122 +89,122 @@ msgstr "Redefinir arquivos"
 msgid "Set online tags"
 msgstr "Definir etiquetas online"
 
-#: src/window.ui:132
+#: src/window.ui:134
 msgid "Add a Folder to modify tags"
 msgstr "Abra uma pasta para modificar etiquetas"
 
-#: src/window.ui:136
+#: src/window.ui:138
 msgid "Open"
 msgstr "Abrir"
 
-#: src/window.ui:165
+#: src/window.ui:167
 msgid "Save All"
 msgstr "Salvar Tudo"
 
-#: src/window.ui:209
+#: src/window.ui:211
 msgid "Name"
 msgstr "Nome"
 
-#: src/window.ui:250
+#: src/window.ui:252
 msgid "Album"
 msgstr "Álbum"
 
-#: src/window.ui:268
+#: src/window.ui:270
 msgid "Artist"
 msgstr "Artista"
 
-#: src/window.ui:286
+#: src/window.ui:288
 msgid "Genre"
 msgstr "Gênero"
 
-#: src/window.ui:304
+#: src/window.ui:306
 msgid "Title"
 msgstr "Título"
 
-#: src/window.ui:392
+#: src/window.ui:394
 msgid "Cover"
 msgstr "Capa"
 
-#: src/window.ui:404
+#: src/window.ui:406
 msgid "Load"
 msgstr "Carregar"
 
-#: src/window.ui:408
+#: src/window.ui:410
 msgid "Load a cover (jpeg or png)"
 msgstr "Carregar uma capa (jpeg ou png)"
 
-#: src/window.ui:451
+#: src/window.ui:453
 msgid "Track number"
 msgstr "Número da musica"
 
-#: src/window.ui:469
+#: src/window.ui:471
 msgid "Year"
 msgstr "Ano"
 
-#: src/window.ui:521
+#: src/window.ui:523
 msgid "Length"
 msgstr "Duração"
 
-#: src/window.ui:536
+#: src/window.ui:538
 msgid "Size"
 msgstr "Tamanho"
 
-#: src/window.ui:573
+#: src/window.ui:575
 msgid "Reset Modification"
 msgstr "Redefinir modificação"
 
-#: src/window.ui:577
+#: src/window.ui:579
 msgid "Remove modification made to fields."
 msgstr "Redefinir modificação feitas aos campos."
 
-#: src/window.ui:592
+#: src/window.ui:594
 msgid "Save Modification"
 msgstr "Salvar modificações"
 
-#: src/window.ui:596
+#: src/window.ui:598
 msgid "Save the modification made to this file."
 msgstr "Salvar as modificações feitas a esse arquivo."
 
-#: src/window.ui:617
+#: src/window.ui:619
 msgid "MusicBrainz Tags"
 msgstr "Etiquetas do MusicBrainz"
 
-#: src/window.ui:635
+#: src/window.ui:637
 msgid "Title "
 msgstr "Título"
 
-#: src/window.ui:656
+#: src/window.ui:658
 msgid "Album "
 msgstr "Álbum"
 
-#: src/window.ui:676
+#: src/window.ui:678
 msgid "Artist "
 msgstr "Artista"
 
-#: src/window.ui:696
+#: src/window.ui:698
 msgid "Genre "
 msgstr "Gênero"
 
-#: src/window.ui:716
+#: src/window.ui:718
 msgid "Track  "
 msgstr "Número"
 
-#: src/window.ui:736
+#: src/window.ui:738
 msgid "Year "
 msgstr "Ano"
 
-#: src/window.ui:751
+#: src/window.ui:753
 msgid "Set Tags"
 msgstr "Definir etiquetas"
 
-#: src/window.ui:755
+#: src/window.ui:757
 msgid "Use the MusicBrainz tags"
 msgstr "Usar etiquetas do MusicBrainz"
 
-#: src/window.ui:787
+#: src/window.ui:789
 msgid "Lyrics "
 msgstr "Letra "
 
-#: src/window.ui:812
+#: src/window.ui:814
 msgid "Set Lyrics"
 msgstr "Definir letra"
