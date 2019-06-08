@@ -17,7 +17,7 @@
     <property name="title" translatable="yes">About</property>
     <property name="type_hint">dialog</property>
     <property name="program_name">GabTag</property>
-    <property name="version">1.3.0</property>
+    <property name="version">1.3.1</property>
     <property name="comments" translatable="yes">GabTag is an  open-source audio tagging tool written in gtk3.</property>
     <property name="authors">Ismaël Lachheb</property>
     <property name="logo_icon_name">com.github.lachhebo.Gabtag</property>

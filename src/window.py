@@ -158,10 +158,6 @@ class GabtagWindow(Gtk.ApplicationWindow):
             self.opened_directory = True
             self.data_crawler.update_directory(dialog.get_filename())
             model.update_directory(dialog.get_filename(),self.liststore1)
-            '''
-            thread_mbz = threading.Thread(target = self.data_crawler.crawl_data, args=(dialog.get_filename(),self.liststore1)) #Writing data
-            thread_mbz.start()
-            '''
             thread = Crawler_Dir(model.directory,self.liststore1)
             thread.start()
 

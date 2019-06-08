@@ -19,6 +19,7 @@ class Model:
             self.directory = ""
             self.modification = {}
             self.view = View.getInstance()
+            self.selection = None
             self.moteur = Moteur()
             self.tagdico = { #TODO add that in a separate json file.
                         "title" :{ "value": ""},

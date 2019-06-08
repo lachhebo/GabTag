@@ -48,23 +48,23 @@ class Crawler_Modif(Thread):
                 self.data_crawler.update_data_crawled(self.modifs,self.directory)
 
 
-                if(self.selectionequal(self.model.selection)):
-                    model, listiter = self.model.selection.get_selected_rows()
+            if(self.selectionequal(self.model.selection)):
+                model, listiter = self.model.selection.get_selected_rows()
 
-                    if len(listiter)> 1 :
-                        multiple_line_selected = 1
-                    else :
-                        multiple_line_selected = 0
-
-
-                    data_scrapped = self.data_crawler.get_tags(model, listiter, multiple_line_selected)
-                    lyrics_scrapped = self.data_crawler.get_lyrics(model, listiter, multiple_line_selected)
-
-                    if(self.selectionequal(self.model.selection)):
-                        self.model.view.show_mbz(data_scrapped)
-                        self.model.view.show_lyrics(lyrics_scrapped)
+                if len(listiter)> 1 :
+                    multiple_line_selected = 1
                 else :
-                    pass
+                    multiple_line_selected = 0
+
+
+                data_scrapped = self.data_crawler.get_tags(model, listiter, multiple_line_selected)
+                lyrics_scrapped = self.data_crawler.get_lyrics(model, listiter, multiple_line_selected)
+
+                if(self.selectionequal(self.model.selection)):
+                    self.model.view.show_mbz(data_scrapped)
+                    self.model.view.show_lyrics(lyrics_scrapped)
+            else :
+                pass
 
 
 
@@ -77,10 +77,10 @@ class Crawler_Modif(Thread):
             for i in range(len(listiter)):
                 namefile = model[listiter[i]][0]
                 if namefile not in self.filenames:
-                    print("why element ? ",namefile)
+                    #print("why element ? ",namefile)
                     return False
         else :
-            print("why size ?")
+            #print("why size ?")
             return False
 
         return True

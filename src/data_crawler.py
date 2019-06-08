@@ -85,7 +85,7 @@ class Data_Crawler :
         def update_data_crawled(self,modifications, directory):
             for namefile in modifications :
                 self.treeview.remove_crawled([namefile])
-                print("we update tags :",namefile)
+                #print("we update tags :",namefile)
                 if self.stop(directory):
                     break
                 self.crawl_one_file(namefile,directory)
@@ -93,17 +93,23 @@ class Data_Crawler :
                     break
                 self.crawl_lyrics(namefile,directory)
 
-        def crawl_data(self,directory,store):
-            self.directory = directory
+
+        def erase_data(self):
             self.tag_finder = {}
             self.lyrics = {}
+
+        def get_filelist(self,directory):
+            self.directory = directory
 
             filelist = []
             for (dirpath, dirnames, filenames) in walk(directory):
                 filelist.extend(filenames)
                 break
 
-            i = 0
+            return filelist
+
+        def get_data_from_online(self,filelist,directory):
+
             for namefile in filelist:
                 if Moteur().check_extension(namefile) and self.internet == True  :
 
@@ -116,6 +122,15 @@ class Data_Crawler :
 
                     if self.stop(directory):
                         break
+
+        def is_finished(self,filelist):
+            for namefile in filelist :
+                if namefile in self.tag_finder :
+                    if namefile not in self.lyrics:
+                        return False
+                else :
+                    return False
+            return True
 
 
         def stop(self, directory):
