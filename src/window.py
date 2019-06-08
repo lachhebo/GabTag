@@ -26,6 +26,7 @@ from .view import View
 from .Crawler_dir import Crawler_Dir
 from .Crawler_modif import Crawler_Modif
 from .data_crawler import Data_Crawler
+from .treeview import TreeView
 
 
 @GtkTemplate(ui='/com/github/lachhebo/Gabtag/window.ui')
@@ -91,10 +92,7 @@ class GabtagWindow(Gtk.ApplicationWindow):
 
         view = View.getInstance()
 
-        self.tree_view_id.set_model(self.liststore1)
-        view.add_column("Name",0)
-        view.add_column("Data Crawled",1)
-
+        self.treeview = TreeView(self.liststore1,self.tree_view_id)
 
         self.data_crawler = Data_Crawler.getInstance()
 
@@ -107,6 +105,7 @@ class GabtagWindow(Gtk.ApplicationWindow):
         if self.opened_directory == True :
             model = Model.getInstance()
             thread = Crawler_Modif(model.modification.copy(),self.liststore1,self.selectionned,0)
+            #self.treeview.remove_crawled(model.modification.keys)
             model.save_modifications(self.selectionned)
             thread.start()
 

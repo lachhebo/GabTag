@@ -1,4 +1,3 @@
-from gi.repository import Gtk
 from os import walk
 
 import musicbrainzngs as mb
@@ -6,7 +5,7 @@ from PyLyrics import *
 
 from .moteur import Moteur
 from .view import View
-
+from .treeview import TreeView
 
 
 class Data_Crawler :
@@ -24,6 +23,7 @@ class Data_Crawler :
             self.tag_finder = {}
             self.lyrics = {}
             self.view = View.getInstance()
+            self.treeview = TreeView.getInstance()
             self.directory = ''
 
 
@@ -37,29 +37,34 @@ class Data_Crawler :
                     ## Either filename if no_tags
                     mzquery = self.remove_extension(namefile)
                     self.tag_finder[namefile] = self.reorder_data(mb.search_recordings(query = mzquery,limit=1))
+                    self.treeview.add_crawled([namefile])
                 else :
                     ## Using tags title artist and album if they are present
                     if tags[0] != "" and tags[1] != 0 :
                         try :
-                            print(" we change the value of tag finder")
+                            #print(" we change the value of tag finder")
                             self.tag_finder[namefile] = self.reorder_data(mb.search_recordings(recording = tags[0], artistname = tags[1],limit=1))
-                            print(self.tag_finder[namefile]["title"])
+                            self.treeview.add_crawled([namefile])
+                            #print(self.tag_finder[namefile]["title"])
                         except : ## TODO Check Internet Connection
                             pass
 
                     elif tags[1] == "" :
                         try :
                             self.tag_finder[namefile] = self.reorder_data(mb.search_recordings(recording = tags[0], release = tags[2],limit=1))
+                            self.treeview.add_crawled([namefile])
                         except :
                             pass
 
                     elif tags[0] == "" :
                         try :
                             self.tag_finder[namefile] = self.reorder_data(mb.search_recordings(query = self.remove_extension(namefile), artistname = tags[1],limit=1))
+                            self.treeview.add_crawled([namefile])
                         except :
-                            pass
+                            self.treeview.add_crawled([namefile])
+
                     else :
-                        pass
+                        self.treeview.add_crawled([namefile])
 
         def crawl_lyrics(self, namefile, directory):
             if Moteur().check_extension(namefile)  and self.internet == True :
@@ -79,6 +84,7 @@ class Data_Crawler :
 
         def update_data_crawled(self,modifications, directory):
             for namefile in modifications :
+                self.treeview.remove_crawled([namefile])
                 print("we update tags :",namefile)
                 if self.stop(directory):
                     break
@@ -111,10 +117,6 @@ class Data_Crawler :
                     if self.stop(directory):
                         break
 
-                    path = Gtk.TreePath(i)
-                    listiter = store.get_iter(path)
-                    store.set_value(listiter,1,"Yes")
-                    i = i+1
 
         def stop(self, directory):
             if self.directory == directory :

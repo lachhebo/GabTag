@@ -37,7 +37,8 @@ gabtag_sources = [
   'MP3Handler.py',
   'data_crawler.py',
   'Crawler_dir.py',
-  'Crawler_modif.py'
+  'Crawler_modif.py',
+  'treeview.py'
 ]
 
 install_data(gabtag_sources, install_dir: moduledir)
