@@ -5,5 +5,5 @@ Icon=com.github.lachhebo.Gabtag
 Exec=gabtag
 Terminal=false
 Type=Application
-Categories=GTK;Audio
+Categories=AudioVideo;Audio;AudioVideoEditing;
 StartupNotify=true
