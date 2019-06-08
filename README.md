@@ -22,8 +22,8 @@ It uses Mutagen to handle tags. I hope to make it available on Flathub as soon a
 
 ## Screenshots:
 
-![ScreenShot](https://raw.githubusercontent.com/lachhebo/GabTag/screenshots/Gabtag-V1_2-1.png)
-![ScreenShot](https://raw.githubusercontent.com/lachhebo/GabTag/screenshots/Gabtag-V1_2-2.png)
+![ScreenShot](https://raw.githubusercontent.com/lachhebo/GabTag/screenshots/Gabtag_v13_1.png)
+![ScreenShot](https://raw.githubusercontent.com/lachhebo/GabTag/screenshots/Gabtag_v13_2.png)
 
 ## Installation :
 
