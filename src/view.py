@@ -103,7 +103,10 @@ class View:
             self.artist.set_text("")
             self.year.set_text("")
             self.track.set_text("")
-
+            self.cover.set_from_icon_name('gtk-missing-image',6)
+            self.last_cover = ""
+            self.show_lyrics("")
+            self.show_mbz({ 'title':"", 'track':"",'album':"",'genre':"","artist":"","cover":"","year":""})
 
         def set_editibility_title(self, multiple_rows, title):
             if multiple_rows == 1 :

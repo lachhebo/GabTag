@@ -4,7 +4,10 @@
 ## Description :
 
 GabTag is a GTK software written in Python, it allows user to add or modify tags on audio files.
-It uses Mutagen to handle tags. I hope to make it available on Flathub as soon as possible.
+It uses Mutagen to handle tags. 
+
+Gabtag is available on flathub, at the link : 
+[link to Gabtag FlatHub Page!](https://flathub.org/apps/details/com.github.lachhebo.Gabtag)
 
 ## Features :
 

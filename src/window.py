@@ -156,13 +156,11 @@ class GabtagWindow(Gtk.ApplicationWindow):
         model = Model.getInstance()
         if response == Gtk.ResponseType.OK:
             self.opened_directory = True
+            model.view.erase()
             self.data_crawler.update_directory(dialog.get_filename())
             model.update_directory(dialog.get_filename(),self.liststore1)
             thread = Crawler_Dir(model.directory,self.liststore1)
             thread.start()
-
-            model.save_modifications(self.selectionned)
-
 
         dialog.destroy()
 

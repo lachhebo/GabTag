@@ -42,6 +42,7 @@ class Model:
             '''
             self.directory = directory
             self.update_list(store)
+            self.selection = None
             self.modification = {}
 
         def reset_all(self,selection):
@@ -228,11 +229,6 @@ class Model:
                     return True
 
             return False
-
-
-
-
-
 
 
         def set_data_lyrics(self,selection):
