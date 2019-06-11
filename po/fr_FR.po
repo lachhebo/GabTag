@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: gabtag\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-06-06 15:04-0400\n"
-"PO-Revision-Date: 2019-06-11 19:02+0000\n"
+"PO-Revision-Date: 2019-06-11 19:37+0000\n"
 "Last-Translator: Ismaïl Lachheb <ismael.lachheb@protonmail.com>, 2019\n"
 "Language-Team: French (France) (https://www.transifex.com/lachhebo/teams/100040/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -39,7 +39,7 @@ msgstr "GabTag"
 
 #: data/com.github.lachhebo.Gabtag.appdata.xml.in:14
 msgid "An audio tagging tool"
-msgstr "Un outils de d'édition de balise de fichiers audios"
+msgstr "Un outils d'édition des tags audios"
 
 #: data/com.github.lachhebo.Gabtag.appdata.xml.in:16
 msgid ""
@@ -47,8 +47,8 @@ msgid ""
 "suitable for gtk based desktop users."
 msgstr ""
 "GabTag est une application Linux d'édition de balise de fichier audios "
-"écrite en GTK 3. Elle est donc parfaitement adapté aux utilisateur de bureau"
-" basé sur GTK."
+"écrite en GTK 3. Elle est donc parfaitement adaptée aux utilisateurs de "
+"bureau basés sur GTK."
 
 #: data/com.github.lachhebo.Gabtag.appdata.xml.in:20
 msgid ""
@@ -56,10 +56,9 @@ msgid ""
 "possible to directly let GabTag automatically find tags and lyrics for the "
 "audio files using online data."
 msgstr ""
-"Il est possible de modifier plusieurs fichier et de modifier leurs balises. "
-"Il est aussi possible de laisser GabTag automatiquement trouver les balises "
-"et les lyrics associés à ce fichier en utilisant des données provenant "
-"d'internet. "
+"Il est possible de modifier les balises de plusieurs fichier. Il est aussi "
+"possible de laisser GabTag automatiquement trouver les balises et les lyrics"
+" associés à un fichier en utilisant des données provenant d'internet. "
 
 #: data/com.github.lachhebo.Gabtag.appdata.xml.in:24
 msgid ""
@@ -67,7 +66,7 @@ msgid ""
 "uses MusicBrainz database to find audio tags and lyrics.wikia.com to find "
 "lyrics online."
 msgstr ""
-"Gabtag est écris en Python 3, il utilise Mutagen pour gérer les fichiers "
+"Gabtag est écrit en Python 3, il utilise Mutagen pour gérer les fichiers "
 "audios, il utilise aussi la base de données MusicBrainz pour récupérer les "
 "balises et la base de données lyrics.wikia.com pour récupérer les paroles. "
 
@@ -81,7 +80,7 @@ msgstr "À propos"
 
 #: src/window.ui:21
 msgid "GabTag is an  open-source audio tagging tool written in gtk3."
-msgstr "GabTag est un éditeur de balise audio écris en GTK3. "
+msgstr "GabTag est un éditeur de balise audio écrit en GTK3. "
 
 #: src/window.ui:69
 msgid "Reset files"
@@ -157,7 +156,7 @@ msgstr "Réinitialiser les modifications"
 
 #: src/window.ui:579
 msgid "Remove modification made to fields."
-msgstr "Annule les modifications faîtes au fichier"
+msgstr "Annule les modifications appliquées au fichier"
 
 #: src/window.ui:593
 msgid "Save Modification"
@@ -165,7 +164,7 @@ msgstr "Sauvegarder les modifications"
 
 #: src/window.ui:598
 msgid "Save the modification made to this file."
-msgstr "Sauvegarde les modification appliquées au fichier"
+msgstr "Sauvegarde les modifications appliquées au fichier"
 
 #: src/window.ui:619
 msgid "MusicBrainz Tags"
@@ -189,7 +188,7 @@ msgstr "Genre"
 
 #: src/window.ui:718
 msgid "Track  "
-msgstr "Track"
+msgstr "Numéro de titre"
 
 #: src/window.ui:738
 msgid "Year "
@@ -201,7 +200,7 @@ msgstr "Appliquer ces balises"
 
 #: src/window.ui:757
 msgid "Use the MusicBrainz tags"
-msgstr "Utilise les balises MusicBrainz"
+msgstr "Utiliser les balises MusicBrainz"
 
 #: src/window.ui:789
 msgid "Lyrics "

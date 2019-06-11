@@ -57,22 +57,3 @@ class Crawler_Dir(Thread):
             thread_mbz2.join()
             thread_mbz3.join()
             thread_mbz4.join()
-
-
-    def isselectionequal(self,selec1,selec2):
-        model, listiter = selec1.get_selected_rows()
-        model2, listiter2 = selec2.get_selected_rows()
-        #print("la taille est :", len(listiter) )
-        #print("la taille autorisée :",self.lenselection )
-
-        if len(listiter) == len(listiter2) :
-            for i in range(len(listiter)):
-                namefilei = model[listiter[i]][0]
-                if namefilei != model2[listiter2[i]][0]:
-                    return False
-        else :
-            #print("why size ?")
-            return False
-
-        return True
-
