@@ -1,9 +1,8 @@
-from threading import Thread, RLock
+from threading import Thread
 from .data_crawler import Data_Crawler
 from .model import Model
 from .treeview import TreeView
 
-verrou = RLock()
 
 class Crawler_Modif(Thread):
 
@@ -33,38 +32,37 @@ class Crawler_Modif(Thread):
 
 
     def run(self):
-        with verrou :
-            """Code à exécuter pendant l'exécution du thread."""
-            if self.some_file == 1 :
-                print("modified some tags :")
-                model, listiter = self.selection.get_selected_rows()
+        """Code à exécuter pendant l'exécution du thread."""
+        if self.some_file == 1 :
+            print("modified some tags :")
+            model, listiter = self.selection.get_selected_rows()
 
-                for i in range(len(listiter)): ## TODO
-                    namefile = model[listiter[i]][0]
-                    if namefile in self.modifs :
-                        self.data_crawler.update_data_crawled([namefile],self.directory)
+            for i in range(len(listiter)): ## TODO
+                namefile = model[listiter[i]][0]
+                if namefile in self.modifs :
+                    self.data_crawler.update_data_crawled([namefile],self.directory)
 
+        else :
+            self.data_crawler.update_data_crawled(self.modifs,self.directory)
+
+
+        if(self.selectionequal(self.model.selection)):
+            model, listiter = self.model.selection.get_selected_rows()
+
+            if len(listiter)> 1 :
+                multiple_line_selected = 1
             else :
-                self.data_crawler.update_data_crawled(self.modifs,self.directory)
+                multiple_line_selected = 0
 
+
+            data_scrapped = self.data_crawler.get_tags(model, listiter, multiple_line_selected)
+            lyrics_scrapped = self.data_crawler.get_lyrics(model, listiter, multiple_line_selected)
 
             if(self.selectionequal(self.model.selection)):
-                model, listiter = self.model.selection.get_selected_rows()
-
-                if len(listiter)> 1 :
-                    multiple_line_selected = 1
-                else :
-                    multiple_line_selected = 0
-
-
-                data_scrapped = self.data_crawler.get_tags(model, listiter, multiple_line_selected)
-                lyrics_scrapped = self.data_crawler.get_lyrics(model, listiter, multiple_line_selected)
-
-                if(self.selectionequal(self.model.selection)):
-                    self.model.view.show_mbz(data_scrapped)
-                    self.model.view.show_lyrics(lyrics_scrapped)
-            else :
-                pass
+                self.model.view.show_mbz(data_scrapped)
+                self.model.view.show_lyrics(lyrics_scrapped)
+        else :
+            pass
 
 
 

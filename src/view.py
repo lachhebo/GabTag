@@ -3,8 +3,13 @@ require_version('Gtk', '3.0')
 
 from gi.repository import Gtk, GdkPixbuf, GLib
 from PIL import Image
+from threading import RLock
 import io
 import math
+
+verrou_tags = RLock()
+verrou_mbz = RLock()
+verrou_lyrics = RLock()
 
 class View:
 
@@ -48,49 +53,51 @@ class View:
 
 
         def show_lyrics(self, lyrics_scrapped):
-            buf = self.lyrics.get_buffer()
-            buf.set_text(lyrics_scrapped)
+            with verrou_lyrics:
+                buf = self.lyrics.get_buffer()
+                buf.set_text(lyrics_scrapped)
 
 
         def show_mbz(self, data_scrapped):
+            with verrou_mbz :
 
-            # We show the tag currently in tagdico
-            self.title_mbz.set_text(data_scrapped["title"])
-            self.track_mbz.set_text(data_scrapped["track"])
-            self.genre_mbz.set_text(data_scrapped["genre"])
-            self.album_mbz.set_text(data_scrapped["album"])
-            self.artist_mbz.set_text(data_scrapped["artist"])
-            self.year_mbz.set_text(data_scrapped["year"])
-
-
-            if data_scrapped["cover"] != "" :
-                with  Image.open(io.BytesIO(data_scrapped["cover"])) as img :
-                        glibbytes = GLib.Bytes.new(img.tobytes())
-
-                        width = img.width  ##The best fix i could find for the moment
-                        height = img.height
-
-                        if glibbytes.get_size() < width * height * 3 :
-                            width = math.sqrt(glibbytes.get_size()/3)
-                            height = math.sqrt(glibbytes.get_size()/3)
+                # We show the tag currently in tagdico
+                self.title_mbz.set_text(data_scrapped["title"])
+                self.track_mbz.set_text(data_scrapped["track"])
+                self.genre_mbz.set_text(data_scrapped["genre"])
+                self.album_mbz.set_text(data_scrapped["album"])
+                self.artist_mbz.set_text(data_scrapped["artist"])
+                self.year_mbz.set_text(data_scrapped["year"])
 
 
-                        try :
-                            pixbuf = GdkPixbuf.Pixbuf.new_from_bytes(glibbytes, # TODO ERROR HAPPENS WITH SOME COVER
-                                                                GdkPixbuf.Colorspace.RGB,
-                                                                False,
-                                                                8,
-                                                                img.width,
-                                                                img.height,
-                                                                len(img.getbands())*img.width)
+                if data_scrapped["cover"] != "" :
+                    with  Image.open(io.BytesIO(data_scrapped["cover"])) as img :
+                            glibbytes = GLib.Bytes.new(img.tobytes())
 
-                            pixbuf = pixbuf.scale_simple(250, 250, GdkPixbuf.InterpType.BILINEAR)
+                            width = img.width  ##The best fix i could find for the moment
+                            height = img.height
 
-                            self.cover_mbz.set_from_pixbuf(pixbuf)
-                        except :
-                            self.cover_mbz.set_from_icon_name('gtk-missing-image',6)
-            else :
-                self.cover_mbz.set_from_icon_name('gtk-missing-image',6)
+                            if glibbytes.get_size() < width * height * 3 :
+                                width = math.sqrt(glibbytes.get_size()/3)
+                                height = math.sqrt(glibbytes.get_size()/3)
+
+
+                            try :
+                                pixbuf = GdkPixbuf.Pixbuf.new_from_bytes(glibbytes, # TODO ERROR HAPPENS WITH SOME COVER
+                                                                    GdkPixbuf.Colorspace.RGB,
+                                                                    False,
+                                                                    8,
+                                                                    img.width,
+                                                                    img.height,
+                                                                    len(img.getbands())*img.width)
+
+                                pixbuf = pixbuf.scale_simple(250, 250, GdkPixbuf.InterpType.BILINEAR)
+
+                                self.cover_mbz.set_from_pixbuf(pixbuf)
+                            except :
+                                self.cover_mbz.set_from_icon_name('gtk-missing-image',6)
+                else :
+                    self.cover_mbz.set_from_icon_name('gtk-missing-image',6)
 
 
         def erase(self):
@@ -179,38 +186,38 @@ class View:
 
 
         def show_tags(self,tagdico, multiple_rows):
+            with verrou_tags :
+                # We show those tags uniquely if there is only one row selected #TODO is it reallly usefull ? I don't think so
+                self.set_editibility_title(multiple_rows,tagdico["title"]["value"])
+                self.set_editability_track(multiple_rows,tagdico["track"]["value"])
 
-            # We show those tags uniquely if there is only one row selected #TODO is it reallly usefull ? I don't think so
-            self.set_editibility_title(multiple_rows,tagdico["title"]["value"])
-            self.set_editability_track(multiple_rows,tagdico["track"]["value"])
-
-            # Same thing for the labels # TODO show size and length for the concatenation of songs selectionned
-            self.set_size(multiple_rows,tagdico["size"]["value"])
-            self.set_length(multiple_rows,tagdico["length"]["value"])
-
-
-            # We show the tag currently in tagdico
-            self.genre.set_text(tagdico["genre"]["value"])
-            self.album.set_text(tagdico["album"]["value"])
-            self.artist.set_text(tagdico["artist"]["value"])
-            self.year.set_text(tagdico["year"]["value"])
-            #self.show_lyrics(tagdico["lyrics"]["value"]) #TODO : print tags lyrics in case of missing internet lyrics
+                # Same thing for the labels # TODO show size and length for the concatenation of songs selectionned
+                self.set_size(multiple_rows,tagdico["size"]["value"])
+                self.set_length(multiple_rows,tagdico["length"]["value"])
 
 
-            if tagdico["cover"]["value"] != "": # A test to handle if there is a cover
-                if(tagdico["cover"]["value"] != self.last_cover):
-                    if type(tagdico["cover"]["value"]) == bytes : # A test to detect bytes file
-                        self.show_cover_from_bytes(tagdico["cover"]["value"])
-                        self.last_cover = tagdico["cover"]["value"]
-                    else:
-                        self.show_cover_from_file(tagdico["cover"]["value"])
-                        self.last_cover = tagdico["cover"]["value"]
+                # We show the tag currently in tagdico
+                self.genre.set_text(tagdico["genre"]["value"])
+                self.album.set_text(tagdico["album"]["value"])
+                self.artist.set_text(tagdico["artist"]["value"])
+                self.year.set_text(tagdico["year"]["value"])
+                #self.show_lyrics(tagdico["lyrics"]["value"]) #TODO : print tags lyrics in case of missing internet lyrics
+
+
+                if tagdico["cover"]["value"] != "": # A test to handle if there is a cover
+                    if(tagdico["cover"]["value"] != self.last_cover):
+                        if type(tagdico["cover"]["value"]) == bytes : # A test to detect bytes file
+                            self.show_cover_from_bytes(tagdico["cover"]["value"])
+                            self.last_cover = tagdico["cover"]["value"]
+                        else:
+                            self.show_cover_from_file(tagdico["cover"]["value"])
+                            self.last_cover = tagdico["cover"]["value"]
+                    else :
+                        pass
                 else :
-                    pass
-            else :
 
-                self.cover.set_from_icon_name('gtk-missing-image',6)
-                self.last_cover = ""
+                    self.cover.set_from_icon_name('gtk-missing-image',6)
+                    self.last_cover = ""
 
 
 

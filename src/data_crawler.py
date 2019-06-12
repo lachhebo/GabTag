@@ -1,9 +1,5 @@
 from os import walk
 
-from threading import RLock
-
-verrou = RLock()
-
 import musicbrainzngs as mb
 from PyLyrics import *
 
@@ -157,19 +153,27 @@ class Data_Crawler :
                     else :
                         return "Lyrics not avalaible"
                 else :
-                    return "File not crawled yet on lyrics.wikia"
+                    return None
 
         def get_tags(self,model,listiter, multiline_selected):
 
-            namefile = model[listiter][0]
-            if namefile in self.tag_finder :
-                candidat =  self.tag_finder[namefile].copy()
-            else :
-                return { "title":"", "artist":"", "album":"", "track":"", "year":"", "genre":"", "cover":""}
+            if multiline_selected == 0 :
 
+                namefile = model[listiter][0]
+                if namefile in self.tag_finder :
+                    return self.tag_finder[namefile].copy()
+                else :
+                    return None
 
-            if multiline_selected == 1 :
-                 for i in range(1,len(listiter)):
+            elif multiline_selected == 1 :
+
+                namefile = model[listiter][0]
+                if namefile in self.tag_finder :
+                    candidat = self.tag_finder[namefile].copy()
+                else :
+                    return None
+
+                for i in range(1,len(listiter)):
                     beta = model[listiter[i]][0]
                     if beta in self.tag_finder :
                         for tagi in ["artist","album","year","genre","cover"] :
@@ -177,9 +181,10 @@ class Data_Crawler :
                                 candidat[tagi] = ""
                         candidat["title"] = ""
                         candidat["track"] = ""
+                    else :
+                        return None
 
-
-            return candidat
+                return candidat
 
         def reorder_data(self,mzdata):
             '''
@@ -257,3 +262,4 @@ class Data_Crawler :
         if Data_Crawler.__instance == None:
             Data_Crawler()
         return Data_Crawler.__instance
+

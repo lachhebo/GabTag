@@ -1,10 +1,12 @@
 from os import walk
+#from time import sleep
+from threading import Thread
 from .moteur import Moteur
 from .view import View
 from .data_crawler import Data_Crawler
 from .treeview import TreeView
 
-from gi.repository import Pango
+#from gi.repository import Pango
 
 import os
 
@@ -147,9 +149,79 @@ class Model:
             lyrics_scrapped = self.data_crawler.get_lyrics(model, listiter, multiple_line_selected)
 
             self.view.show_tags(self.tagdico, multiple_line_selected)
-            self.view.show_mbz(data_scrapped)
-            self.view.show_lyrics(lyrics_scrapped)
 
+            if data_scrapped == None :
+                self.view.show_mbz({ "title":"", "artist":"", "album":"", "track":"", "year":"", "genre":"", "cover":""})
+
+                lenselec = len(listiter)
+                fileselec = []
+
+                for i in range(len(listiter)):
+                    namefile = model[listiter[i]][0]
+                    fileselec.append(namefile)
+
+                thread_waiting_mbz = Thread(target = self.wait_for_mbz, args=(model,listiter,lenselec,fileselec,multiple_line_selected))
+                thread_waiting_mbz.start()
+            else :
+                self.view.show_mbz(data_scrapped)
+
+
+            if lyrics_scrapped == None :
+                self.view.show_lyrics("File not crawled yet on lyrics.wikia")
+                lenselec = len(listiter)
+                fileselec = []
+
+                for i in range(len(listiter)):
+                    namefile = model[listiter[i]][0]
+                    fileselec.append(namefile)
+
+                #thread_waiting_lyr = Thread(target = self.wait_for_lyrics, args=(model,listiter,lenselec,fileselec,multiple_line_selected)) #Writing data
+                #self.wait_for_lyrics(model,listiter,multiple_line_selected)
+                #thread_waiting_lyr.start()
+            else :
+                self.view.show_lyrics(lyrics_scrapped)
+
+        def wait_for_mbz(self,model,listiter,lenselec,fileselec,multiple_line_selected):
+            print("Entering thread waiting for mbz")
+            is_waiting_mbz = 1
+
+            while self.is_selectionequal(self.selection,lenselec,fileselec) and is_waiting_mbz == 1:
+                data_scrapped = self.data_crawler.get_tags(model, listiter, multiple_line_selected)
+                if data_scrapped != None and self.is_selectionequal(self.selection,lenselec,fileselec) :
+                    print("mbz found :", data_scrapped["title"])
+                    is_waiting_mbz = 0
+                    self.view.show_mbz(data_scrapped)
+
+
+
+        def wait_for_lyrics(self,model,listiter,lenselec,fileselec,multiple_line_selected):
+            print("Entering thread waiting for lyrics")
+            is_waiting_lyrics = 1
+
+            while self.is_selectionequal(self.selection,lenselec,fileselec) and is_waiting_lyrics == 1 :
+                lyrics_scrapped = self.data_crawler.get_lyrics(model, listiter, multiple_line_selected)
+                if lyrics_scrapped != None and self.is_selectionequal(self.selection,lenselec,fileselec)  :
+                    print("lyrics found :",lyrics_scrapped[0:10])
+                    is_waiting_lyrics = 0
+                    self.view.show_lyrics(lyrics_scrapped)
+
+
+        def is_selectionequal(self,selec, lenselec2,filelistselec2):
+            model, listiter = selec.get_selected_rows()
+            #print("la taille est :", len(listiter) )
+            #print("la taille autorisée :",self.lenselection )
+
+            if len(listiter) == lenselec2 :
+                for i in range(len(listiter)):
+                    namefile = model[listiter[i]][0]
+                    if namefile not in filelistselec2:
+                        #print("why element ? ",namefile)
+                        return False
+            else :
+                #print("why size ?")
+                return False
+
+            return True
 
         def rename_files(self):
 
@@ -415,3 +487,4 @@ class Model:
         if Model.__instance == None:
             Model()
         return Model.__instance
+
