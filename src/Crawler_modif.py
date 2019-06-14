@@ -34,7 +34,6 @@ class Crawler_Modif(Thread):
     def run(self):
         """Code à exécuter pendant l'exécution du thread."""
         if self.some_file == 1 :
-            print("modified some tags :")
             model, listiter = self.selection.get_selected_rows()
 
             for i in range(len(listiter)): ## TODO

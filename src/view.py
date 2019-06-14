@@ -47,15 +47,17 @@ class View:
 
             self.lyrics = lyrics
 
+
             if self.lyrics != None :
                 self.lyrics.set_justification(2) # CENTER
                 self.lyrics.set_wrap_mode(2) # Cut between Word
+                self.lyrics_buf = self.lyrics.get_buffer()
 
 
         def show_lyrics(self, lyrics_scrapped):
             with verrou_lyrics:
-                buf = self.lyrics.get_buffer()
-                buf.set_text(lyrics_scrapped)
+                self.lyrics_buf.set_text(lyrics_scrapped)
+
 
 
         def show_mbz(self, data_scrapped):
