@@ -59,7 +59,8 @@ class Crawler_Modif(Thread):
 
             if(self.selectionequal(self.model.selection)):
                 self.model.view.show_mbz(data_scrapped)
-                self.model.view.show_lyrics(lyrics_scrapped)
+                if lyrics_scrapped != None : #Check why it happend to be None in some case :
+                    self.model.view.show_lyrics(lyrics_scrapped)
         else :
             pass
 

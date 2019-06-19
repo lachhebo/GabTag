@@ -19,6 +19,10 @@ class MP3Handler(AudioBasics):
         self.audio = MP3(path_file)
         self.id3 = self.audio.tags
 
+        if self.id3 == None:
+            self.audio.tags = ID3()
+            self.id3 = self.audio.tags
+
 
     def getextensiontype(self):
         return ".mp3"
@@ -27,15 +31,17 @@ class MP3Handler(AudioBasics):
         '''
         A function to return the first tag of an id3 label
         '''
-        tagneeded = self.id3.getall(id3_nametag)
-        if len(tagneeded)>0:
-            if data_type == "text":
-                return tagneeded[0].text[0]
-            elif data_type == "data":
-                return tagneeded[0].data
-        else:
+        if self.id3 != None :
+            tagneeded = self.id3.getall(id3_nametag)
+            if len(tagneeded)>0:
+                if data_type == "text":
+                    return tagneeded[0].text[0]
+                elif data_type == "data":
+                    return tagneeded[0].data
+            else:
+                return ""
+        else :
             return ""
-
 
     def get_tag_research(self):
         return [
@@ -62,10 +68,13 @@ class MP3Handler(AudioBasics):
         elif tag_key == "track":
             return self.get_one_tag('TRCK',"text")
         elif tag_key == "lyrics":
-            tagneeded = self.id3.getall('USLT')
-            if len(tagneeded)>0:
-                return tagneeded[0].text
-            else:
+            if self.id3 != None :
+                tagneeded = self.id3.getall('USLT')
+                if len(tagneeded)>0:
+                    return tagneeded[0].text
+                else:
+                    return ""
+            else :
                 return ""
 
         elif tag_key == "year":
