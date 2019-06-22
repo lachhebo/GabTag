@@ -3,10 +3,17 @@
 
 ## Description :
 
-GabTag is a GTK software written in Python, it allows user to add or modify tags on audio files.
-It uses Mutagen to handle tags. 
 
-Gabtag is available on flathub : [Gabtag Flathub Link !](https://flathub.org/apps/details/com.github.lachhebo.Gabtag)
+GabTag is a Linux audio tagging tool written in GTK 3, which makes it very suitable for gtk based desktop users.
+
+It allow users to select several file and modify their tags, It is also possible to directly let GabTag automatically find tags and lyrics for the audio files using online data.
+
+GabTag is written in Python 3, uses Mutagen to handle audio tag. It also uses MusicBrainz database to find audio tags and lyrics.wikia.com to find lyrics online.
+
+
+
+<a href='https://flathub.org/apps/details/com.github.lachhebo.Gabtag'><img width='240' alt='Download on Flathub' src='https://flathub.org/assets/badges/flathub-badge-en.png'/></a>
+
 
 ## Features :
 
@@ -25,10 +32,13 @@ Gabtag is available on flathub : [Gabtag Flathub Link !](https://flathub.org/app
 
 ## Screenshots:
 
-![ScreenShot](https://raw.githubusercontent.com/lachhebo/GabTag/screenshots/Gabtag_v13_1.png)
-![ScreenShot](https://raw.githubusercontent.com/lachhebo/GabTag/screenshots/Gabtag_v13_2.png)
+
+<img height="350" src="https://raw.githubusercontent.com/lachhebo/GabTag/screenshots/Gabtag_v13_1.png" />
+<img height="350" src="https://raw.githubusercontent.com/lachhebo/GabTag/screenshots/Gabtag_v13_2.png" />
 
 
 ## Support/Donation :
+
+If you like Gabtag and would like to support the development of this project, please donate below!
 
 [<img height="30" src="https://raw.githubusercontent.com/lachhebo/GabTag/screenshots/donate.png" alt="PayPal"/>](https://www.paypal.me/lachhebo)
