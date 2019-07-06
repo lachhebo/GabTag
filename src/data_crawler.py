@@ -16,7 +16,7 @@ class Data_Crawler :
 
         def __init__(self):
             try :
-                mb.set_useragent("GabTag", version = "1.3.1", contact = "ismael.lachheb@protonmail.com")
+                mb.set_useragent("GabTag", version = "1.3.4", contact = "ismael.lachheb@protonmail.com")
                 self.internet = True
             except :
                 self.internet = False

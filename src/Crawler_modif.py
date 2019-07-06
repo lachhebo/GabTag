@@ -58,7 +58,8 @@ class Crawler_Modif(Thread):
             lyrics_scrapped = self.data_crawler.get_lyrics(model, listiter, multiple_line_selected)
 
             if(self.selectionequal(self.model.selection)):
-                self.model.view.show_mbz(data_scrapped)
+                if data_scrapped != None :
+                    self.model.view.show_mbz(data_scrapped)
                 if lyrics_scrapped != None : #Check why it happend to be None in some case :
                     self.model.view.show_lyrics(lyrics_scrapped)
         else :
