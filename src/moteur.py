@@ -1,16 +1,16 @@
 from .MP3Handler import MP3Handler
 from os import path
 
+
 class Moteur:
 
     def __init__(self):
         '''
         the list of extensions handled by Gabtag
         '''
-        self.extensions =  ["mp3"]
+        self.extensions = ["mp3"]
 
-
-    def check_extension(self,filename):
+    def check_extension(self, filename):
         '''
         Check if the file extension is handled by Gabtag
         input : a filename (string)
@@ -19,13 +19,12 @@ class Moteur:
 
         extension = self.get_extension(filename)
 
-        if extension in self.extensions :
+        if extension in self.extensions:
             return True
         else:
             return False
 
-
-    def getFile(self,filename, directory):
+    def getFile(self, filename, directory):
         '''
         return the correct handler for the file
         input : a file (string), a directory (string)
@@ -33,7 +32,7 @@ class Moteur:
         '''
 
         if self.get_extension(filename) == "mp3":
-            return MP3Handler(path.join(directory,filename))
+            return MP3Handler(path.join(directory, filename))
         else:
             return None
 
@@ -43,6 +42,3 @@ class Moteur:
         '''
         namelist = filename.split('.')
         return namelist[-1]
-
-
-

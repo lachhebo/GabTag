@@ -6,7 +6,6 @@ from .treeview import TreeView
 
 class Crawler_Modif(Thread):
 
-
     def __init__(self, modifs, store, selection, some_file):
         Thread.__init__(self)
         self.data_crawler = Data_Crawler.getInstance()
@@ -18,70 +17,60 @@ class Crawler_Modif(Thread):
         self.selection = selection
         self.treeview = TreeView.getInstance()
 
-
         model, listiter = self.model.selection.get_selected_rows()
 
         self.lenselection = len(listiter)
         self.filenames = []
 
         for i in range(len(listiter)):
-                namefile = model[listiter[i]][0]
-                self.filenames.append(namefile)
-
-
-
+            namefile = model[listiter[i]][0]
+            self.filenames.append(namefile)
 
     def run(self):
         """Code à exécuter pendant l'exécution du thread."""
-        if self.some_file == 1 :
+        if self.some_file == 1:
             model, listiter = self.selection.get_selected_rows()
 
-            for i in range(len(listiter)): ## TODO
+            for i in range(len(listiter)):  # TODO
                 namefile = model[listiter[i]][0]
-                if namefile in self.modifs :
-                    self.data_crawler.update_data_crawled([namefile],self.directory)
+                if namefile in self.modifs:
+                    self.data_crawler.update_data_crawled(
+                        [namefile], self.directory)
 
-        else :
-            self.data_crawler.update_data_crawled(self.modifs,self.directory)
-
+        else:
+            self.data_crawler.update_data_crawled(self.modifs, self.directory)
 
         if(self.selectionequal(self.model.selection)):
             model, listiter = self.model.selection.get_selected_rows()
 
-            if len(listiter)> 1 :
+            if len(listiter) > 1:
                 multiple_line_selected = 1
-            else :
+            else:
                 multiple_line_selected = 0
 
-
-            data_scrapped = self.data_crawler.get_tags(model, listiter, multiple_line_selected)
-            lyrics_scrapped = self.data_crawler.get_lyrics(model, listiter, multiple_line_selected)
+            data_scrapped = self.data_crawler.get_tags(
+                model, listiter, multiple_line_selected)
+            lyrics_scrapped = self.data_crawler.get_lyrics(
+                model, listiter, multiple_line_selected)
 
             if(self.selectionequal(self.model.selection)):
-                if data_scrapped != None :
+                if data_scrapped != None:
                     self.model.view.show_mbz(data_scrapped)
-                if lyrics_scrapped != None : #Check why it happend to be None in some case :
+                if lyrics_scrapped != None:  # TODO :Check why it happend to be None in some case :
                     self.model.view.show_lyrics(lyrics_scrapped)
-        else :
+        else:
             pass
 
-
-
-    def selectionequal(self,selec):
+    def selectionequal(self, selec):
         model, listiter = selec.get_selected_rows()
-        #print("la taille est :", len(listiter) )
-        #print("la taille autorisée :",self.lenselection )
 
-        if len(listiter) == self.lenselection :
+
+        if len(listiter) == self.lenselection:
             for i in range(len(listiter)):
                 namefile = model[listiter[i]][0]
                 if namefile not in self.filenames:
-                    #print("why element ? ",namefile)
                     return False
-        else :
-            #print("why size ?")
+        else:
             return False
 
         return True
-
-        
