@@ -33,7 +33,6 @@ GabTag is written in Python 3, uses Mutagen to handle audio tag. It also uses Mu
 ## Screenshots:
 
 
-<img height="350" src="https://raw.githubusercontent.com/lachhebo/GabTag/screenshots/Gabtag_v13_1.png" />
 <img height="350" src="https://raw.githubusercontent.com/lachhebo/GabTag/screenshots/Gabtag_v13_2.png" />
 
 
