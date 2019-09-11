@@ -15,7 +15,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from .treeview import TreeView
 from .data_crawler import Data_Crawler
 from .Crawler_modif import Crawler_Modif
 from .Crawler_dir import Crawler_Dir
@@ -88,7 +87,6 @@ class GabtagWindow(Gtk.ApplicationWindow):
 
         view = View.getInstance()
 
-        self.treeview = TreeView(self.liststore1, self.tree_view_id)
 
         self.data_crawler = Data_Crawler.getInstance()
 
@@ -102,7 +100,6 @@ class GabtagWindow(Gtk.ApplicationWindow):
             model = Model.getInstance()
             thread = Crawler_Modif(
                 model.modification.copy(), self.liststore1, self.selectionned, 0)
-            # self.treeview.remove_crawled(model.modification.keys)
             model.save_modifications(self.selectionned)
             thread.start()
 

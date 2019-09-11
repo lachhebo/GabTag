@@ -140,11 +140,15 @@ class Data_Crawler:
         def update_directory(self, directory):
             self.directory = directory
 
-        def get_lyrics(self, model, listiter, multiline_selected):
+        def get_lyrics(self, model, listiter, multiline_selected, filenamesregistered):
             if multiline_selected:
                 return "No lyrics on Multiple File"
             else:
-                namefile = model[listiter][0]
+
+                for registeredfile in filenamesregistered :
+                    if registeredfile[0] == model[listiter][0] :
+                        namefile = registeredfile[1]  #TODO : handle case were 2 files have the same title
+
                 if namefile in self.lyrics:
                     if self.lyrics[namefile] != "":
                         return self.lyrics[namefile]
@@ -153,11 +157,15 @@ class Data_Crawler:
                 else:
                     return None
 
-        def get_tags(self, model, listiter, multiline_selected):
+        def get_tags(self, model, listiter, multiline_selected, filenamesregistered):
 
             if multiline_selected == 0:
 
-                namefile = model[listiter][0]
+                for registeredfile in filenamesregistered :
+                    if registeredfile[0] == model[listiter][0] :
+                        namefile = registeredfile[1]  #TODO : handle case were 2 files have the same title
+
+
                 if namefile in self.tag_finder:
                     return self.tag_finder[namefile].copy()
                 else:
@@ -165,18 +173,27 @@ class Data_Crawler:
 
             elif multiline_selected == 1:
 
-                namefile = model[listiter][0]
+                for registeredfile in filenamesregistered :
+                    if registeredfile[0] == model[listiter][0] :
+                        namefile = registeredfile[1]  #TODO : handle case were 2 files have the same title
+
+
                 if namefile in self.tag_finder:
                     candidat = self.tag_finder[namefile].copy()
                 else:
                     return None
 
                 for i in range(1, len(listiter)):
-                    beta = model[listiter[i]][0]
-                    if beta in self.tag_finder:
-                        for tagi in ["artist", "album", "year", "genre", "cover"]:
-                            if candidat[tagi] != self.tag_finder[beta][tagi]:
-                                candidat[tagi] = ""
+
+                    for registeredfile in filenamesregistered :
+                        if registeredfile[0] == model[listiter[i]][0] :
+                            nametitlefile = registeredfile[1]  #TODO : handle case were 2 files have the same title
+
+
+                    if nametitlefile in self.tag_finder:
+                        for tag in ["artist", "album", "year", "genre", "cover"]:
+                            if candidat[tag] != self.tag_finder[nametitlefile][tag]:
+                                candidat[tag] = ""
                         candidat["title"] = ""
                         candidat["track"] = ""
                     else:
