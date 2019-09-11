@@ -1,4 +1,4 @@
-# <img width="30" src="data/icons/hicolor/scalable/apps/com.github.lachhebo.Gabtag.svg"/> GabTag [![Build Status](https://travis-ci.com/lachhebo/GabTag.svg?branch=master)](https://travis-ci.com/lachhebo/GabTag) 
+# <img width="30" src="data/icons/hicolor/scalable/apps/com.github.lachhebo.Gabtag.svg"/> GabTag [![Build Status](https://travis-ci.com/lachhebo/GabTag.svg?branch=master)](https://travis-ci.com/lachhebo/GabTag) [![codecov](https://codecov.io/gh/lachhebo/GabTag/branch/master/graph/badge.svg)](https://codecov.io/gh/lachhebo/GabTag)
 
 
 ## Description :
