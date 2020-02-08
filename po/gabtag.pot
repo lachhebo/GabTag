@@ -66,7 +66,7 @@ msgid "About"
 msgstr ""
 
 #: src/window.ui:21
-msgid "GabTag is an  open-source audio tagging tool written in gtk3."
+msgid "gabtag is an  open-source audio tagging tool written in gtk3."
 msgstr ""
 
 #: src/window.ui:69

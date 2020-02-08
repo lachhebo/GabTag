@@ -3,5 +3,4 @@ data/com.github.lachhebo.Gabtag.appdata.xml.in
 data/com.github.lachhebo.Gabtag.gschema.xml
 src/window.ui
 src/main.py
-src/window.py
 

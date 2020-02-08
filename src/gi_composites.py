@@ -28,8 +28,10 @@ from gi.repository import Gtk
 
 __all__ = ['GtkTemplate']
 
+
 class GtkTemplateWarning(UserWarning):
     pass
+
 
 def _connect_func(builder, obj, signal_name, handler_name,
                   connect_object, flags, cls):
@@ -44,7 +46,7 @@ def _connect_func(builder, obj, signal_name, handler_name,
     # so ask GtkBuilder for the template instance
     template_inst = builder.get_object(cls.__gtype_name__)
 
-    if template_inst is None: # This should never happen
+    if template_inst is None:  # This should never happen
         errmsg = "Internal error: cannot find template instance! obj: %s; " \
                  "signal: %s; handler: %s; connect_obj: %s; class: %s" % \
                  (obj, signal_name, handler_name, connect_object, cls)
@@ -84,7 +86,7 @@ def _register_template(cls, template_bytes):
             if hasattr(o, '_gtk_callback'):
                 bound_methods.add(name)
                 # Don't need to call this, as connect_func always gets called
-                #cls.bind_template_callback_full(name, o)
+                # cls.bind_template_callback_full(name, o)
         elif isinstance(o, _Child):
             cls.bind_template_child_full(name, True, 0)
             bound_widgets.add(name)
@@ -213,7 +215,6 @@ class _GtkTemplate(object):
         f._gtk_callback = True
         return f
 
-
     Child = _Child
 
     @staticmethod
@@ -230,7 +231,6 @@ class _GtkTemplate(object):
                   before registering templates? Would need a metaclass...
         '''
         _GtkTemplate.__ui_path__ = abspath(join(*path))
-
 
     def __init__(self, ui):
         self.ui = ui
@@ -264,10 +264,9 @@ class _GtkTemplate(object):
         return cls
 
 
-
 # Future shim support if this makes it into PyGI?
-#if hasattr(Gtk, 'GtkTemplate'):
+# if hasattr(Gtk, 'GtkTemplate'):
 #    GtkTemplate = lambda c: c
-#else:
+# else:
 GtkTemplate = _GtkTemplate
-    
+

@@ -15,12 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from .window import GabtagWindow
-from gi.repository import Gtk, Gio, GLib, Gdk, GObject
-import sys
 import gi
-
+import sys
 gi.require_version('Gtk', '3.0')
+
+from gi.repository import Gtk, Gio, GLib
+from .window import GabtagWindow
 
 
 class Application(Gtk.Application):

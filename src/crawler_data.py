@@ -3,14 +3,14 @@ from os import walk
 import musicbrainzngs as mb
 from PyLyrics import *
 
-from .moteur import Moteur
+from .audio_getter import AudioGetter
 from .view import View
 from .treeview import TreeView
 
 
-class Data_Crawler:
+class DataCrawler:
 
-    class __Data_Crawler:
+    class __DataCrawler:
 
         def __init__(self):
             try:
@@ -21,13 +21,13 @@ class Data_Crawler:
                 self.internet = False
             self.tag_finder = {}
             self.lyrics = {}
-            self.view = View.getInstance()
-            self.treeview = TreeView.getInstance()
+            self.view = View.get_instance()
+            self.treeview = TreeView.get_instance()
             self.directory = ''
 
         def crawl_one_file(self, namefile, directory):
-            if Moteur().check_extension(namefile) and self.internet == True:
-                audio = Moteur().getFile(namefile, directory)
+            if AudioGetter().check_extension(namefile) and self.internet == True:
+                audio = AudioGetter().get_file(namefile, directory)
 
                 tags = audio.get_tag_research()
 
@@ -41,11 +41,9 @@ class Data_Crawler:
                     # Using tags title artist and album if they are present
                     if tags[0] != "" and tags[1] != 0:
                         try:
-                            #print(" we change the value of tag finder")
-                            self.tag_finder[namefile] = self.reorder_data(
-                                mb.search_recordings(recording=tags[0], artistname=tags[1], limit=1))
+                            gathered_data = mb.search_recordings(recording=tags[0], artistname=tags[1], limit=1)
+                            self.tag_finder[namefile] = self.reorder_data(gathered_data)
                             self.treeview.add_crawled([namefile])
-                            # print(self.tag_finder[namefile]["title"])
                         except:  # TODO Check Internet Connection
                             pass
 
@@ -69,8 +67,8 @@ class Data_Crawler:
                         self.treeview.add_crawled([namefile])
 
         def crawl_lyrics(self, namefile, directory):
-            if Moteur().check_extension(namefile) and self.internet == True:
-                audio = Moteur().getFile(namefile, directory)
+            if AudioGetter().check_extension(namefile) and self.internet == True:
+                audio = AudioGetter().get_file(namefile, directory)
 
                 tags = audio.get_tag_research()
 
@@ -86,7 +84,6 @@ class Data_Crawler:
         def update_data_crawled(self, modifications, directory):
             for namefile in modifications:
                 self.treeview.remove_crawled([namefile])
-                #print("we update tags :",namefile)
                 if self.stop(directory):
                     break
                 self.crawl_one_file(namefile, directory)
@@ -98,7 +95,7 @@ class Data_Crawler:
             self.tag_finder = {}
             self.lyrics = {}
 
-        def get_filelist(self, directory):
+        def get_file_list(self, directory):
             self.directory = directory
 
             filelist = []
@@ -111,7 +108,7 @@ class Data_Crawler:
         def get_data_from_online(self, filelist, directory):
 
             for namefile in filelist:
-                if Moteur().check_extension(namefile) and self.internet == True:
+                if AudioGetter().check_extension(namefile) and self.internet == True:
 
                     if self.stop(directory):
                         break
@@ -185,9 +182,9 @@ class Data_Crawler:
                 return candidat
 
         def reorder_data(self, mzdata):
-            '''
+            """
             take a bunch of data from mz and make it in the form { title = , ...}
-            '''
+            """
 
             dictionnary = {
                 "title": "",
@@ -234,9 +231,9 @@ class Data_Crawler:
             return dictionnary
 
         def remove_extension(self, filename):
-            '''
+            """
             return the filename without the extension
-            '''
+            """
             namelist = filename.split('.')
             return namelist[0:-1]
 
@@ -244,14 +241,14 @@ class Data_Crawler:
 
     def __init__(self):
         """ Virtually private constructor. """
-        if Data_Crawler.__instance != None:
+        if DataCrawler.__instance is not None:
             raise Exception("This class is a singleton!")
         else:
-            Data_Crawler.__instance = Data_Crawler.__Data_Crawler()
+            DataCrawler.__instance = DataCrawler.__DataCrawler()
 
     @staticmethod
-    def getInstance():
+    def get_instance():
         """ Static access method. """
-        if Data_Crawler.__instance == None:
-            Data_Crawler()
-        return Data_Crawler.__instance
+        if DataCrawler.__instance is None:
+            DataCrawler()
+        return DataCrawler.__instance

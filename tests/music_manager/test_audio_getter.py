@@ -1,6 +1,6 @@
 import unittest
 import sys, os
-from src import moteur
+'''
 
 
 class MoteurTest(unittest.TestCase):
@@ -41,3 +41,4 @@ class MoteurTest(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+'''

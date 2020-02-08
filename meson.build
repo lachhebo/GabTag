@@ -1,5 +1,6 @@
-project('gabtag', version: '1.0.4',
-  meson_version: '>= 0.50.1',
+project('gabtag',
+        version: '1.4.0',
+        meson_version: '>= 0.50.1',
 )
 
 i18n = import('i18n')

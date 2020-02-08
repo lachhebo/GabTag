@@ -1,50 +1,48 @@
 from threading import Thread
-from .data_crawler import Data_Crawler
+from .crawler_data import DataCrawler
 from .model import Model
-import time
 
 
-class Crawler_Dir(Thread):
+class CrawlerDirectory(Thread):
 
     def __init__(self, directory, store):
         Thread.__init__(self)
-        self.data_crawler = Data_Crawler.getInstance()
+        self.data_crawler = DataCrawler.get_instance()
         self.directory = directory
         self.store = store
-        self.model = Model.getInstance()
+        self.model = Model.get_instance()
 
     def run(self):
-        """Code à exécuter pendant l'exécution du thread."""
-        filelist = self.data_crawler.get_filelist(self.directory)
+        file_list = self.data_crawler.get_file_list(self.directory)
 
-        filelist1 = []
-        filelist2 = []
-        filelist3 = []
-        filelist4 = []
+        file_list1 = []
+        file_list2 = []
+        file_list3 = []
+        file_list4 = []
 
         i = 1
-        for filen in filelist:
+        for file in file_list:
             if i == 1:
-                filelist1.append(filen)
+                file_list1.append(file)
                 i = 2
             elif i == 2:
-                filelist2.append(filen)
+                file_list2.append(file)
                 i = 3
             elif i == 3:
-                filelist3.append(filen)
+                file_list3.append(file)
                 i = 4
             elif i == 4:
-                filelist4.append(filen)
+                file_list4.append(file)
                 i = 1
 
         thread_mbz1 = Thread(target=self.data_crawler.get_data_from_online, args=(
-            filelist1, self.directory))  # Writing data
+            file_list1, self.directory))  # Writing data
         thread_mbz2 = Thread(target=self.data_crawler.get_data_from_online, args=(
-            filelist2, self.directory))
+            file_list2, self.directory))
         thread_mbz3 = Thread(target=self.data_crawler.get_data_from_online, args=(
-            filelist3, self.directory))
+            file_list3, self.directory))
         thread_mbz4 = Thread(target=self.data_crawler.get_data_from_online, args=(
-            filelist4, self.directory))
+            file_list4, self.directory))
 
         thread_mbz1.start()
         thread_mbz2.start()

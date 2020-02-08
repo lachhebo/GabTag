@@ -1,297 +1,279 @@
-from os import walk
-#from time import sleep
-from threading import Thread
-from .moteur import Moteur
-from .view import View
-from .data_crawler import Data_Crawler
-from .treeview import TreeView
-
-#from gi.repository import Pango
-
 import os
+
+from os import walk
+from threading import Thread
+from .audio_getter import AudioGetter
+from .tools import is_selection_equal
+from .view import View
+from .crawler_data import DataCrawler
+from .treeview import TreeView
 
 
 class Model:
-
     class __Model:
 
         def __init__(self):
-            '''
-            Initilisaion of the model class
-            '''
-            self.directory = ""
+            """
+            Initialisation of the model class
+            """
+            self.directory = ''
             self.modification = {}
-            self.view = View.getInstance()
+            self.audio_tags = {}
+            self.view = View.get_instance()
             self.selection = None
-            self.moteur = Moteur()
-            self.tagdico = {  # TODO add that in a separate json file.
-                "title": {"value": ""},
-                "album": {"value": ""},
-                "artist": {"value": ""},
-                "genre": {"value": ""},
-                "cover": {"value": ""},
-                "year": {"value": ""},
-                "track": {"value": ""},
-                "length": {"value": ""},
-                "size": {"value": ""},
-                "lyrics": {"value": ""}
+            self.file_name = []
+            self.audio_getter = AudioGetter()
+            self.tags_dictionary = {  # TODO add that in a separate json file.
+                'title': {'value': ''},
+                'album': {'value': ''},
+                'artist': {'value': ''},
+                'genre': {'value': ''},
+                'cover': {'value': ''},
+                'year': {'value': ''},
+                'track': {'value': ''},
+                'length': {'value': ''},
+                'size': {'value': ''},
+                'lyrics': {'value': ''}
             }
 
-            self.data_crawler = Data_Crawler.getInstance()
+            self.data_crawler = DataCrawler.get_instance()
 
         def update_directory(self, directory, store):
-            '''
+            """
             we the user open a new directory, we remove all waiting modifications
-            '''
+            """
             self.directory = directory
             self.update_list(store)
             self.selection = None
             self.modification = {}
 
         def reset_all(self, selection):
-            '''
+            """
             Reset modification and reupdate the view,it supose that something is selectionned (True)
-            '''
+            """
             self.modification = {}
             self.view.erase()
             self.update_view(selection)
 
-            treehandler = TreeView.getInstance()
-            treehandler.remove_bold_font(self.filenames)
+            tree_handler = TreeView.get_instance()
+            tree_handler.remove_bold_font(self.file_name)
 
         def reset_one(self, selection):
-            '''
+            """
             Find the selected rows and delete the related dictionnary
             nested in modifications. Then update view
-            '''
-            model, listiter = selection.get_selected_rows()
+            """
+            model, list_iter = selection.get_selected_rows()
 
-            for i in range(0, len(listiter)):
-                namefile = model[listiter[i]][0]
-                if namefile in self.modification:
-                    self.modification[namefile] = {}
+            for i in range(0, len(list_iter)):
+                name_file = model[list_iter[i]][0]
+                if name_file in self.modification:
+                    self.modification[name_file] = {}
 
-                treehandler = TreeView.getInstance()
-                treehandler.remove_bold_font([namefile])
+                tree_handler = TreeView.get_instance()
+                tree_handler.remove_bold_font([name_file])
 
             self.update_view(selection)
 
         def save_one(self, selection):
-            '''
+            """
             Find the selected rows, set tags for each row and then save modification.
             We don't need to update the view after saving one file.
-            '''
-            model, listiter = selection.get_selected_rows()
-            treehandler = TreeView.getInstance()
+            """
+            model, list_iter = selection.get_selected_rows()
+            tree_handler = TreeView.get_instance()
 
-            for i in range(len(listiter)):  # TODO
-                namefile = model[listiter[i]][0]
-                audio = self.moteur.getFile(namefile, self.directory)
-                if namefile in self.modification:
-                    filemodifs = self.modification[namefile]
+            for i in range(len(list_iter)):  # TODO
+                name_file = model[list_iter[i]][0]
+                audio = self.audio_getter.get_file(name_file, self.directory)
+                if name_file in self.modification:
+                    file_modification = self.modification[name_file]
 
-                    for key in self.tagdico:
-                        if key in filemodifs:
-                            audio.setTag(key, filemodifs[key])
+                    for key in self.tags_dictionary:
+                        if key in file_modification:
+                            audio.set_tag(key, file_modification[key])
 
-                    treehandler.remove_bold_font([namefile])
-                    audio.savemodif()
+                    tree_handler.remove_bold_font([name_file])
+                    audio.save_modifications()
 
                     '''
-                    thread_mbz = threading.Thread(target = self.data_crawler.update_data_crawled, args=([namefile],self.directory)) #Writing data
+                    thread_mbz = threading.Thread(target = self.data_crawler.update_data_crawled, args=([name_file],self.directory)) #Writing data
                     thread_mbz.start()
                     '''
 
-                self.modification[namefile] = {}
+                self.modification[name_file] = {}
 
         def update_list(self, store):
-            '''
+            """
             Erase the list in the tree view and then update it with filename with extension
             handled by GabTag
-            '''
+            """
 
-            #self.store = store
-
+            # self.store = store
+            self.file_name = []
             store.clear()
 
-            filelist = []
-            for (dirpath, dirnames, filenames) in walk(self.directory):
-                filelist.extend(filenames)
+            file_list = []
+            for (directory_path, directory_name, files_name) in walk(self.directory):
+                file_list.extend(files_name)
                 break
 
-            self.filenames = []
-
-            for namefile in filelist:
-                if self.moteur.check_extension(namefile):
-                    self.filenames.append(namefile)
-                    store.append([namefile, "No", 400])
+            for name_file in file_list:
+                if self.audio_getter.check_extension(name_file):
+                    self.file_name.append(name_file)
+                    store.append([name_file, 'No', 400])
 
         def update_view(self, selection):
-            '''
+            """
             Erase the view and the current tag value then get tags for selected row (or rows)
             and show them.
-            '''
+            """
 
             self.selection = selection
-            #print("new value for selection")
 
-            model, listiter = selection.get_selected_rows()
+            model, list_iteration = selection.get_selected_rows()
 
             self.view.erase()
-            self.erasetag()
+            self.erase_tag()
 
-            multiple_line_selected = self.getTags(
-                model, listiter)  # return a bool
+            multiple_line_selected = self.get_tags(
+                model, list_iteration)  # return a bool
 
             data_scrapped = self.data_crawler.get_tags(
-                model, listiter, multiple_line_selected)
+                model, list_iteration, multiple_line_selected)
             lyrics_scrapped = self.data_crawler.get_lyrics(
-                model, listiter, multiple_line_selected)
+                model, list_iteration, multiple_line_selected)
 
-            self.view.show_tags(self.tagdico, multiple_line_selected)
+            self.view.show_tags(self.tags_dictionary, multiple_line_selected)
 
-            if data_scrapped == None:
-                self.view.show_mbz({"title": "", "artist": "", "album": "",
-                                    "track": "", "year": "", "genre": "", "cover": ""})
+            if data_scrapped is None:
+                self.view.show_mbz({'title': '', 'artist': '', 'album': '',
+                                    'track': '', 'year': '', 'genre': '', 'cover': ''})
 
-                lenselec = len(listiter)
-                fileselec = []
+                length_selection = len(list_iteration)
+                file_selection = []
 
-                for i in range(len(listiter)):
-                    namefile = model[listiter[i]][0]
-                    fileselec.append(namefile)
+                for i in range(len(list_iteration)):
+                    name_file = model[list_iteration[i]][0]
+                    file_selection.append(name_file)
 
                 thread_waiting_mbz = Thread(target=self.wait_for_mbz, args=(
-                    model, listiter, lenselec, fileselec, multiple_line_selected))
+                    model, list_iteration, length_selection, file_selection, multiple_line_selected))
                 thread_waiting_mbz.start()
             else:
                 self.view.show_mbz(data_scrapped)
 
-            if lyrics_scrapped == None:
+            if lyrics_scrapped is None:
                 self.view.show_lyrics("File not crawled yet on lyrics.wikia")
                 '''
-                lenselec = len(listiter)
-                fileselec = []
+                length_selection = len(list_iteration)
+                file_selection = []
 
-                for i in range(len(listiter)):
-                    namefile = model[listiter[i]][0]
-                    fileselec.append(namefile)
+                for i in range(len(list_iteration)):
+                    name_file = model[list_iteration[i]][0]
+                    file_selection.append(name_file)
 
-                #thread_waiting_lyr = Thread(target = self.wait_for_lyrics, args=(model,listiter,lenselec,fileselec,multiple_line_selected)) #Writing data
-                #self.wait_for_lyrics(model,listiter,multiple_line_selected)
+                #thread_waiting_lyr = Thread(target = self.wait_for_lyrics, args=(model,list_iteration,length_selection,file_selection,multiple_line_selected)) #Writing data
+                #self.wait_for_lyrics(model,list_iteration,multiple_line_selected)
                 #thread_waiting_lyr.start()
                 '''
             else:
                 self.view.show_lyrics(lyrics_scrapped)
 
-        def wait_for_mbz(self, model, listiter, lenselec, fileselec, multiple_line_selected):
-            #print("Entering thread waiting for mbz")
+        def wait_for_mbz(self, model, list_iteration, len_selection, file_selection, multiple_line_selected):
+            # print("Entering thread waiting for mbz")
             is_waiting_mbz = 1
 
-            while self.is_selectionequal(self.selection, lenselec, fileselec) and is_waiting_mbz == 1:
+            while is_selection_equal(self.selection, len_selection, file_selection) and is_waiting_mbz == 1:
                 data_scrapped = self.data_crawler.get_tags(
-                    model, listiter, multiple_line_selected)
-                if data_scrapped != None and self.is_selectionequal(self.selection, lenselec, fileselec):
-                    #print("mbz found :", data_scrapped["title"])
+                    model, list_iteration, multiple_line_selected)
+                if data_scrapped is not None and is_selection_equal(self.selection, len_selection, file_selection):
+                    # print("mbz found :", data_scrapped["title"])
                     is_waiting_mbz = 0
                     self.view.show_mbz(data_scrapped)
 
-        def wait_for_lyrics(self, model, listiter, lenselec, fileselec, multiple_line_selected):
+        def wait_for_lyrics(self, model, list_iteration, len_selection, file_selection, multiple_line_selected):
             is_waiting_lyrics = 1
 
-            while self.is_selectionequal(self.selection, lenselec, fileselec) and is_waiting_lyrics == 1:
+            while is_selection_equal(self.selection, len_selection, file_selection) and is_waiting_lyrics == 1:
                 lyrics_scrapped = self.data_crawler.get_lyrics(
-                    model, listiter, multiple_line_selected)
-                if lyrics_scrapped != None and self.is_selectionequal(self.selection, lenselec, fileselec):
+                    model, list_iteration, multiple_line_selected)
+                if lyrics_scrapped != None and is_selection_equal(self.selection, len_selection, file_selection):
                     is_waiting_lyrics = 0
                     self.view.show_lyrics(lyrics_scrapped)
 
-        def is_selectionequal(self, selec, lenselec2, filelistselec2):
-            model, listiter = selec.get_selected_rows()
-            #print("la taille est :", len(listiter) )
-            #print("la taille autorisée :",self.lenselection )
-
-            if len(listiter) == lenselec2:
-                for i in range(len(listiter)):
-                    namefile = model[listiter[i]][0]
-                    if namefile not in filelistselec2:
-                        #print("why element ? ",namefile)
-                        return False
-            else:
-                #print("why size ?")
-                return False
-
-            return True
-
         def rename_files(self):
 
-            filelist = []
-            for (_, _, filenames) in walk(self.directory):
-                filelist.extend(filenames)
+            file_list = []
+            for (_, _, file_names) in walk(self.directory):
+                file_list.extend(file_names)
                 break
 
-            for namefile in filelist:
-                if self.moteur.check_extension(namefile):
-                    audio = self.moteur.getFile(namefile, self.directory)
+            for name_file in file_list:
+                if self.audio_getter.check_extension(name_file):
+                    audio = self.audio_getter.get_file(name_file, self.directory)
                     new_name = {}
-                    for key in self.tagdico:
-                        new_name[key] = audio.getTag(key)
-                    os.rename(os.path.join(self.directory, namefile), os.path.join(
-                        self.directory, new_name["title"]+"-"+new_name["album"]+"-"+new_name["artist"]+audio.getextensiontype()))
+                    for key in self.tags_dictionary:
+                        new_name[key] = audio.get_tag(key)
+                    os.rename(os.path.join(self.directory, name_file), os.path.join(
+                        self.directory,
+                        new_name['title'] + '-' + new_name['album'] + '-' + new_name['artist'] + audio.get_extension()))
                     # TODO remove this useless function and use a correct one)
 
         def update_modifications(self, selection, tag_changed, new_value):
-            '''
-            If the namefile is already a key in the directory, add or update the modified tags
+            """
+            If the file name is already a key in the directory, add or update the modified tags
             else create a new key in modification
-            '''
-            model, listiter = selection.get_selected_rows()
+            """
+            model, list_iter = selection.get_selected_rows()
 
-            namefile = model[listiter][0]
+            name_file = model[list_iter][0]
 
-            if len(listiter) == 1:  # TODO try to merge the case ==1 and >1
-                if namefile in self.modification:
-                    alpha = self.modification[namefile]
+            if len(list_iter) == 1:  # TODO try to merge the case ==1 and >1
+                if name_file in self.modification:
+                    alpha = self.modification[name_file]
                     alpha[tag_changed] = new_value
                 else:
-                    self.modification[namefile] = {}
-                    alpha = self.modification[namefile]
+                    self.modification[name_file] = {}
+                    alpha = self.modification[name_file]
                     alpha[tag_changed] = new_value
 
-                treehandler = TreeView.getInstance()
-                if self.file_modified(namefile):
-                    treehandler.add_bold_font([namefile])
+                tree_handler = TreeView.get_instance()
+                if self.file_modified(name_file):
+                    tree_handler.add_bold_font([name_file])
                 else:
-                    treehandler.remove_bold_font([namefile])
+                    tree_handler.remove_bold_font([name_file])
 
-            elif len(listiter) > 1:
-                for i in range(0, len(listiter)):
-                    if model[listiter[i]][0] in self.modification:
-                        alpha = self.modification[model[listiter[i]][0]]
+            elif len(list_iter) > 1:
+                for i in range(0, len(list_iter)):
+                    if model[list_iter[i]][0] in self.modification:
+                        alpha = self.modification[model[list_iter[i]][0]]
                         alpha[tag_changed] = new_value
 
                     else:
-                        self.modification[model[listiter[i]][0]] = {}
-                        alpha = self.modification[model[listiter[i]][0]]
+                        self.modification[model[list_iter[i]][0]] = {}
+                        alpha = self.modification[model[list_iter[i]][0]]
                         alpha[tag_changed] = new_value
-                    treehandler = TreeView.getInstance()
-                    if self.file_modified(namefile):
-                        treehandler.add_bold_font([model[listiter[i]][0]])
+                    tree_handler = TreeView.get_instance()
+                    if self.file_modified(name_file):
+                        tree_handler.add_bold_font([model[list_iter[i]][0]])
                     else:
-                        treehandler.remove_bold_font([model[listiter[i]][0]])
+                        tree_handler.remove_bold_font([model[list_iter[i]][0]])
 
-        def file_modified(self, namefile):
+        def file_modified(self, name_file):
 
-            audio = self.moteur.getFile(namefile, self.directory)
+            audio = self.audio_getter.get_file(name_file, self.directory)
 
             audio_tag = {}
-            for key in self.tagdico:
-                audio_tag[key] = audio.getTag(key)
+            tag_modified = {}
+            for key in self.tags_dictionary:
+                audio_tag[key] = audio.get_tag(key)
 
-            if namefile in self.modification:
-                tag_modified = self.modification[namefile]
+            if name_file in self.modification:
+                tag_modified = self.modification[name_file]
             else:
-                print("ERROR Debug !")
+                #print('ERROR Debug !')  # TODO: use logger
+                pass
 
             for key_tag in tag_modified:
                 if tag_modified[key_tag] != audio_tag[key_tag]:
@@ -301,29 +283,29 @@ class Model:
 
         def set_data_lyrics(self, selection):
 
-            model, listiter = selection.get_selected_rows()
+            model, list_iterator = selection.get_selected_rows()
 
-            if len(listiter) > 1:
+            if len(list_iterator) > 1:
                 multiple_line_selected = 1
             else:
                 multiple_line_selected = 0
 
-            if len(listiter) == 1:
+            if len(list_iterator) == 1:
                 lyrics = self.data_crawler.get_lyrics(
-                    model, listiter, multiple_line_selected)
-                self.update_modifications(selection, "lyrics", lyrics)
+                    model, list_iterator, multiple_line_selected)
+                self.update_modifications(selection, 'lyrics', lyrics)
 
         def set_data_crawled(self, selection):
 
-            model, listiter = selection.get_selected_rows()
+            model, list_iterator = selection.get_selected_rows()
 
-            if len(listiter) > 1:
+            if len(list_iterator) > 1:
                 multiple_line_selected = 1
             else:
                 multiple_line_selected = 0
 
             data_scrapped = self.data_crawler.get_tags(
-                model, listiter, multiple_line_selected)
+                model, list_iterator, multiple_line_selected)
 
             new_data_scrapped = {}
 
@@ -335,91 +317,91 @@ class Model:
                 self.update_modifications(
                     selection, key, new_data_scrapped[key])
 
-        def update_modification_namefile(self, namefile, key, new_value):
-            self.modification[namefile][key] = new_value
+        def update_modification_name_file(self, name_file, key, new_value):
+            self.modification[name_file][key] = new_value
 
-            treehandler = TreeView.getInstance()
-            if self.file_modified(namefile):
-                treehandler.add_bold_font([namefile])
+            tree_handler = TreeView.get_instance()
+            if self.file_modified(name_file):
+                tree_handler.add_bold_font([name_file])
             else:
-                treehandler.remove_bold_font([namefile])
+                tree_handler.remove_bold_font([name_file])
 
         def set_online_tags(self):
-            tag_finded = self.data_crawler.tag_finder
+            tag_founds = self.data_crawler.tag_finder
 
-            for namefile in tag_finded:
-                if namefile in self.modification:
-                    for key in tag_finded[namefile]:
-                        self.update_modification_namefile(
-                            namefile, key, tag_finded[namefile][key])
+            for name_file in tag_founds:
+                if name_file in self.modification:
+                    for key in tag_founds[name_file]:
+                        self.update_modification_name_file(
+                            name_file, key, tag_founds[name_file][key])
 
                 else:
-                    self.modification[namefile] = {}
-                    for key in tag_finded[namefile]:
-                        self.update_modification_namefile(
-                            namefile, key, tag_finded[namefile][key])
+                    self.modification[name_file] = {}
+                    for key in tag_founds[name_file]:
+                        self.update_modification_name_file(
+                            name_file, key, tag_founds[name_file][key])
 
         def set_online_lyrics(self):  # TODO
             pass
 
-        def erasetag(self):
-            '''
+        def erase_tag(self):
+            """
             erase current tags value
-            '''
-            for key in self.tagdico:
-                self.tagdico[key]["value"] = ""
+            """
+            for key in self.tags_dictionary:
+                self.tags_dictionary[key]['value'] = ''
 
         def save_modifications(self, selection):
-            '''
+            """
             For each key file in modification, we get the tags inside the nested dictionnary and
             integer them on the audio tag file. Eventually we save the audio tag file.
-            '''
-            treehandler = TreeView.getInstance()
+            """
+            tree_handler = TreeView.get_instance()
 
             for filename in self.modification:
-                audio = self.moteur.getFile(filename, self.directory)
-                filemodifs = self.modification[filename]
+                audio = self.audio_getter.get_file(filename, self.directory)
+                file_modifications = self.modification[filename]
 
-                for key in self.tagdico:
-                    if key in filemodifs:
-                        audio.setTag(key, filemodifs[key])
+                for key in self.tags_dictionary:
+                    if key in file_modifications:
+                        audio.set_tag(key, file_modifications[key])
 
-                treehandler.remove_bold_font([filename])
+                tree_handler.remove_bold_font([filename])
 
-                audio.savemodif()
+                audio.save_modifications()
 
             self.modification = {}
 
-        def getTags(self, model, listiter):
-            '''
+        def get_tags(self, model, list_iterator):
+            """
             First we get the selected rows, we get the tag value of the first row, if there are several
             rows, we check the tag value inside them are the same as in the first row. If yes, those tags
             value are shown.
-            '''
+            """
 
-            namefile = model[listiter][0]
-            audio = self.moteur.getFile(namefile, self.directory)
+            name_file = model[list_iterator][0]
+            audio = self.audio_getter.get_file(name_file, self.directory)
 
-            for key in self.tagdico:
-                self.tagdico[key]["value"] = audio.getTag(key)
+            for key in self.tags_dictionary:
+                self.tags_dictionary[key]["value"] = audio.get_tag(key)
 
-            self.audio_tag = self.tagdico.copy()
-            self.check_dictionnary(namefile)   # Look in Mofification
+            self.audio_tags = self.tags_dictionary.copy()
+            self.check_dictionary(name_file)  # Look in Mofification
 
-            if len(listiter) > 1:
+            if len(list_iterator) > 1:
 
-                contkey_dico = self.tagdico.copy()
+                contkey_dico = self.tags_dictionary.copy()
 
-                for key in self.tagdico:
+                for key in self.tags_dictionary:
                     contkey_dico[key] = 1
 
-                for i in range(1, len(listiter)):
-                    namefile = model[listiter[i]][0]
-                    audio = self.moteur.getFile(namefile, self.directory)
+                for i in range(1, len(list_iterator)):
+                    name_file = model[list_iterator[i]][0]
+                    audio = self.audio_getter.get_file(name_file, self.directory)
                     for key in contkey_dico:
                         if contkey_dico[key] == 1:
                             contkey_dico[key] = self.check_tag_equal_key_value(audio.check_tag_existence(
-                                key), audio.getTag(key), namefile, key, self.tagdico[key]["value"])
+                                key), audio.get_tag(key), name_file, key, self.tags_dictionary[key]["value"])
                     '''
                     for key in contkey :
                         if self.audio_tag[key]["value"] != audio.getTag(key):
@@ -427,41 +409,41 @@ class Model:
                     '''
                 for key in contkey_dico:
                     if contkey_dico[key] == 0:
-                        self.tagdico[key]["value"] = ""
+                        self.tags_dictionary[key]["value"] = ""
 
                 return 1  # we return 1 if multiple rows
             else:
                 return 0  # O otherwise
 
-        def check_dictionnary(self, namefile):
-            '''
+        def check_dictionary(self, name_file):
+            """
             Check in the filename modification dictionnary the existence of tags and
             update the current list of tags with found values.
-            '''
+            """
 
             dict_tag_changed = {}
-            if namefile in self.modification:
-                dict_tag_changed = self.modification[namefile]
+            if name_file in self.modification:
+                dict_tag_changed = self.modification[name_file]
 
-            for key in self.tagdico:
+            for key in self.tags_dictionary:
                 if key in dict_tag_changed:
-                    self.tagdico[key]["value"] = dict_tag_changed[key]
+                    self.tags_dictionary[key]["value"] = dict_tag_changed[key]
 
-        def check_tag_equal_key_value(self, audio_key_exist, audio_tag_value, namefile, key, key_value):
-            '''
-            We check that the tag 'key' is egal to key_value for namefile else we return 0.
+        def check_tag_equal_key_value(self, audio_key_exist, audio_tag_value, name_file, key, key_value):
+            """
+            We check that the tag 'key' is egal to key_value for name_file else we return 0.
             We first look in modification then in the tag audio file.
-            '''
+            """
 
-            if namefile in self.modification:
-                dict_tag_changed = self.modification[namefile]
+            if name_file in self.modification:
+                dict_tag_changed = self.modification[name_file]
                 if key in dict_tag_changed:
                     if key_value != dict_tag_changed[key]:
                         return 0
                     else:
                         return 1
 
-            if not(audio_key_exist) or key_value != audio_tag_value:
+            if not audio_key_exist or key_value != audio_tag_value:
                 return 0
             else:
                 return 1
@@ -470,14 +452,14 @@ class Model:
 
     def __init__(self):
         """ Virtually private constructor. """
-        if Model.__instance != None:
+        if Model.__instance is not None:
             raise Exception("This class is a singleton!")
         else:
             Model.__instance = Model.__Model()
 
     @staticmethod
-    def getInstance():
+    def get_instance():
         """ Static access method. """
-        if Model.__instance == None:
+        if Model.__instance is None:
             Model()
         return Model.__instance

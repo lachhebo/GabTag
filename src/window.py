@@ -16,9 +16,9 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from .treeview import TreeView
-from .data_crawler import Data_Crawler
-from .Crawler_modif import Crawler_Modif
-from .Crawler_dir import Crawler_Dir
+from .crawler_data import DataCrawler
+from .crawler_modification import CrawlerModification
+from .crawler_directory import CrawlerDirectory
 from .view import View
 from .model import Model
 from .gi_composites import GtkTemplate
@@ -86,11 +86,11 @@ class GabtagWindow(Gtk.ApplicationWindow):
             self.id_lyrics
         )
 
-        view = View.getInstance()
+        view = View.get_instance()
 
         self.treeview = TreeView(self.liststore1, self.tree_view_id)
 
-        self.data_crawler = Data_Crawler.getInstance()
+        self.data_crawler = DataCrawler.get_instance()
 
         self.realselection = 0
         self.selectionned = None
@@ -99,10 +99,9 @@ class GabtagWindow(Gtk.ApplicationWindow):
     @GtkTemplate.Callback
     def but_saved_cliqued(self, widget):
         if self.opened_directory == True:
-            model = Model.getInstance()
-            thread = Crawler_Modif(
+            model = Model.get_instance()
+            thread = CrawlerModification(
                 model.modification.copy(), self.liststore1, self.selectionned, 0)
-            # self.treeview.remove_crawled(model.modification.keys)
             model.save_modifications(self.selectionned)
             thread.start()
 
@@ -110,8 +109,8 @@ class GabtagWindow(Gtk.ApplicationWindow):
     def clicked_save_one(self, widget):
         if self.realselection == 1:
             self.realselection = 0
-            model = Model.getInstance()
-            thread = Crawler_Modif(
+            model = Model.get_instance()
+            thread = CrawlerModification(
                 model.modification.copy(), self.liststore1, self.selectionned, 1)
             model.save_one(self.selectionned)
             thread.start()
@@ -121,7 +120,7 @@ class GabtagWindow(Gtk.ApplicationWindow):
     def reset_one_clicked(self, widget):
         if self.realselection == 1:
             self.realselection = 0
-            model = Model.getInstance()
+            model = Model.get_instance()
             model.reset_one(self.selectionned)
             self.realselection = 1
 
@@ -129,7 +128,7 @@ class GabtagWindow(Gtk.ApplicationWindow):
     def reset_all_clicked(self, widget):
         if self.realselection == 1:
             self.realselection = 0
-            model = Model.getInstance()
+            model = Model.get_instance()
             model.reset_all(self.selectionned)
             self.realselection = 1
 
@@ -149,13 +148,13 @@ class GabtagWindow(Gtk.ApplicationWindow):
 
         response = dialog.run()
 
-        model = Model.getInstance()
+        model = Model.get_instance()
         if response == Gtk.ResponseType.OK:
             self.opened_directory = True
             model.view.erase()
             self.data_crawler.update_directory(dialog.get_filename())
             model.update_directory(dialog.get_filename(), self.liststore1)
-            thread = Crawler_Dir(model.directory, self.liststore1)
+            thread = CrawlerDirectory(model.directory, self.liststore1)
             thread.start()
 
         dialog.destroy()
@@ -172,7 +171,7 @@ class GabtagWindow(Gtk.ApplicationWindow):
     def title_changed(self, widget):
         if self.realselection == 1:
             self.realselection = 0
-            model = Model.getInstance()
+            model = Model.get_instance()
             model.update_modifications(
                 self.selectionned, "title", widget.get_text())
             self.realselection = 1
@@ -181,7 +180,7 @@ class GabtagWindow(Gtk.ApplicationWindow):
     def artist_changed(self, widget):
         if self.realselection == 1:
             self.realselection = 0
-            model = Model.getInstance()
+            model = Model.get_instance()
             model.update_modifications(
                 self.selectionned, "artist", widget.get_text())
             self.realselection = 1
@@ -190,7 +189,7 @@ class GabtagWindow(Gtk.ApplicationWindow):
     def album_changed(self, widget):
         if self.realselection == 1:
             self.realselection = 0
-            model = Model.getInstance()
+            model = Model.get_instance()
             model.update_modifications(
                 self.selectionned, "album", widget.get_text())
             self.realselection = 1
@@ -199,7 +198,7 @@ class GabtagWindow(Gtk.ApplicationWindow):
     def type_changed(self, widget):
         if self.realselection == 1:
             self.realselection = 0
-            model = Model.getInstance()
+            model = Model.get_instance()
             model.update_modifications(
                 self.selectionned, "genre", widget.get_text())
             self.realselection = 1
@@ -208,7 +207,7 @@ class GabtagWindow(Gtk.ApplicationWindow):
     def track_changed(self, widget):
         if self.realselection == 1:
             self.realselection = 0
-            model = Model.getInstance()
+            model = Model.get_instance()
             model.update_modifications(
                 self.selectionned, "track", widget.get_text())
             self.realselection = 1
@@ -217,7 +216,7 @@ class GabtagWindow(Gtk.ApplicationWindow):
     def year_changed(self, widget):
         if self.realselection == 1:
             self.realselection = 0
-            model = Model.getInstance()
+            model = Model.get_instance()
             model.update_modifications(
                 self.selectionned, "year", widget.get_text())
             self.realselection = 1
@@ -237,8 +236,8 @@ class GabtagWindow(Gtk.ApplicationWindow):
     def load_cover_clicked(self, widget):
         if self.realselection == 1:
             self.realselection = 0
-            model = Model.getInstance()
-            view = View.getInstance()
+            model = Model.get_instance()
+            view = View.get_instance()
 
             dialog = Gtk.FileChooserDialog("Please choose a file", self,
                                            Gtk.FileChooserAction.OPEN,
@@ -264,7 +263,7 @@ class GabtagWindow(Gtk.ApplicationWindow):
             self.realselection = 0
             self.selectionned = selection
 
-            model = Model.getInstance()
+            model = Model.get_instance()
             model.update_view(selection)
 
             self.realselection = 1
@@ -274,7 +273,7 @@ class GabtagWindow(Gtk.ApplicationWindow):
         if self.realselection == 1:
             self.realselection = 0
 
-            model = Model.getInstance()
+            model = Model.get_instance()
             model.set_data_crawled(self.selectionned)
             model.update_view(self.selectionned)
 
@@ -284,7 +283,7 @@ class GabtagWindow(Gtk.ApplicationWindow):
     def on_rename_files(self, widget):
         if self.opened_directory == True:
             self.realselection = 0
-            model = Model.getInstance()
+            model = Model.get_instance()
             model.rename_files()
             model.update_list(self.liststore1)
             self.realselection = 1
@@ -294,7 +293,7 @@ class GabtagWindow(Gtk.ApplicationWindow):
         if self.opened_directory == True:
             if self.realselection == 1:
                 self.realselection = 0
-                model = Model.getInstance()
+                model = Model.get_instance()
 
                 model.set_online_tags()
 
@@ -309,7 +308,8 @@ class GabtagWindow(Gtk.ApplicationWindow):
             if self.realselection == 1:
                 self.realselection = 0
 
-                model = Model.getInstance()
+                model = Model.get_instance()
                 model.set_data_lyrics(self.selectionned)
 
                 self.realselection = 1
+
