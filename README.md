@@ -6,7 +6,7 @@
 
 GabTag is a Linux audio tagging tool written in GTK 3, which makes it very suitable for GTK based desktop users.
 
-It allows users to select several files and modify their tags. It is also possible to let GabTag automatically find tags and lyrics for an audio file using MusicBrainz and lyrics.wikia.com database.
+It allows users to select several files and modify their tags. It is also possible to let GabTag automatically find tags and lyrics for an audio file using MusicBrainz and lyrics.wikia database.
 
 
 <a href='https://flathub.org/apps/details/com.github.lachhebo.Gabtag'><img width='240' alt='Download on Flathub' src='https://flathub.org/assets/badges/flathub-badge-en.png'/></a>
@@ -32,6 +32,10 @@ It allows users to select several files and modify their tags. It is also possib
 - [x] Lyrics (from online data)
 - [ ] Multi-folder modification
 - [ ] Acoustic ID integration 
+
+The board is accessible here : 
+
+https://trello.com/b/rlSeLAIB/gabtag-board
 
 ## Support/Donation :
 
