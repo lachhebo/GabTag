@@ -15,7 +15,7 @@ class Crawler_Dir(Thread):
 
     def run(self):
         """Code à exécuter pendant l'exécution du thread."""
-        filelist = self.model.filenames
+        filelist = self.data_crawler.get_filelist(self.directory)
 
         filelist1 = []
         filelist2 = []
@@ -23,18 +23,18 @@ class Crawler_Dir(Thread):
         filelist4 = []
 
         i = 1
-        for filetuple in filelist:
+        for filen in filelist:
             if i == 1:
-                filelist1.append(filetuple[0])
+                filelist1.append(filen)
                 i = 2
             elif i == 2:
-                filelist2.append(filetuple[0])
+                filelist2.append(filen)
                 i = 3
             elif i == 3:
-                filelist3.append(filetuple[0])
+                filelist3.append(filen)
                 i = 4
             elif i == 4:
-                filelist4.append(filetuple[0])
+                filelist4.append(filen)
                 i = 1
 
         thread_mbz1 = Thread(target=self.data_crawler.get_data_from_online, args=(

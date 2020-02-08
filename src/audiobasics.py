@@ -18,7 +18,3 @@ class AudioBasics():
     @abc.abstractmethod
     def check_tag_existence(self, key):
         pass
-
-    @abc.abstractmethod
-    def getFileName(self):
-        pass

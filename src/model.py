@@ -59,20 +59,6 @@ class Model:
             treehandler = TreeView.getInstance()
             treehandler.remove_bold_font(self.filenames)
 
-        def title2filename(self, title):
-            for registeredfile in  self.filenames :
-                if registeredfile[0] == title :
-                    namefile = registeredfile[1] #TODO : handle case were 2 files have the same title
-
-            return namefile
-
-        def filename2title(self, filename):
-            for registeredfile in self.filenames :
-                if registeredfile[1] == filename :
-                    title = registeredfile[0] #TODO : handle case were 2 files have the same title
-
-            return title
-
         def reset_one(self, selection):
             '''
             Find the selected rows and delete the related dictionnary
@@ -81,12 +67,12 @@ class Model:
             model, listiter = selection.get_selected_rows()
 
             for i in range(0, len(listiter)):
-                namefile = self.title2filename(model[listiter[i]][0])
+                namefile = model[listiter[i]][0]
                 if namefile in self.modification:
                     self.modification[namefile] = {}
 
                 treehandler = TreeView.getInstance()
-                treehandler.remove_bold_font([model[listiter[i]][0]])
+                treehandler.remove_bold_font([namefile])
 
             self.update_view(selection)
 
@@ -95,12 +81,11 @@ class Model:
             Find the selected rows, set tags for each row and then save modification.
             We don't need to update the view after saving one file.
             '''
-
             model, listiter = selection.get_selected_rows()
             treehandler = TreeView.getInstance()
 
             for i in range(len(listiter)):  # TODO
-                namefile = self.title2filename(model[listiter[i]][0])
+                namefile = model[listiter[i]][0]
                 audio = self.moteur.getFile(namefile, self.directory)
                 if namefile in self.modification:
                     filemodifs = self.modification[namefile]
@@ -109,7 +94,7 @@ class Model:
                         if key in filemodifs:
                             audio.setTag(key, filemodifs[key])
 
-                    treehandler.remove_bold_font([model[listiter[i]][0]])
+                    treehandler.remove_bold_font([namefile])
                     audio.savemodif()
 
                     '''
@@ -125,6 +110,8 @@ class Model:
             handled by GabTag
             '''
 
+            #self.store = store
+
             store.clear()
 
             filelist = []
@@ -136,10 +123,8 @@ class Model:
 
             for namefile in filelist:
                 if self.moteur.check_extension(namefile):
-                    audiofile_name = self.moteur.getFile(namefile, self.directory).getFileName()
-
-                    self.filenames.append((audiofile_name, namefile)) # we register both the title and the file associated to it.
-                    store.append([audiofile_name, "No", 400])
+                    self.filenames.append(namefile)
+                    store.append([namefile, "No", 400])
 
         def update_view(self, selection):
             '''
@@ -148,6 +133,7 @@ class Model:
             '''
 
             self.selection = selection
+            #print("new value for selection")
 
             model, listiter = selection.get_selected_rows()
 
@@ -158,9 +144,9 @@ class Model:
                 model, listiter)  # return a bool
 
             data_scrapped = self.data_crawler.get_tags(
-                model, listiter, multiple_line_selected, self.filenames)
+                model, listiter, multiple_line_selected)
             lyrics_scrapped = self.data_crawler.get_lyrics(
-                model, listiter, multiple_line_selected, self.filenames)
+                model, listiter, multiple_line_selected)
 
             self.view.show_tags(self.tagdico, multiple_line_selected)
 
@@ -171,9 +157,8 @@ class Model:
                 lenselec = len(listiter)
                 fileselec = []
 
-
                 for i in range(len(listiter)):
-                    namefile = self.title2filename(model[listiter][0])
+                    namefile = model[listiter[i]][0]
                     fileselec.append(namefile)
 
                 thread_waiting_mbz = Thread(target=self.wait_for_mbz, args=(
@@ -184,16 +169,30 @@ class Model:
 
             if lyrics_scrapped == None:
                 self.view.show_lyrics("File not crawled yet on lyrics.wikia")
+                '''
+                lenselec = len(listiter)
+                fileselec = []
+
+                for i in range(len(listiter)):
+                    namefile = model[listiter[i]][0]
+                    fileselec.append(namefile)
+
+                #thread_waiting_lyr = Thread(target = self.wait_for_lyrics, args=(model,listiter,lenselec,fileselec,multiple_line_selected)) #Writing data
+                #self.wait_for_lyrics(model,listiter,multiple_line_selected)
+                #thread_waiting_lyr.start()
+                '''
             else:
                 self.view.show_lyrics(lyrics_scrapped)
 
         def wait_for_mbz(self, model, listiter, lenselec, fileselec, multiple_line_selected):
+            #print("Entering thread waiting for mbz")
             is_waiting_mbz = 1
 
             while self.is_selectionequal(self.selection, lenselec, fileselec) and is_waiting_mbz == 1:
                 data_scrapped = self.data_crawler.get_tags(
-                    model, listiter, multiple_line_selected, self.filenames)
+                    model, listiter, multiple_line_selected)
                 if data_scrapped != None and self.is_selectionequal(self.selection, lenselec, fileselec):
+                    #print("mbz found :", data_scrapped["title"])
                     is_waiting_mbz = 0
                     self.view.show_mbz(data_scrapped)
 
@@ -202,20 +201,24 @@ class Model:
 
             while self.is_selectionequal(self.selection, lenselec, fileselec) and is_waiting_lyrics == 1:
                 lyrics_scrapped = self.data_crawler.get_lyrics(
-                    model, listiter, multiple_line_selected, self.filenames)
+                    model, listiter, multiple_line_selected)
                 if lyrics_scrapped != None and self.is_selectionequal(self.selection, lenselec, fileselec):
                     is_waiting_lyrics = 0
                     self.view.show_lyrics(lyrics_scrapped)
 
         def is_selectionequal(self, selec, lenselec2, filelistselec2):
             model, listiter = selec.get_selected_rows()
+            #print("la taille est :", len(listiter) )
+            #print("la taille autorisée :",self.lenselection )
 
             if len(listiter) == lenselec2:
                 for i in range(len(listiter)):
-                    namefile = self.title2filename(model[listiter[i]][0])
+                    namefile = model[listiter[i]][0]
                     if namefile not in filelistselec2:
+                        #print("why element ? ",namefile)
                         return False
             else:
+                #print("why size ?")
                 return False
 
             return True
@@ -244,7 +247,7 @@ class Model:
             '''
             model, listiter = selection.get_selected_rows()
 
-            namefile = self.title2filename(model[listiter][0])
+            namefile = model[listiter][0]
 
             if len(listiter) == 1:  # TODO try to merge the case ==1 and >1
                 if namefile in self.modification:
@@ -257,19 +260,19 @@ class Model:
 
                 treehandler = TreeView.getInstance()
                 if self.file_modified(namefile):
-                    treehandler.add_bold_font([model[listiter][0]])
+                    treehandler.add_bold_font([namefile])
                 else:
-                    treehandler.remove_bold_font([model[listiter][0]])
+                    treehandler.remove_bold_font([namefile])
 
             elif len(listiter) > 1:
                 for i in range(0, len(listiter)):
-                    if self.title2filename(model[listiter[i]][0]) in self.modification:
-                        alpha = self.modification[self.title2filename(model[listiter[i]][0])]
+                    if model[listiter[i]][0] in self.modification:
+                        alpha = self.modification[model[listiter[i]][0]]
                         alpha[tag_changed] = new_value
 
                     else:
-                        self.modification[self.title2filename(model[listiter[i]][0])] = {}
-                        alpha = self.modification[self.title2filename(model[listiter[i]][0])]
+                        self.modification[model[listiter[i]][0]] = {}
+                        alpha = self.modification[model[listiter[i]][0]]
                         alpha[tag_changed] = new_value
                     treehandler = TreeView.getInstance()
                     if self.file_modified(namefile):
@@ -307,7 +310,7 @@ class Model:
 
             if len(listiter) == 1:
                 lyrics = self.data_crawler.get_lyrics(
-                    model, listiter, multiple_line_selected, self.filenames)
+                    model, listiter, multiple_line_selected)
                 self.update_modifications(selection, "lyrics", lyrics)
 
         def set_data_crawled(self, selection):
@@ -320,7 +323,7 @@ class Model:
                 multiple_line_selected = 0
 
             data_scrapped = self.data_crawler.get_tags(
-                model, listiter, multiple_line_selected, self.filenames)
+                model, listiter, multiple_line_selected)
 
             new_data_scrapped = {}
 
@@ -333,14 +336,13 @@ class Model:
                     selection, key, new_data_scrapped[key])
 
         def update_modification_namefile(self, namefile, key, new_value):
-
             self.modification[namefile][key] = new_value
 
             treehandler = TreeView.getInstance()
             if self.file_modified(namefile):
-                treehandler.add_bold_font([self.filename2title(namefile)])
+                treehandler.add_bold_font([namefile])
             else:
-                treehandler.remove_bold_font([self.filename2title(namefile)])
+                treehandler.remove_bold_font([namefile])
 
         def set_online_tags(self):
             tag_finded = self.data_crawler.tag_finder
@@ -382,7 +384,7 @@ class Model:
                     if key in filemodifs:
                         audio.setTag(key, filemodifs[key])
 
-                treehandler.remove_bold_font([self.filename2title(filename)])
+                treehandler.remove_bold_font([filename])
 
                 audio.savemodif()
 
@@ -395,10 +397,8 @@ class Model:
             value are shown.
             '''
 
-            namefile = self.title2filename(model[listiter][0])
-            print(namefile)
+            namefile = model[listiter][0]
             audio = self.moteur.getFile(namefile, self.directory)
-
 
             for key in self.tagdico:
                 self.tagdico[key]["value"] = audio.getTag(key)
@@ -414,7 +414,7 @@ class Model:
                     contkey_dico[key] = 1
 
                 for i in range(1, len(listiter)):
-                    namefile = self.title2filename(model[listiter[i]][0])
+                    namefile = model[listiter[i]][0]
                     audio = self.moteur.getFile(namefile, self.directory)
                     for key in contkey_dico:
                         if contkey_dico[key] == 1:

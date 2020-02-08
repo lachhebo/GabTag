@@ -32,7 +32,7 @@ class Moteur:
         '''
 
         if self.get_extension(filename) == "mp3":
-            return MP3Handler(path.join(directory, filename), filename)
+            return MP3Handler(path.join(directory, filename))
         else:
             return None
 

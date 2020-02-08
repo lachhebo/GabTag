@@ -12,11 +12,10 @@ class MP3Handler(AudioBasics):
     to handle a new file type, implement a similar class who is the children of AudioBasics
     '''
 
-    def __init__(self, path_file, filename):
+    def __init__(self, path_file):
         '''
         We initialise the path of the file and the tagging tool we use
         '''
-        self.filename = filename
         self.path_file = path_file
         self.audio = MP3(path_file)
         self.id3 = self.audio.tags
@@ -94,8 +93,8 @@ class MP3Handler(AudioBasics):
         return namelist[-1]
 
     def check_tag_existence(self, key):
-        ''' Check if the exist in the filename'''
-        if key == "title":
+        ''' Every thing is in the title'''
+        if key != "title":
             tag_title = self.id3.getall('TIT2')
             return len(tag_title) > 0
         elif key == "cover":
@@ -186,14 +185,3 @@ class MP3Handler(AudioBasics):
         Save definitvely the modification we have made.
         '''
         self.id3.save(self.path_file)
-
-
-    def getFileName(self):
-
-        if self.check_tag_existence("title") :
-            return self.getTag("title")
-        else :
-            return self.filename
-
-
-        

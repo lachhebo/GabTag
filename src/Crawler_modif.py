@@ -8,7 +8,6 @@ class Crawler_Modif(Thread):
 
     def __init__(self, modifs, store, selection, some_file):
         Thread.__init__(self)
-
         self.data_crawler = Data_Crawler.getInstance()
         self.model = Model.getInstance()
         self.directory = self.model.directory
@@ -33,7 +32,7 @@ class Crawler_Modif(Thread):
             model, listiter = self.selection.get_selected_rows()
 
             for i in range(len(listiter)):  # TODO
-                namefile = self.model.title2filename(model[listiter[i]][0]) 
+                namefile = model[listiter[i]][0]
                 if namefile in self.modifs:
                     self.data_crawler.update_data_crawled(
                         [namefile], self.directory)
@@ -50,9 +49,9 @@ class Crawler_Modif(Thread):
                 multiple_line_selected = 0
 
             data_scrapped = self.data_crawler.get_tags(
-                model, listiter, multiple_line_selected, self.model.filenames)
+                model, listiter, multiple_line_selected)
             lyrics_scrapped = self.data_crawler.get_lyrics(
-                model, listiter, multiple_line_selected, self.model.filenames)
+                model, listiter, multiple_line_selected)
 
             if(self.selectionequal(self.model.selection)):
                 if data_scrapped != None:
@@ -64,6 +63,7 @@ class Crawler_Modif(Thread):
 
     def selectionequal(self, selec):
         model, listiter = selec.get_selected_rows()
+
 
         if len(listiter) == self.lenselection:
             for i in range(len(listiter)):
