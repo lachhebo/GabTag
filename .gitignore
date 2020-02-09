@@ -6,4 +6,5 @@ gabtag/
 .flatpak-builder/
 dev/
 .tx/
-
+venv
+.idea
