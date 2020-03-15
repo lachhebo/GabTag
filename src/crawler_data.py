@@ -3,7 +3,7 @@ from os import walk
 import musicbrainzngs as mb
 from PyLyrics import *
 
-from .audio_getter import AudioGetter
+from .audio_getter import check_extension, get_file
 from .view import View
 from .treeview import TreeView
 
@@ -26,8 +26,8 @@ class DataCrawler:
             self.directory = ''
 
         def crawl_one_file(self, namefile, directory):
-            if AudioGetter().check_extension(namefile) and self.internet == True:
-                audio = AudioGetter().get_file(namefile, directory)
+            if check_extension(namefile) and self.internet == True:
+                audio = get_file(namefile, directory)
 
                 tags = audio.get_tag_research()
 
@@ -67,8 +67,8 @@ class DataCrawler:
                         self.treeview.add_crawled([namefile])
 
         def crawl_lyrics(self, namefile, directory):
-            if AudioGetter().check_extension(namefile) and self.internet == True:
-                audio = AudioGetter().get_file(namefile, directory)
+            if check_extension(namefile) and self.internet == True:
+                audio = get_file(namefile, directory)
 
                 tags = audio.get_tag_research()
 
@@ -108,7 +108,7 @@ class DataCrawler:
         def get_data_from_online(self, filelist, directory):
 
             for namefile in filelist:
-                if AudioGetter().check_extension(namefile) and self.internet == True:
+                if check_extension(namefile) and self.internet == True:
 
                     if self.stop(directory):
                         break

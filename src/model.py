@@ -2,7 +2,7 @@ import os
 
 from os import walk
 from threading import Thread
-from .audio_getter import AudioGetter
+from .audio_getter import check_extension, get_file
 from .tools import is_selection_equal
 from .view import View
 from .crawler_data import DataCrawler
@@ -22,7 +22,6 @@ class Model:
             self.view = View.get_instance()
             self.selection = None
             self.file_name = []
-            self.audio_getter = AudioGetter()
             self.tags_dictionary = {  # TODO add that in a separate json file.
                 'title': {'value': ''},
                 'album': {'value': ''},
@@ -85,7 +84,7 @@ class Model:
 
             for i in range(len(list_iter)):  # TODO
                 name_file = model[list_iter[i]][0]
-                audio = self.audio_getter.get_file(name_file, self.directory)
+                audio = get_file(name_file, self.directory)
                 if name_file in self.modification:
                     file_modification = self.modification[name_file]
 
@@ -119,7 +118,7 @@ class Model:
                 break
 
             for name_file in file_list:
-                if self.audio_getter.check_extension(name_file):
+                if check_extension(name_file):
                     self.file_name.append(name_file)
                     store.append([name_file, 'No', 400])
 
@@ -210,8 +209,8 @@ class Model:
                 break
 
             for name_file in file_list:
-                if self.audio_getter.check_extension(name_file):
-                    audio = self.audio_getter.get_file(name_file, self.directory)
+                if check_extension(name_file):
+                    audio = get_file(name_file, self.directory)
                     new_name = {}
                     for key in self.tags_dictionary:
                         new_name[key] = audio.get_tag(key)
@@ -262,7 +261,7 @@ class Model:
 
         def file_modified(self, name_file):
 
-            audio = self.audio_getter.get_file(name_file, self.directory)
+            audio = get_file(name_file, self.directory)
 
             audio_tag = {}
             tag_modified = {}
@@ -359,7 +358,7 @@ class Model:
             tree_handler = TreeView.get_instance()
 
             for filename in self.modification:
-                audio = self.audio_getter.get_file(filename, self.directory)
+                audio = get_file(filename, self.directory)
                 file_modifications = self.modification[filename]
 
                 for key in self.tags_dictionary:
@@ -380,7 +379,7 @@ class Model:
             """
 
             name_file = model[list_iterator][0]
-            audio = self.audio_getter.get_file(name_file, self.directory)
+            audio = get_file(name_file, self.directory)
 
             for key in self.tags_dictionary:
                 self.tags_dictionary[key]["value"] = audio.get_tag(key)
@@ -397,7 +396,7 @@ class Model:
 
                 for i in range(1, len(list_iterator)):
                     name_file = model[list_iterator[i]][0]
-                    audio = self.audio_getter.get_file(name_file, self.directory)
+                    audio = get_file(name_file, self.directory)
                     for key in contkey_dico:
                         if contkey_dico[key] == 1:
                             contkey_dico[key] = self.check_tag_equal_key_value(audio.check_tag_existence(
