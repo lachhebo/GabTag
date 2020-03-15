@@ -1,3 +1,5 @@
+import os
+
 import musicbrainzngs as mb
 
 
@@ -102,3 +104,11 @@ def is_selection_equal(selection, length_selection_2, file_list_selection2):
         return False
 
     return True
+
+
+def file_size_to_string(path_file):
+    return str(round(os.path.getsize(path_file) / 1000000, 1)) + ' Mb'
+
+
+def music_length_to_string(length):
+    return str(int(length / 60)) + ' minutes ' + str(int(length % 60)) + ' seconds'

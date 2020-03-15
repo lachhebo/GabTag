@@ -1,10 +1,19 @@
-import os
-
-from mutagen.id3 import ID3, APIC, TRCK, USLT, TIT2, TALB, TPE1, TCON, TDRC
+from mutagen.id3 import ID3, APIC
 from mutagen.mp3 import MP3
 
 from .audio_extension_handler import AudioExtensionHandler
-from .tools import get_extension_image
+from .tools import get_extension_image, music_length_to_string, file_size_to_string
+
+TAG_PARAMETER = {
+    'title': 'TIT2',
+    'cover': 'APIC',
+    'album': 'TALB',
+    'artist': 'TPE1',
+    'genre': 'TCON',
+    'track': 'TRCK',
+    'year': 'TDRC',
+    'lyrics': 'USLT',
+}
 
 
 class Mp3FileHandler(AudioExtensionHandler):
@@ -41,33 +50,24 @@ class Mp3FileHandler(AudioExtensionHandler):
                 elif data_type == 'data':
                     return tag_needed[0].data
             else:
-                return ""
+                return ''
         else:
-            return ""
+            return ''
 
     def get_tag_research(self):
         return [
-            self.get_one_tag('TIT2', 'text'),
-            self.get_one_tag('TPE1', 'text'),
-            self.get_one_tag('TALB', 'text')
+            self.get_one_tag(TAG_PARAMETER['title'], 'text'),
+            self.get_one_tag(TAG_PARAMETER['artist'], 'text'),
+            self.get_one_tag(TAG_PARAMETER['album'], 'text')
         ]
 
     def get_tag(self, tag_key):
         """
         We handle tag using a switch, it is working well because it is basically the structure.
         """
-        if tag_key == 'title':
-            return self.get_one_tag('TIT2', 'text')
-        elif tag_key == 'cover':
+
+        if tag_key == 'cover':
             return self.get_one_tag('APIC', 'data')
-        elif tag_key == 'album':
-            return self.get_one_tag('TALB', 'text')
-        elif tag_key == 'artist':
-            return self.get_one_tag('TPE1', 'text')
-        elif tag_key == 'genre':
-            return self.get_one_tag('TCON', 'text')
-        elif tag_key == 'track':
-            return self.get_one_tag('TRCK', 'text')
         elif tag_key == 'lyrics':
             if self.id3 is not None:
                 tag_needed = self.id3.getall('USLT')
@@ -77,43 +77,18 @@ class Mp3FileHandler(AudioExtensionHandler):
                     return ''
             else:
                 return ''
-
         elif tag_key == 'year':
             return str(self.get_one_tag('TDRC', 'text'))
-
-        # NOT tags but file information
         elif tag_key == 'size':
-            return str(round(os.path.getsize(self.path_file) / 1000000, 1)) + ' Mb'
+            return file_size_to_string(self.path_file)
         elif tag_key == 'length':
-            return str(int(self.audio.info.length / 60)) + ' minutes ' + str(
-                int(self.audio.info.length % 60)) + ' seconds'
+            return music_length_to_string(self.audio.info.length)
+        else:
+            return self.get_one_tag(TAG_PARAMETER[tag_key], 'text')
 
     def check_tag_existence(self, key):
         """ Every thing is in the title"""
-        if key != 'title':
-            tag_title = self.id3.getall('TIT2')
-            return len(tag_title) > 0
-        elif key == 'cover':
-            tag_cover = self.id3.getall('APIC')
-            return len(tag_cover) > 0
-        elif key == 'album':
-            tag_album = self.id3.getall('TALB')
-            return len(tag_album) > 0
-        elif key == 'artist':
-            tag_artist = self.id3.getall('TPE1')
-            return len(tag_artist) > 0
-        elif key == 'genre':
-            tag_genre = self.id3.getall('TCON')
-            return len(tag_genre) > 0
-        elif key == 'track':
-            tag_track = self.id3.getall('TRCK')
-            return len(tag_track) > 0
-        elif key == 'year':
-            tag_year = self.id3.getall('TDRC')
-            return len(tag_year) > 0
-        elif key == 'lyrics':
-            tag_lyrics = self.id3.getall('USLT')
-            return len(tag_lyrics) > 0
+        return len(self.id3.getall(TAG_PARAMETER[key])) > 0
 
     def set_tag(self, tag_key, tag_value):
 
@@ -144,31 +119,9 @@ class Mp3FileHandler(AudioExtensionHandler):
                         data=open(tag_value, 'rb').read()
                     )
                 )
-
-        elif tag_key == 'title':
-            self.id3.delall('TIT2')
-            self.id3.add(TIT2(encoding=3, text=tag_value))
-        elif tag_key == 'album':
-            self.id3.delall('TALB')
-            self.id3.add(TALB(encoding=3, text=tag_value))
-        elif tag_key == 'artist':
-            self.id3.delall('TPE1')
-            self.id3.add(TPE1(encoding=3, text=tag_value))
-        elif tag_key == 'genre':
-            self.id3.delall('TCON')
-            self.id3.add(TCON(encoding=3, text=tag_value))
-        elif tag_key == 'track':
-            self.id3.delall('TRCK')
-            self.id3.add(TRCK(encoding=3, text=tag_value))
-        elif tag_key == 'year':
-            self.id3.delall('TDRC')
-            self.id3.add(TDRC(encoding=3, text=tag_value))
-        elif tag_key == 'lyrics':
-            self.id3.delall('USLT')
-            self.id3.add(USLT(encoding=3, text=tag_value))
         else:
-            # print('NO_TAG', tag_key)
-            pass
+            self.id3.delall(TAG_PARAMETER[tag_key])
+            self.id3.add(globals()[TAG_PARAMETER[tag_key]](encoding=3, text=tag_value))
 
     def save_modifications(self):
         """
