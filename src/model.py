@@ -197,7 +197,7 @@ class Model:
             while is_selection_equal(self.selection, len_selection, file_selection) and is_waiting_lyrics == 1:
                 lyrics_scrapped = self.data_crawler.get_lyrics(
                     model, list_iteration, multiple_line_selected)
-                if lyrics_scrapped != None and is_selection_equal(self.selection, len_selection, file_selection):
+                if lyrics_scrapped is not None and is_selection_equal(self.selection, len_selection, file_selection):
                     is_waiting_lyrics = 0
                     self.view.show_lyrics(lyrics_scrapped)
 
