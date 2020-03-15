@@ -3,10 +3,10 @@ from os import path
 from .audio_mp3_file_handler import Mp3FileHandler
 from .tools import get_file_extension
 
-EXTENSIONS = ['mp3']
+HANDLED_EXTENSIONS = ['mp3']
 
 
-def check_extension(filename):
+def is_extension_managed(filename):
     """
     Check if the file extension is handled by Gabtag
     input : a filename (string)
@@ -15,13 +15,13 @@ def check_extension(filename):
 
     extension = get_file_extension(filename)
 
-    if extension in EXTENSIONS:
+    if extension in HANDLED_EXTENSIONS:
         return True
     else:
         return False
 
 
-def get_file(filename, directory):
+def get_file_manager(filename, directory):
     """
     return the correct handler for the file
     input : a file (string), a directory (string)
