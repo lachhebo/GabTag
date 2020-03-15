@@ -1,11 +1,12 @@
-import math
 import io
+import math
 from threading import RLock
-from PIL import Image
+
 import gi
+from PIL import Image
 
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk, GdkPixbuf, GLib
+from gi.repository import GdkPixbuf, GLib
 
 verrou_tags = RLock()
 verrou_mbz = RLock()
@@ -67,7 +68,6 @@ class View:
                 self.artist_mbz.set_text(data_scrapped['artist'])
                 self.year_mbz.set_text(data_scrapped['year'])
 
-
                 if data_scrapped['cover'] != '':
 
                     with Image.open(io.BytesIO(data_scrapped['cover'])) as img:
@@ -117,7 +117,7 @@ class View:
             self.show_mbz({'title': '', 'track': '', 'album': '',
                            'genre': '', 'artist': '', 'cover': '', 'year': ''})
 
-        def set_editability_of_title(self, multiple_rows, title):
+        def set_title_permission(self, multiple_rows, title):
             if multiple_rows == 1:
                 self.title.set_text('')
                 self.title.set_editable(0)
@@ -125,7 +125,7 @@ class View:
                 self.title.set_editable(1)
                 self.title.set_text(title)
 
-        def set_editability_track(self, multiple_rows, track):
+        def set_track_permission(self, multiple_rows, track):
             if multiple_rows == 1:
                 self.track.set_text('')
                 self.track.set_editable(0)
@@ -185,37 +185,37 @@ class View:
 
                 self.cover.set_from_pixbuf(pixbuf)
 
-        def show_tags(self, tag_dico, multiple_rows):
+        def show_tags(self, tags_dict, multiple_rows):
             with verrou_tags:
                 # We show those tags uniquely if there is only one row selected
                 # TODO is it really useful ? I don't think so
-                self.set_editability_of_title(
-                    multiple_rows, tag_dico['title']['value'])
-                self.set_editability_track(
-                    multiple_rows, tag_dico['track']['value'])
+                self.set_title_permission(
+                    multiple_rows, tags_dict['title']['value'])
+                self.set_track_permission(
+                    multiple_rows, tags_dict['track']['value'])
 
                 # Same thing for the labels # TODO show size and length for the concatenation of songs selectioned
-                self.set_size(multiple_rows, tag_dico['size']['value'])
-                self.set_length(multiple_rows, tag_dico['length']['value'])
+                self.set_size(multiple_rows, tags_dict['size']['value'])
+                self.set_length(multiple_rows, tags_dict['length']['value'])
 
-                # We show the tag currently in tagdico
-                self.genre.set_text(tag_dico['genre']['value'])
-                self.album.set_text(tag_dico['album']['value'])
-                self.artist.set_text(tag_dico['artist']['value'])
-                self.year.set_text(tag_dico['year']['value'])
+                # We show the tag currently in tags_dict
+                self.genre.set_text(tags_dict['genre']['value'])
+                self.album.set_text(tags_dict['album']['value'])
+                self.artist.set_text(tags_dict['artist']['value'])
+                self.year.set_text(tags_dict['year']['value'])
                 # TODO : print tags lyrics in case of missing internet lyrics
 
-                if tag_dico['cover']['value'] != '':  # A test to handle if there is a cover
-                    if tag_dico['cover']['value'] != self.last_cover:
+                if tags_dict['cover']['value'] != '':  # A test to handle if there is a cover
+                    if tags_dict['cover']['value'] != self.last_cover:
                         # A test to detect bytes file
-                        if type(tag_dico['cover']['value']) == bytes:
+                        if type(tags_dict['cover']['value']) == bytes:
                             self.show_cover_from_bytes(
-                                tag_dico['cover']['value'])
-                            self.last_cover = tag_dico['cover']['value']
+                                tags_dict['cover']['value'])
+                            self.last_cover = tags_dict['cover']['value']
                         else:
                             self.show_cover_from_file(
-                                tag_dico['cover']['value'])
-                            self.last_cover = tag_dico['cover']['value']
+                                tags_dict['cover']['value'])
+                            self.last_cover = tags_dict['cover']['value']
                     else:
                         pass
                 else:

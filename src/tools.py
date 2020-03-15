@@ -1,6 +1,10 @@
 import os
 
+import gi
 import musicbrainzngs as mb
+from gi.repository import Gtk
+
+gi.require_version('Gtk', '3.0')
 
 
 def remove_extension(filename):
@@ -112,3 +116,15 @@ def file_size_to_string(path_file):
 
 def music_length_to_string(length):
     return str(int(length / 60)) + ' minutes ' + str(int(length % 60)) + ' seconds'
+
+
+def add_filters(dialog):
+    filter_png = Gtk.FileFilter()
+    filter_png.set_name('Png')
+    filter_png.add_mime_type('image/png')
+    dialog.add_filter(filter_png)
+
+    filter_jpeg = Gtk.FileFilter()
+    filter_jpeg.set_name('jpeg')
+    filter_jpeg.add_mime_type('image/jpeg')
+    dialog.add_filter(filter_jpeg)

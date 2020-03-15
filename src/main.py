@@ -27,7 +27,7 @@ class Application(Gtk.Application):
     def __init__(self):
         super().__init__(application_id='com.github.lachhebo.Gabtag',
                          flags=Gio.ApplicationFlags.FLAGS_NONE)
-        GLib.set_application_name(("GabTag"))
+        GLib.set_application_name(('GabTag'))
         GLib.set_prgname('com.github.lachhebo.Gabtag')
 
     def do_activate(self):

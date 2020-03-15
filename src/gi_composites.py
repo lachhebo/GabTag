@@ -35,7 +35,7 @@ class GtkTemplateWarning(UserWarning):
 
 def _connect_func(builder, obj, signal_name, handler_name,
                   connect_object, flags, cls):
-    '''Handles GtkBuilder signal connect events'''
+    """Handles GtkBuilder signal connect events"""
 
     if connect_object is None:
         extra = ()

@@ -22,7 +22,7 @@ class Model:
             self.view = View.get_instance()
             self.selection = None
             self.file_name = []
-            self.tags_dictionary = {  # TODO add that in a separate json file.
+            self.tags_dictionary = {
                 'title': {'value': ''},
                 'album': {'value': ''},
                 'artist': {'value': ''},
@@ -95,11 +95,6 @@ class Model:
                     tree_handler.remove_bold_font([name_file])
                     audio.save_modifications()
 
-                    '''
-                    thread_mbz = threading.Thread(target = self.data_crawler.update_data_crawled, args=([name_file],self.directory)) #Writing data
-                    thread_mbz.start()
-                    '''
-
                 self.modification[name_file] = {}
 
         def update_list(self, store):
@@ -108,7 +103,6 @@ class Model:
             handled by GabTag
             """
 
-            # self.store = store
             self.file_name = []
             store.clear()
 
@@ -163,19 +157,7 @@ class Model:
                 self.view.show_mbz(data_scrapped)
 
             if lyrics_scrapped is None:
-                self.view.show_lyrics("File not crawled yet on lyrics.wikia")
-                '''
-                length_selection = len(list_iteration)
-                file_selection = []
-
-                for i in range(len(list_iteration)):
-                    name_file = model[list_iteration[i]][0]
-                    file_selection.append(name_file)
-
-                #thread_waiting_lyr = Thread(target = self.wait_for_lyrics, args=(model,list_iteration,length_selection,file_selection,multiple_line_selected)) #Writing data
-                #self.wait_for_lyrics(model,list_iteration,multiple_line_selected)
-                #thread_waiting_lyr.start()
-                '''
+                self.view.show_lyrics('File not crawled yet on lyrics.wikia')
             else:
                 self.view.show_lyrics(lyrics_scrapped)
 
@@ -340,9 +322,6 @@ class Model:
                         self.update_modification_name_file(
                             name_file, key, tag_founds[name_file][key])
 
-        def set_online_lyrics(self):  # TODO
-            pass
-
         def erase_tag(self):
             """
             erase current tags value
@@ -352,7 +331,7 @@ class Model:
 
         def save_modifications(self, selection):
             """
-            For each key file in modification, we get the tags inside the nested dictionnary and
+            For each key file in modification, we get the tags inside the nested dictionary and
             integer them on the audio tag file. Eventually we save the audio tag file.
             """
             tree_handler = TreeView.get_instance()
@@ -385,7 +364,7 @@ class Model:
                 self.tags_dictionary[key]["value"] = audio.get_tag(key)
 
             self.audio_tags = self.tags_dictionary.copy()
-            self.check_dictionary(name_file)  # Look in Mofification
+            self.check_dictionary(name_file)  # Look in Modification
 
             if len(list_iterator) > 1:
 
@@ -416,7 +395,7 @@ class Model:
 
         def check_dictionary(self, name_file):
             """
-            Check in the filename modification dictionnary the existence of tags and
+            Check in the filename modification dictionary the existence of tags and
             update the current list of tags with found values.
             """
 
@@ -430,7 +409,7 @@ class Model:
 
         def check_tag_equal_key_value(self, audio_key_exist, audio_tag_value, name_file, key, key_value):
             """
-            We check that the tag 'key' is egal to key_value for name_file else we return 0.
+            We check that the tag 'key' is equal to key_value for name_file else we return 0.
             We first look in modification then in the tag audio file.
             """
 

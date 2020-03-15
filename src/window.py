@@ -14,7 +14,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
+from .tools import add_filters
 from .treeview import TreeView
 from .crawler_data import DataCrawler
 from .crawler_modification import CrawlerModification
@@ -88,49 +88,49 @@ class GabtagWindow(Gtk.ApplicationWindow):
 
         view = View.get_instance()
 
-        self.treeview = TreeView(self.liststore1, self.tree_view_id)
+        self.tree_view = TreeView(self.liststore1, self.tree_view_id)
 
         self.data_crawler = DataCrawler.get_instance()
 
-        self.realselection = 0
-        self.selectionned = None
-        self.opened_directory = False
+        self.is_real_selection = 0
+        self.selectioned = None
+        self.is_opened_directory = False
 
     @GtkTemplate.Callback
     def but_saved_cliqued(self, widget):
-        if self.opened_directory == True:
+        if self.is_opened_directory == True:
             model = Model.get_instance()
             thread = CrawlerModification(
-                model.modification.copy(), self.liststore1, self.selectionned, 0)
-            model.save_modifications(self.selectionned)
+                model.modification.copy(), self.liststore1, self.selectioned, 0)
+            model.save_modifications(self.selectioned)
             thread.start()
 
     @GtkTemplate.Callback
     def clicked_save_one(self, widget):
-        if self.realselection == 1:
-            self.realselection = 0
+        if self.is_real_selection == 1:
+            self.is_real_selection = 0
             model = Model.get_instance()
             thread = CrawlerModification(
-                model.modification.copy(), self.liststore1, self.selectionned, 1)
-            model.save_one(self.selectionned)
+                model.modification.copy(), self.liststore1, self.selectioned, 1)
+            model.save_one(self.selectioned)
             thread.start()
-            self.realselection = 1
+            self.is_real_selection = 1
 
     @GtkTemplate.Callback
     def reset_one_clicked(self, widget):
-        if self.realselection == 1:
-            self.realselection = 0
+        if self.is_real_selection == 1:
+            self.is_real_selection = 0
             model = Model.get_instance()
-            model.reset_one(self.selectionned)
-            self.realselection = 1
+            model.reset_one(self.selectioned)
+            self.is_real_selection = 1
 
     @GtkTemplate.Callback
     def reset_all_clicked(self, widget):
-        if self.realselection == 1:
-            self.realselection = 0
+        if self.is_real_selection == 1:
+            self.is_real_selection = 0
             model = Model.get_instance()
-            model.reset_all(self.selectionned)
-            self.realselection = 1
+            model.reset_all(self.selectioned)
+            self.is_real_selection = 1
 
     @GtkTemplate.Callback
     def about_clicked(self, widget):
@@ -139,18 +139,18 @@ class GabtagWindow(Gtk.ApplicationWindow):
 
     @GtkTemplate.Callback
     def open_clicked(self, widget):
-        self.realselection = 0
-        dialog = Gtk.FileChooserDialog("Please choose a folder", self,
+        self.is_real_selection = 0
+        dialog = Gtk.FileChooserDialog('Please choose a folder', self,
                                        Gtk.FileChooserAction.SELECT_FOLDER,
                                        (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
-                                        "Select", Gtk.ResponseType.OK))
+                                        'Select', Gtk.ResponseType.OK))
         dialog.set_default_size(800, 400)
 
         response = dialog.run()
 
         model = Model.get_instance()
         if response == Gtk.ResponseType.OK:
-            self.opened_directory = True
+            self.is_opened_directory = True
             model.view.erase()
             self.data_crawler.update_directory(dialog.get_filename())
             model.update_directory(dialog.get_filename(), self.liststore1)
@@ -161,7 +161,7 @@ class GabtagWindow(Gtk.ApplicationWindow):
 
         # List mp3 file on the folder on the tree view :
 
-        self.realselection = 1
+        self.is_real_selection = 1
 
     @GtkTemplate.Callback
     def on_menu_but_toggled(self, widget):
@@ -169,147 +169,136 @@ class GabtagWindow(Gtk.ApplicationWindow):
 
     @GtkTemplate.Callback
     def title_changed(self, widget):
-        if self.realselection == 1:
-            self.realselection = 0
+        if self.is_real_selection == 1:
+            self.is_real_selection = 0
             model = Model.get_instance()
             model.update_modifications(
-                self.selectionned, "title", widget.get_text())
-            self.realselection = 1
+                self.selectioned, 'title', widget.get_text())
+            self.is_real_selection = 1
 
     @GtkTemplate.Callback
     def artist_changed(self, widget):
-        if self.realselection == 1:
-            self.realselection = 0
+        if self.is_real_selection == 1:
+            self.is_real_selection = 0
             model = Model.get_instance()
             model.update_modifications(
-                self.selectionned, "artist", widget.get_text())
-            self.realselection = 1
+                self.selectioned, 'artist', widget.get_text())
+            self.is_real_selection = 1
 
     @GtkTemplate.Callback
     def album_changed(self, widget):
-        if self.realselection == 1:
-            self.realselection = 0
+        if self.is_real_selection == 1:
+            self.is_real_selection = 0
             model = Model.get_instance()
             model.update_modifications(
-                self.selectionned, "album", widget.get_text())
-            self.realselection = 1
+                self.selectioned, 'album', widget.get_text())
+            self.is_real_selection = 1
 
     @GtkTemplate.Callback
     def type_changed(self, widget):
-        if self.realselection == 1:
-            self.realselection = 0
+        if self.is_real_selection == 1:
+            self.is_real_selection = 0
             model = Model.get_instance()
             model.update_modifications(
-                self.selectionned, "genre", widget.get_text())
-            self.realselection = 1
+                self.selectioned, 'genre', widget.get_text())
+            self.is_real_selection = 1
 
     @GtkTemplate.Callback
     def track_changed(self, widget):
-        if self.realselection == 1:
-            self.realselection = 0
+        if self.is_real_selection == 1:
+            self.is_real_selection = 0
             model = Model.get_instance()
             model.update_modifications(
-                self.selectionned, "track", widget.get_text())
-            self.realselection = 1
+                self.selectioned, 'track', widget.get_text())
+            self.is_real_selection = 1
 
     @GtkTemplate.Callback
     def year_changed(self, widget):
-        if self.realselection == 1:
-            self.realselection = 0
+        if self.is_real_selection == 1:
+            self.is_real_selection = 0
             model = Model.get_instance()
             model.update_modifications(
-                self.selectionned, "year", widget.get_text())
-            self.realselection = 1
+                self.selectioned, 'year', widget.get_text())
+            self.is_real_selection = 1
 
-    def add_filters(self, dialog):
-        filter_png = Gtk.FileFilter()
-        filter_png.set_name("Png")
-        filter_png.add_mime_type("image/png")
-        dialog.add_filter(filter_png)
-
-        filter_jpeg = Gtk.FileFilter()
-        filter_jpeg.set_name("jpeg")
-        filter_jpeg.add_mime_type("image/jpeg")
-        dialog.add_filter(filter_jpeg)
 
     @GtkTemplate.Callback
     def load_cover_clicked(self, widget):
-        if self.realselection == 1:
-            self.realselection = 0
+        if self.is_real_selection == 1:
+            self.is_real_selection = 0
             model = Model.get_instance()
-            view = View.get_instance()
 
-            dialog = Gtk.FileChooserDialog("Please choose a file", self,
+            dialog = Gtk.FileChooserDialog('Please choose a file', self,
                                            Gtk.FileChooserAction.OPEN,
                                            (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
                                             Gtk.STOCK_OPEN, Gtk.ResponseType.OK))
 
-            self.add_filters(dialog)
+            add_filters(dialog)
 
             response = dialog.run()
 
             if response == Gtk.ResponseType.OK:
                 file_cover = dialog.get_filename()
                 model.update_modifications(
-                    self.selectionned, "cover", file_cover)
-                model.update_view(self.selectionned)
+                    self.selectioned, 'cover', file_cover)
+                model.update_view(self.selectioned)
 
             dialog.destroy()
-            self.realselection = 1
+            self.is_real_selection = 1
 
     @GtkTemplate.Callback
     def selected_changed(self, selection):
-        if self.realselection == 1:
-            self.realselection = 0
-            self.selectionned = selection
+        if self.is_real_selection == 1:
+            self.is_real_selection = 0
+            self.selectioned = selection
 
             model = Model.get_instance()
             model.update_view(selection)
 
-            self.realselection = 1
+            self.is_real_selection = 1
 
     @GtkTemplate.Callback
     def on_set_mbz(self, widget):
-        if self.realselection == 1:
-            self.realselection = 0
+        if self.is_real_selection == 1:
+            self.is_real_selection = 0
 
             model = Model.get_instance()
-            model.set_data_crawled(self.selectionned)
-            model.update_view(self.selectionned)
+            model.set_data_crawled(self.selectioned)
+            model.update_view(self.selectioned)
 
-            self.realselection = 1
+            self.is_real_selection = 1
 
     @GtkTemplate.Callback
     def on_rename_files(self, widget):
-        if self.opened_directory == True:
-            self.realselection = 0
+        if self.is_opened_directory:
+            self.is_real_selection = 0
             model = Model.get_instance()
             model.rename_files()
             model.update_list(self.liststore1)
-            self.realselection = 1
+            self.is_real_selection = 1
 
     @GtkTemplate.Callback
     def on_set_online_tags(self, widget):
-        if self.opened_directory == True:
-            if self.realselection == 1:
-                self.realselection = 0
+        if self.is_opened_directory:
+            if self.is_real_selection == 1:
+                self.is_real_selection = 0
                 model = Model.get_instance()
 
                 model.set_online_tags()
 
-                if self.selectionned != None:
-                    model.update_view(self.selectionned)
+                if self.selectioned is not None:
+                    model.update_view(self.selectioned)
 
-                self.realselection = 1
+                self.is_real_selection = 1
 
     @GtkTemplate.Callback
     def on_set_lyrics(self, widget):
-        if self.opened_directory == True:
-            if self.realselection == 1:
-                self.realselection = 0
+        if self.is_opened_directory:
+            if self.is_real_selection == 1:
+                self.is_real_selection = 0
 
                 model = Model.get_instance()
-                model.set_data_lyrics(self.selectionned)
+                model.set_data_lyrics(self.selectioned)
 
-                self.realselection = 1
+                self.is_real_selection = 1
 

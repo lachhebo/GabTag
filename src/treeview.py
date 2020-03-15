@@ -16,12 +16,12 @@ class TreeView:
 
                 renderer = Gtk.CellRendererText()
                 column = Gtk.TreeViewColumn(
-                    "Name", renderer, text=0, weight=2, weight_set=True)
+                    'Name', renderer, text=0, weight=2, weight_set=True)
                 self.view.append_column(column)
 
                 renderer = Gtk.CellRendererText()
                 column = Gtk.TreeViewColumn(
-                    "Data Crawled", renderer, text=1, weight=2, weight_set=True)
+                    'Data Crawled', renderer, text=1, weight=2, weight_set=True)
                 self.view.append_column(column)
 
         def remove_crawled(self, name_files):
@@ -38,7 +38,7 @@ class TreeView:
                 if line_number != -1:
                     path = Gtk.TreePath(line_number)
                     list_iterator = self.store.get_iter(path)
-                    self.store.set_value(list_iterator, 1, "No")
+                    self.store.set_value(list_iterator, 1, 'No')
 
         def add_crawled(self, name_files):
             line_number = -1
@@ -54,7 +54,7 @@ class TreeView:
                 if line_number != -1:
                     path = Gtk.TreePath(line_number)
                     list_iterator = self.store.get_iter(path)
-                    self.store.set_value(list_iterator, 1, "Yes")
+                    self.store.set_value(list_iterator, 1, 'Yes')
 
         def add_bold_font(self, name_files):
             line_number = -1
@@ -94,7 +94,7 @@ class TreeView:
     def __init__(self, store, view):
         """ Virtually private constructor. """
         if TreeView.__instance is not None:
-            raise Exception("This class is a singleton!")
+            raise Exception('This class is a singleton!')
         else:
             TreeView.__instance = TreeView.__TreeView(store, view)
 
