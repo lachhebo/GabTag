@@ -27,18 +27,25 @@ configure_file(
 
 gabtag_sources = [
   '__init__.py',
-  'gi_composites.py',
   'main.py',
+  'version.py',
+
+  'exception.py',
+  'tools.py',
   'model.py',
+
+  'treeview.py',
   'view.py',
   'window.py',
-  'moteur.py',
-  'audiobasics.py',
-  'MP3Handler.py',
-  'data_crawler.py',
-  'Crawler_dir.py',
-  'Crawler_modif.py',
-  'treeview.py'
+  'gi_composites.py',
+
+  'audio_extension_handler.py',
+  'audio_getter.py',
+  'audio_mp3_file_handler.py',
+
+  'crawler_data.py',
+  'crawler_directory.py',
+  'crawler_modification.py'
 ]
 
 install_data(gabtag_sources, install_dir: moduledir)

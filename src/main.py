@@ -15,19 +15,19 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from .window import GabtagWindow
-from gi.repository import Gtk, Gio, GLib, Gdk, GObject
-import sys
 import gi
-
+import sys
 gi.require_version('Gtk', '3.0')
+
+from gi.repository import Gtk, Gio, GLib
+from .window import GabtagWindow
 
 
 class Application(Gtk.Application):
     def __init__(self):
         super().__init__(application_id='com.github.lachhebo.Gabtag',
                          flags=Gio.ApplicationFlags.FLAGS_NONE)
-        GLib.set_application_name(("GabTag"))
+        GLib.set_application_name(('GabTag'))
         GLib.set_prgname('com.github.lachhebo.Gabtag')
 
     def do_activate(self):

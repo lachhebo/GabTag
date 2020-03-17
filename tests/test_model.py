@@ -28,16 +28,16 @@ class ModelTest(unittest.TestCase):
 
 
         # Arrange
-        testmodel = model.Model.getInstance()
+        testmodel = model.Model.get_instance()
         testmodel.modification = { "testkey" : { "album": "a", "artist": "c"} }
         tag_changed = {"tag1","tag2"}
 
         # Act
-        testmodel.check_dictionnary("testkey")
+        testmodel.check_dictionary("testkey")
 
         # Assert
-        self.assertEqual("a",testmodel.tagdico["album"]["value"])
-        self.assertEqual("c",testmodel.tagdico["artist"]["value"])
+        self.assertEqual("a",testmodel.tags_dictionary["album"]["value"])
+        self.assertEqual("c",testmodel.tags_dictionary["artist"]["value"])
 
 
 
@@ -45,7 +45,7 @@ class ModelTest(unittest.TestCase):
 
 
         # Arrange
-        testmodel = model.Model.getInstance()
+        testmodel = model.Model.get_instance()
         testmodel.modification = { "testkey" : { "album": "nqnt", "artist": "vald"} }
 
         #Act

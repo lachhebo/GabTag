@@ -79,8 +79,8 @@ msgid "About"
 msgstr "À propos"
 
 #: src/window.ui:21
-msgid "GabTag is an  open-source audio tagging tool written in gtk3."
-msgstr "GabTag est un éditeur de balise audio écrit en GTK3. "
+msgid "gabtag is an  open-source audio tagging tool written in gtk3."
+msgstr "gabtag est un éditeur de balise audio écrit en GTK3. "
 
 #: src/window.ui:69
 msgid "Reset files"
