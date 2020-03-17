@@ -20,6 +20,8 @@ from .crawler_data import DataCrawler
 from .crawler_modification import CrawlerModification
 from .crawler_directory import CrawlerDirectory
 from .view import View
+from .version import __version__
+
 from .model import Model
 from .gi_composites import GtkTemplate
 from gi.repository import Gio, Gtk
@@ -134,6 +136,7 @@ class GabtagWindow(Gtk.ApplicationWindow):
 
     @GtkTemplate.Callback
     def about_clicked(self, widget):
+        self.id_about_window.set_version(__version__)
         self.id_about_window.run()
         self.id_about_window.hide()
 

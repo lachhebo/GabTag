@@ -28,6 +28,7 @@ configure_file(
 gabtag_sources = [
   '__init__.py',
   'main.py',
+  'version.py',
 
   'exception.py',
   'tools.py',

@@ -6,6 +6,7 @@ from PyLyrics import *
 from .audio_getter import is_extension_managed, get_file_manager
 from .tools import remove_extension, reorder_data
 from .treeview import TreeView
+from .version import __version__
 from .view import View
 
 
@@ -14,8 +15,7 @@ class DataCrawler:
 
         def __init__(self):
             try:
-                mb.set_useragent('GabTag', version='1.3.4',
-                                 contact='ismael.lachheb@protonmail.com')
+                mb.set_useragent('GabTag', version=__version__, contact='ismael.lachheb@protonmail.com')
                 self.internet = True
             except:
                 self.internet = False

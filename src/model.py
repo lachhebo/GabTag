@@ -1,12 +1,12 @@
 import os
-
 from os import walk
 from threading import Thread
+
 from .audio_getter import is_extension_managed, get_file_manager
-from .tools import is_selection_equal
-from .view import View
 from .crawler_data import DataCrawler
+from .tools import is_selection_equal
 from .treeview import TreeView
+from .view import View
 
 
 class Model:
@@ -48,7 +48,7 @@ class Model:
 
         def reset_all(self, selection):
             """
-            Reset modification and reupdate the view,it supose that something is selectionned (True)
+            Reset modification and reupdate the view,it suppose that something is selectioned (True)
             """
             self.modification = {}
             self.view.erase()
@@ -82,7 +82,7 @@ class Model:
             model, list_iter = selection.get_selected_rows()
             tree_handler = TreeView.get_instance()
 
-            for i in range(len(list_iter)):  # TODO
+            for i in range(len(list_iter)):
                 name_file = model[list_iter[i]][0]
                 audio = get_file_manager(name_file, self.directory)
                 if name_file in self.modification:
@@ -162,14 +162,12 @@ class Model:
                 self.view.show_lyrics(lyrics_scrapped)
 
         def wait_for_mbz(self, model, list_iteration, len_selection, file_selection, multiple_line_selected):
-            # print("Entering thread waiting for mbz")
             is_waiting_mbz = 1
 
             while is_selection_equal(self.selection, len_selection, file_selection) and is_waiting_mbz == 1:
                 data_scrapped = self.data_crawler.get_tags(
                     model, list_iteration, multiple_line_selected)
                 if data_scrapped is not None and is_selection_equal(self.selection, len_selection, file_selection):
-                    # print("mbz found :", data_scrapped["title"])
                     is_waiting_mbz = 0
                     self.view.show_mbz(data_scrapped)
 
@@ -253,7 +251,6 @@ class Model:
             if name_file in self.modification:
                 tag_modified = self.modification[name_file]
             else:
-                #print('ERROR Debug !')  # TODO: use logger
                 pass
 
             for key_tag in tag_modified:
@@ -380,11 +377,6 @@ class Model:
                         if contkey_dico[key] == 1:
                             contkey_dico[key] = self.check_tag_equal_key_value(audio.check_tag_existence(
                                 key), audio.get_tag(key), name_file, key, self.tags_dictionary[key]["value"])
-                    '''
-                    for key in contkey :
-                        if self.audio_tag[key]["value"] != audio.getTag(key):
-                            self.audio_tag
-                    '''
                 for key in contkey_dico:
                     if contkey_dico[key] == 0:
                         self.tags_dictionary[key]["value"] = ""
