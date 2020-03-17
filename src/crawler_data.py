@@ -14,11 +14,7 @@ class DataCrawler:
     class __DataCrawler:
 
         def __init__(self):
-            try:
-                mb.set_useragent('GabTag', version=__version__, contact='ismael.lachheb@protonmail.com')
-                self.internet = True
-            except:
-                self.internet = False
+            mb.set_useragent('GabTag', version=__version__, contact='ismael.lachheb@protonmail.com')
             self.tag_finder = {}
             self.lyrics = {}
             self.view = View.get_instance()
@@ -26,7 +22,7 @@ class DataCrawler:
             self.directory = ''
 
         def crawl_one_file(self, name_file, directory):
-            if is_extension_managed(name_file) and self.internet == True:
+            if is_extension_managed(name_file):
                 audio = get_file_manager(name_file, directory)
 
                 tags = audio.get_tag_research()
@@ -44,7 +40,7 @@ class DataCrawler:
                             gathered_data = mb.search_recordings(recording=tags[0], artistname=tags[1], limit=1)
                             self.tag_finder[name_file] = reorder_data(gathered_data)
                             self.tree_view.add_crawled([name_file])
-                        except:  # TODO Check Internet Connection
+                        except mb.NetworkError:
                             pass
 
                     elif tags[1] == '':
@@ -52,7 +48,7 @@ class DataCrawler:
                             self.tag_finder[name_file] = reorder_data(
                                 mb.search_recordings(recording=tags[0], release=tags[2], limit=1))
                             self.tree_view.add_crawled([name_file])
-                        except:
+                        except mb.NetworkError:
                             pass
 
                     elif tags[0] == '':
@@ -60,14 +56,14 @@ class DataCrawler:
                             self.tag_finder[name_file] = reorder_data(mb.search_recordings(
                                 query=remove_extension(name_file), artistname=tags[1], limit=1))
                             self.tree_view.add_crawled([name_file])
-                        except:
+                        except mb.NetworkError:
                             self.tree_view.add_crawled([name_file])
 
                     else:
                         self.tree_view.add_crawled([name_file])
 
         def crawl_lyrics(self, name_file, directory):
-            if is_extension_managed(name_file) and self.internet == True:
+            if is_extension_managed(name_file):
                 audio = get_file_manager(name_file, directory)
 
                 tags = audio.get_tag_research()
@@ -78,8 +74,10 @@ class DataCrawler:
                     try:
                         self.lyrics[name_file] = PyLyrics.getLyrics(
                             tags[1], tags[0])
-                    except:
+                    except requests.exceptions.ConnectionError:
                         self.lyrics[name_file] = ''
+                    except ValueError:
+                        self.lyrics[name_file] = 'Lyrics not available for this song or artist'
 
         def update_data_crawled(self, modifications, directory):
             for name_file in modifications:
@@ -108,7 +106,7 @@ class DataCrawler:
         def get_data_from_online(self, file_list, directory):
 
             for name_file in file_list:
-                if is_extension_managed(name_file) and self.internet == True:
+                if is_extension_managed(name_file):
 
                     if self.stop(directory):
                         break

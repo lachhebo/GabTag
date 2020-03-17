@@ -5,6 +5,8 @@ from threading import RLock
 import gi
 from PIL import Image
 
+from . import gabtag_logger
+
 gi.require_version('Gtk', '3.0')
 from gi.repository import GdkPixbuf, GLib
 
@@ -69,20 +71,10 @@ class View:
                 self.year_mbz.set_text(data_scrapped['year'])
 
                 if data_scrapped['cover'] != '':
-
                     with Image.open(io.BytesIO(data_scrapped['cover'])) as img:
-                        glib_bytes = GLib.Bytes.new(img.tobytes())
-
-                        '''
-                        width = img.width  # The best fix i could find for the moment
-                        height = img.height
-
-                        if glib_bytes.get_size() < width * height * 3:
-                            width = math.sqrt(glib_bytes.get_size() / 3)
-                            height = math.sqrt(glib_bytes.get_size() / 3)
-                        '''
 
                         try:
+                            glib_bytes = GLib.Bytes.new(img.tobytes())
                             pixbuf = GdkPixbuf.Pixbuf.new_from_bytes(glib_bytes,  # TODO ERROR HAPPENS WITH SOME COVER
                                                                      GdkPixbuf.Colorspace.RGB,
                                                                      False,
@@ -95,9 +87,10 @@ class View:
                                 250, 250, GdkPixbuf.InterpType.BILINEAR)
 
                             self.cover_mbz.set_from_pixbuf(pixbuf)
-                        except:
+                        except TypeError as error_message:
                             self.cover_mbz.set_from_icon_name(
                                 'gtk-missing-image', 6)
+                            gabtag_logger.error(error_message)
                 else:
                     self.cover_mbz.set_from_icon_name('gtk-missing-image', 6)
 

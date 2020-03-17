@@ -21,53 +21,55 @@ def reorder_data(music_brainz_data):
     """
 
     file_tags = {
-        "title": "",
-        "artist": "",
-        "genre": "",
-        "cover": "",
-        "album": "",
-        "track": "",
-        "year": ""}
+        "title": '',
+        "artist": '',
+        "genre": '',
+        "cover": '',
+        "album": '',
+        "track": '',
+        "year": ''}
 
     if len(music_brainz_data['recording-list']) >= 1:
-        file_tags["title"] = music_brainz_data['recording-list'][0]['title']
-        file_tags["artist"] = music_brainz_data['recording-list'][0]['artist-credit'][0]["artist"]["name"]
+        file_tags['title'] = music_brainz_data['recording-list'][0]['title']
+        file_tags['artist'] = music_brainz_data['recording-list'][0]['artist-credit'][0]['artist']['name']
 
-        if 'disambiguation' in music_brainz_data['recording-list'][0]['artist-credit'][0]["artist"]:
-            file_tags["genre"] = music_brainz_data['recording-list'][0]['artist-credit'][0]["artist"][
-                "disambiguation"]
+        if 'disambiguation' in music_brainz_data['recording-list'][0]['artist-credit'][0]['artist']:
+            file_tags['genre'] = music_brainz_data['recording-list'][0]['artist-credit'][0]['artist'][
+                'disambiguation']
         else:
-            file_tags["genre"] = ""
+            file_tags['genre'] = ''
 
         if 'release-list' in music_brainz_data['recording-list'][0]:
-            for i in range(len(music_brainz_data['recording-list'][0]["release-list"])):
+            for i in range(len(music_brainz_data['recording-list'][0]['release-list'])):
                 try:
 
-                    file_tags["cover"] = mb.get_image(
-                        mbid=music_brainz_data['recording-list'][0]["release-list"][i]["id"], coverid="front", size=250)
+                    file_tags['cover'] = mb.get_image(
+                        mbid=music_brainz_data['recording-list'][0]['release-list'][i]['id'], coverid='front', size=250)
 
                     if type(file_tags) == bytes:
                         break
-                except:
-                    file_tags["cover"] = ""
+
+                except mb.musicbrainz.ResponseError:
+                    file_tags['cover'] = ''
+
 
             # album
-            file_tags["album"] = music_brainz_data['recording-list'][0]['release-list'][0]["release-group"][
-                "title"]
-            file_tags["track"] = \
-                music_brainz_data['recording-list'][0]['release-list'][0]["medium-list"][0]['track-list'][0][
-                    "number"]
+            file_tags['album'] = music_brainz_data['recording-list'][0]['release-list'][0]['release-group'][
+                'title']
+            file_tags['track'] = \
+                music_brainz_data['recording-list'][0]['release-list'][0]['medium-list'][0]['track-list'][0][
+                    'number']
             if 'date' in music_brainz_data['recording-list'][0]['release-list'][0]:
-                file_tags["year"] = \
-                    music_brainz_data['recording-list'][0]['release-list'][0]["date"].split("-")[
+                file_tags['year'] = \
+                    music_brainz_data['recording-list'][0]['release-list'][0]['date'].split('-')[
                         0]
             else:
-                file_tags["year"] = ""
+                file_tags['year'] = ''
         else:
-            file_tags["album"] = ""
-            file_tags["track"] = ""
-            file_tags["year"] = ""
-            file_tags["cover"] = ""
+            file_tags['album'] = ''
+            file_tags['track'] = ''
+            file_tags['year'] = ''
+            file_tags['cover'] = ''
 
     return file_tags
 

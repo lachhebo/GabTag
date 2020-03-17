@@ -1,6 +1,4 @@
 import unittest
-import sys, os
-from gabtag import MP3Handler
 
 
 class MP3HandlerTest(unittest.TestCase):

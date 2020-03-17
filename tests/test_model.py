@@ -36,8 +36,8 @@ class ModelTest(unittest.TestCase):
         testmodel.check_dictionary("testkey")
 
         # Assert
-        self.assertEqual("a",testmodel.tagdico["album"]["value"])
-        self.assertEqual("c",testmodel.tagdico["artist"]["value"])
+        self.assertEqual("a",testmodel.tags_dictionary["album"]["value"])
+        self.assertEqual("c",testmodel.tags_dictionary["artist"]["value"])
 
 
 
