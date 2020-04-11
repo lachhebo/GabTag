@@ -4,3 +4,4 @@ musicbrainzngs
 PyLyrics
 pygobject
 Pillow
+flake8
