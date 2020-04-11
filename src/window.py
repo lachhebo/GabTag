@@ -14,6 +14,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 from .tools import add_filters
 from .treeview import TreeView
 from .crawler_data import DataCrawler
@@ -21,10 +22,10 @@ from .crawler_modification import CrawlerModification
 from .crawler_directory import CrawlerDirectory
 from .view import View
 from .version import __version__
-
 from .model import Model
 from .gi_composites import GtkTemplate
-from gi.repository import Gio, Gtk
+from gi.repository import Gtk
+
 import gi
 gi.require_version('Gtk', '3.0')
 
@@ -83,27 +84,31 @@ class GabtagWindow(Gtk.ApplicationWindow):
             self.id_year,
             self.id_info_length,
             self.id_info_size,
-            [self.id_title_mbz, self.id_album_mbz, self.id_artist_mbz,
-                self.id_genre_mbz, self.id_cover_mbz, self.id_track_mbz, self.id_year_mbz],
+            [self.id_title_mbz,
+                self.id_album_mbz,
+                self.id_artist_mbz,
+                self.id_genre_mbz,
+                self.id_cover_mbz,
+                self.id_track_mbz,
+                self.id_year_mbz
+             ],
             self.id_lyrics
         )
 
-        view = View.get_instance()
-
         self.tree_view = TreeView(self.liststore1, self.tree_view_id)
-
         self.data_crawler = DataCrawler.get_instance()
-
         self.is_real_selection = 0
         self.selectioned = None
         self.is_opened_directory = False
 
     @GtkTemplate.Callback
     def but_saved_cliqued(self, widget):
-        if self.is_opened_directory == True:
+        if self.is_opened_directory:
             model = Model.get_instance()
-            thread = CrawlerModification(
-                model.modification.copy(), self.liststore1, self.selectioned, 0)
+            thread = CrawlerModification(model.modification.copy(),
+                                         self.liststore1,
+                                         self.selectioned,
+                                         0)
             model.save_modifications(self.selectioned)
             thread.start()
 
@@ -112,8 +117,10 @@ class GabtagWindow(Gtk.ApplicationWindow):
         if self.is_real_selection == 1:
             self.is_real_selection = 0
             model = Model.get_instance()
-            thread = CrawlerModification(
-                model.modification.copy(), self.liststore1, self.selectioned, 1)
+            thread = CrawlerModification(model.modification.copy(),
+                                         self.liststore1,
+                                         self.selectioned,
+                                         1)
             model.save_one(self.selectioned)
             thread.start()
             self.is_real_selection = 1
@@ -143,10 +150,14 @@ class GabtagWindow(Gtk.ApplicationWindow):
     @GtkTemplate.Callback
     def open_clicked(self, widget):
         self.is_real_selection = 0
-        dialog = Gtk.FileChooserDialog('Please choose a folder', self,
+        dialog = Gtk.FileChooserDialog('Please choose a folder',
+                                       self,
                                        Gtk.FileChooserAction.SELECT_FOLDER,
-                                       (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
-                                        'Select', Gtk.ResponseType.OK))
+                                       (Gtk.STOCK_CANCEL,
+                                        Gtk.ResponseType.CANCEL,
+                                        'Select',
+                                        Gtk.ResponseType.OK
+                                        ))
         dialog.set_default_size(800, 400)
 
         response = dialog.run()
@@ -224,20 +235,22 @@ class GabtagWindow(Gtk.ApplicationWindow):
                 self.selectioned, 'year', widget.get_text())
             self.is_real_selection = 1
 
-
     @GtkTemplate.Callback
     def load_cover_clicked(self, widget):
         if self.is_real_selection == 1:
             self.is_real_selection = 0
             model = Model.get_instance()
 
-            dialog = Gtk.FileChooserDialog('Please choose a file', self,
+            dialog = Gtk.FileChooserDialog('Please choose a file',
+                                           self,
                                            Gtk.FileChooserAction.OPEN,
-                                           (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
-                                            Gtk.STOCK_OPEN, Gtk.ResponseType.OK))
+                                           (Gtk.STOCK_CANCEL,
+                                            Gtk.ResponseType.CANCEL,
+                                            Gtk.STOCK_OPEN,
+                                            Gtk.ResponseType.OK
+                                            ))
 
             add_filters(dialog)
-
             response = dialog.run()
 
             if response == Gtk.ResponseType.OK:
@@ -304,4 +317,3 @@ class GabtagWindow(Gtk.ApplicationWindow):
                 model.set_data_lyrics(self.selectioned)
 
                 self.is_real_selection = 1
-
