@@ -35,14 +35,14 @@ class CrawlerDirectory(Thread):
                 file_list4.append(file)
                 i = 1
 
-        thread_mbz1 = Thread(target=self.data_crawler.get_data_from_online, args=(
-            file_list1, self.directory))  # Writing data
-        thread_mbz2 = Thread(target=self.data_crawler.get_data_from_online, args=(
-            file_list2, self.directory))
-        thread_mbz3 = Thread(target=self.data_crawler.get_data_from_online, args=(
-            file_list3, self.directory))
-        thread_mbz4 = Thread(target=self.data_crawler.get_data_from_online, args=(
-            file_list4, self.directory))
+        thread_mbz1 = Thread(target=self.data_crawler.get_data_from_online,
+                             args=(file_list1, self.directory))
+        thread_mbz2 = Thread(target=self.data_crawler.get_data_from_online,
+                             args=(file_list2, self.directory))
+        thread_mbz3 = Thread(target=self.data_crawler.get_data_from_online,
+                             args=(file_list3, self.directory))
+        thread_mbz4 = Thread(target=self.data_crawler.get_data_from_online,
+                             args=(file_list4, self.directory))
 
         thread_mbz1.start()
         thread_mbz2.start()

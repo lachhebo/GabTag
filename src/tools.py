@@ -30,21 +30,25 @@ def reorder_data(music_brainz_data):
         "year": ''}
 
     if len(music_brainz_data['recording-list']) >= 1:
-        file_tags['title'] = music_brainz_data['recording-list'][0]['title']
-        file_tags['artist'] = music_brainz_data['recording-list'][0]['artist-credit'][0]['artist']['name']
 
-        if 'disambiguation' in music_brainz_data['recording-list'][0]['artist-credit'][0]['artist']:
-            file_tags['genre'] = music_brainz_data['recording-list'][0]['artist-credit'][0]['artist'][
-                'disambiguation']
+        recording_list = music_brainz_data['recording-list'][0]
+        artist = recording_list['artist-credit'][0]['artist']
+        file_tags['title'] = recording_list['title']
+        file_tags['artist'] = artist['name']
+
+        if 'disambiguation' in artist:
+            file_tags['genre'] = artist['disambiguation']
         else:
             file_tags['genre'] = ''
 
-        if 'release-list' in music_brainz_data['recording-list'][0]:
-            for i in range(len(music_brainz_data['recording-list'][0]['release-list'])):
+        if 'release-list' in recording_list:
+            for i in range(len(recording_list['release-list'])):
                 try:
 
                     file_tags['cover'] = mb.get_image(
-                        mbid=music_brainz_data['recording-list'][0]['release-list'][i]['id'], coverid='front', size=250)
+                        mbid=recording_list['release-list'][i]['id'],
+                        coverid='front',
+                        size=250)
 
                     if type(file_tags) == bytes:
                         break
@@ -52,17 +56,14 @@ def reorder_data(music_brainz_data):
                 except mb.musicbrainz.ResponseError:
                     file_tags['cover'] = ''
 
-
             # album
-            file_tags['album'] = music_brainz_data['recording-list'][0]['release-list'][0]['release-group'][
-                'title']
-            file_tags['track'] = \
-                music_brainz_data['recording-list'][0]['release-list'][0]['medium-list'][0]['track-list'][0][
-                    'number']
-            if 'date' in music_brainz_data['recording-list'][0]['release-list'][0]:
-                file_tags['year'] = \
-                    music_brainz_data['recording-list'][0]['release-list'][0]['date'].split('-')[
-                        0]
+            release_list = recording_list['release-list'][0]
+            track = release_list['medium-list'][0]['track-list'][0]
+            file_tags['album'] = release_list['release-group']['title']
+            file_tags['track'] = track['number']
+
+            if 'date' in release_list:
+                file_tags['year'] = release_list['date'].split('-')[0]
             else:
                 file_tags['year'] = ''
         else:
@@ -117,7 +118,9 @@ def file_size_to_string(path_file):
 
 
 def music_length_to_string(length):
-    return str(int(length / 60)) + ' minutes ' + str(int(length % 60)) + ' seconds'
+    minutes = str(int(length / 60))
+    seconds = str(int(length % 60))
+    return minutes + ' minutes ' + seconds + ' seconds'
 
 
 def add_filters(dialog):

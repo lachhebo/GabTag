@@ -39,7 +39,8 @@ class Model:
 
         def update_directory(self, directory, store):
             """
-            we the user open a new directory, we remove all waiting modifications
+            we the user open a new directory, we remove all waiting
+            modifications
             """
             self.directory = directory
             self.update_list(store)
@@ -48,7 +49,8 @@ class Model:
 
         def reset_all(self, selection):
             """
-            Reset modification and reupdate the view,it suppose that something is selectioned (True)
+            Reset modification and reupdate the view,it suppose that something
+             is selectioned (True)
             """
             self.modification = {}
             self.view.erase()
@@ -76,7 +78,8 @@ class Model:
 
         def save_one(self, selection):
             """
-            Find the selected rows, set tags for each row and then save modification.
+            Find the selected rows, set tags for each row and then save
+            modification.
             We don't need to update the view after saving one file.
             """
             model, list_iter = selection.get_selected_rows()
@@ -99,15 +102,16 @@ class Model:
 
         def update_list(self, store):
             """
-            Erase the list in the tree view and then update it with filename with extension
-            handled by GabTag
+            Erase the list in the tree view and then update it with filename
+            with extension handled by GabTag
             """
 
             self.file_name = []
             store.clear()
 
             file_list = []
-            for (directory_path, directory_name, files_name) in walk(self.directory):
+            for (directory_path, directory_name,
+                 files_name) in walk(self.directory):
                 file_list.extend(files_name)
                 break
 
@@ -118,8 +122,8 @@ class Model:
 
         def update_view(self, selection):
             """
-            Erase the view and the current tag value then get tags for selected row (or rows)
-            and show them.
+            Erase the view and the current tag value then get tags for
+            selected row (or rows) and show them.
             """
 
             self.selection = selection
@@ -140,8 +144,13 @@ class Model:
             self.view.show_tags(self.tags_dictionary, multiple_line_selected)
 
             if data_scrapped is None:
-                self.view.show_mbz({'title': '', 'artist': '', 'album': '',
-                                    'track': '', 'year': '', 'genre': '', 'cover': ''})
+                self.view.show_mbz({'title': '',
+                                    'artist': '',
+                                    'album': '',
+                                    'track': '',
+                                    'year': '',
+                                    'genre': '',
+                                    'cover': ''})
 
                 length_selection = len(list_iteration)
                 file_selection = []
@@ -150,8 +159,12 @@ class Model:
                     name_file = model[list_iteration[i]][0]
                     file_selection.append(name_file)
 
-                thread_waiting_mbz = Thread(target=self.wait_for_mbz, args=(
-                    model, list_iteration, length_selection, file_selection, multiple_line_selected))
+                thread_waiting_mbz = Thread(target=self.wait_for_mbz,
+                                            args=(model,
+                                                  list_iteration,
+                                                  length_selection,
+                                                  file_selection,
+                                                  multiple_line_selected))
                 thread_waiting_mbz.start()
             else:
                 self.view.show_mbz(data_scrapped)
@@ -161,28 +174,60 @@ class Model:
             else:
                 self.view.show_lyrics(lyrics_scrapped)
 
-        def wait_for_mbz(self, model, list_iteration, len_selection, file_selection, multiple_line_selected):
+        def wait_for_mbz(self,
+                         model,
+                         list_iteration,
+                         len_selection,
+                         file_selection,
+                         multiple_line_selected):
+
             is_waiting_mbz = 1
+            selection_are_equal = is_selection_equal(self.selection,
+                                                     len_selection,
+                                                     file_selection)
 
-            while is_selection_equal(self.selection, len_selection, file_selection) and is_waiting_mbz == 1:
-                data_scrapped = self.data_crawler.get_tags(
-                    model, list_iteration, multiple_line_selected)
-                if data_scrapped is not None and is_selection_equal(self.selection, len_selection, file_selection):
+            while selection_are_equal and is_waiting_mbz == 1:
+
+                data_gat = self.data_crawler.get_tags(model,
+                                                      list_iteration,
+                                                      multiple_line_selected)
+
+                selection_are_equal2 = is_selection_equal(self.selection,
+                                                          len_selection,
+                                                          file_selection)
+
+                if data_gat is not None and selection_are_equal2:
                     is_waiting_mbz = 0
-                    self.view.show_mbz(data_scrapped)
+                    self.view.show_mbz(data_gat)
 
-        def wait_for_lyrics(self, model, list_iteration, len_selection, file_selection, multiple_line_selected):
+        def wait_for_lyrics(self,
+                            model,
+                            list_iteration,
+                            len_selection,
+                            file_selection,
+                            multiple_line_selected):
+
             is_waiting_lyrics = 1
+            selection_are_equal = is_selection_equal(self.selection,
+                                                     len_selection,
+                                                     file_selection)
 
-            while is_selection_equal(self.selection, len_selection, file_selection) and is_waiting_lyrics == 1:
-                lyrics_scrapped = self.data_crawler.get_lyrics(
-                    model, list_iteration, multiple_line_selected)
-                if lyrics_scrapped is not None and is_selection_equal(self.selection, len_selection, file_selection):
+            while selection_are_equal and is_waiting_lyrics == 1:
+
+                lyrics = self.data_crawler.get_lyrics(model,
+                                                      list_iteration,
+                                                      multiple_line_selected)
+
+                selection_are_equal2 = is_selection_equal(self.selection,
+                                                          len_selection,
+                                                          file_selection)
+
+                if lyrics is not None and selection_are_equal2:
                     is_waiting_lyrics = 0
-                    self.view.show_lyrics(lyrics_scrapped)
+                    self.view.show_lyrics(lyrics)
 
         def rename_files(self):
-
+            # TODO remove this useless function and use a correct one)
             file_list = []
             for (_, _, file_names) in walk(self.directory):
                 file_list.extend(file_names)
@@ -194,16 +239,23 @@ class Model:
                     new_name = {}
                     for key in self.tags_dictionary:
                         new_name[key] = audio.get_tag(key)
-                    os.rename(os.path.join(self.directory, name_file), os.path.join(
-                        self.directory,
-                        new_name['title'] + '-' + new_name['album'] + '-' + new_name['artist'] + audio.get_extension()))
-                    # TODO remove this useless function and use a correct one)
+
+                    path_string = new_name['title'] + '-'
+                    path_string = path_string + new_name['album'] + '-'
+                    path_string = path_string + new_name['artist']
+                    path_string = path_string + audio.get_extension()
+
+                    param2 = os.path.join(self.directory, path_string)
+                    param1 = os.path.join(self.directory, name_file)
+
+                    os.rename(param1, param2)
 
         def update_modifications(self, selection, tag_changed, new_value):
             """
-            If the file name is already a key in the directory, add or update the modified tags
-            else create a new key in modification
+            If the file name is already a key in the directory, add or update
+            the modified tags else create a new key in modification
             """
+
             model, list_iter = selection.get_selected_rows()
 
             name_file = model[list_iter][0]
@@ -328,8 +380,9 @@ class Model:
 
         def save_modifications(self, selection):
             """
-            For each key file in modification, we get the tags inside the nested dictionary and
-            integer them on the audio tag file. Eventually we save the audio tag file.
+            For each key file in modification, we get the tags inside
+            the nested dictionary and integer them on the audio tag file.
+            Eventually we save the audio tag file.
             """
             tree_handler = TreeView.get_instance()
 
@@ -349,8 +402,9 @@ class Model:
 
         def get_tags(self, model, list_iterator):
             """
-            First we get the selected rows, we get the tag value of the first row, if there are several
-            rows, we check the tag value inside them are the same as in the first row. If yes, those tags
+            First we get the selected rows, we get the tag value of the
+            first row, if there are several rows, we check the tag value
+            inside them are the same as in the first row. If yes, those tags
             value are shown.
             """
 
@@ -375,8 +429,14 @@ class Model:
                     audio = get_file_manager(name_file, self.directory)
                     for key in contkey_dico:
                         if contkey_dico[key] == 1:
-                            contkey_dico[key] = self.check_tag_equal_key_value(audio.check_tag_existence(
-                                key), audio.get_tag(key), name_file, key, self.tags_dictionary[key]["value"])
+
+                            value = self.check_tag_equal_key_value(
+                                        audio.check_tag_existence(key),
+                                        audio.get_tag(key), name_file,
+                                        key,
+                                        self.tags_dictionary[key]["value"])
+
+                            contkey_dico[key] = value
                 for key in contkey_dico:
                     if contkey_dico[key] == 0:
                         self.tags_dictionary[key]["value"] = ""
@@ -387,8 +447,8 @@ class Model:
 
         def check_dictionary(self, name_file):
             """
-            Check in the filename modification dictionary the existence of tags and
-            update the current list of tags with found values.
+            Check in the filename modification dictionary the existence of
+            tags and update the current list of tags with found values.
             """
 
             dict_tag_changed = {}
@@ -399,10 +459,16 @@ class Model:
                 if key in dict_tag_changed:
                     self.tags_dictionary[key]["value"] = dict_tag_changed[key]
 
-        def check_tag_equal_key_value(self, audio_key_exist, audio_tag_value, name_file, key, key_value):
+        def check_tag_equal_key_value(self,
+                                      audio_key_exist,
+                                      audio_tag_value,
+                                      name_file,
+                                      key,
+                                      key_value):
             """
-            We check that the tag 'key' is equal to key_value for name_file else we return 0.
-            We first look in modification then in the tag audio file.
+            We check that the tag 'key' is equal to key_value for name_file
+            else we return 0.We first look in modification then in the
+            tag audio file.
             """
 
             if name_file in self.modification:

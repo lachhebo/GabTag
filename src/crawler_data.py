@@ -1,8 +1,7 @@
-from os import walk
-
 import musicbrainzngs as mb
-from PyLyrics import *
-
+import requests
+from os import walk
+from PyLyrics import getLyrics
 from .audio_getter import is_extension_managed, get_file_manager
 from .tools import remove_extension, reorder_data
 from .treeview import TreeView
@@ -14,7 +13,10 @@ class DataCrawler:
     class __DataCrawler:
 
         def __init__(self):
-            mb.set_useragent('GabTag', version=__version__, contact='ismael.lachheb@protonmail.com')
+            mb.set_useragent(
+                'GabTag',
+                version=__version__,
+                contact='ismael.lachheb@protonmail.com')
             self.tag_finder = {}
             self.lyrics = {}
             self.view = View.get_instance()
@@ -37,24 +39,33 @@ class DataCrawler:
                     # Using tags title artist and album if they are present
                     if tags[0] != '' and tags[1] != 0:
                         try:
-                            gathered_data = mb.search_recordings(recording=tags[0], artistname=tags[1], limit=1)
-                            self.tag_finder[name_file] = reorder_data(gathered_data)
+                            gathered_data = mb.search_recordings(
+                                recording=tags[0], artistname=tags[1], limit=1)
+                            self.tag_finder[name_file] = reorder_data(
+                                gathered_data)
                             self.tree_view.add_crawled([name_file])
                         except mb.NetworkError:
                             pass
 
                     elif tags[1] == '':
                         try:
-                            self.tag_finder[name_file] = reorder_data(
-                                mb.search_recordings(recording=tags[0], release=tags[2], limit=1))
+                            records = mb.search_recordings(recording=tags[0],
+                                                           release=tags[2],
+                                                           limit=1)
+                            records = reorder_data(records)
+                            self.tag_finder[name_file] = records
                             self.tree_view.add_crawled([name_file])
                         except mb.NetworkError:
                             pass
 
                     elif tags[0] == '':
                         try:
-                            self.tag_finder[name_file] = reorder_data(mb.search_recordings(
-                                query=remove_extension(name_file), artistname=tags[1], limit=1))
+                            gathered_data = mb.search_recordings(
+                                query=remove_extension(name_file),
+                                artistname=tags[1],
+                                limit=1)
+                            reordered_data = reorder_data(gathered_data)
+                            self.tag_finder[name_file] = reordered_data
                             self.tree_view.add_crawled([name_file])
                         except mb.NetworkError:
                             self.tree_view.add_crawled([name_file])
@@ -72,12 +83,13 @@ class DataCrawler:
                     pass
                 else:
                     try:
-                        self.lyrics[name_file] = PyLyrics.getLyrics(
+                        self.lyrics[name_file] = getLyrics(
                             tags[1], tags[0])
                     except requests.exceptions.ConnectionError:
                         self.lyrics[name_file] = ''
                     except ValueError:
-                        self.lyrics[name_file] = 'Lyrics not available for this song or artist'
+                        messge = 'Lyrics not available for this song or artist'
+                        self.lyrics[name_file] = messge
 
         def update_data_crawled(self, modifications, directory):
             for name_file in modifications:
@@ -169,8 +181,10 @@ class DataCrawler:
                 for i in range(1, len(list_iterator)):
                     beta = model[list_iterator[i]][0]
                     if beta in self.tag_finder:
-                        for tag_iterator in ['artist', 'album', 'year', 'genre', 'cover']:
-                            if candidat[tag_iterator] != self.tag_finder[beta][tag_iterator]:
+                        _tags = ['artist', 'album', 'year', 'genre', 'cover']
+                        for tag_iterator in _tags:
+                            tag_test = self.tag_finder[beta][tag_iterator]
+                            if candidat[tag_iterator] != tag_test:
                                 candidat[tag_iterator] = ''
                         candidat['title'] = ''
                         candidat['track'] = ''

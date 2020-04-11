@@ -2,9 +2,10 @@ from mutagen.id3 import ID3, APIC
 from mutagen.mp3 import MP3
 
 from .audio_extension_handler import AudioExtensionHandler
-from .tools import get_extension_image, music_length_to_string, file_size_to_string
+from .tools import get_extension_image, music_length_to_string
+from .tools import file_size_to_string
 
-TAG_PARAMETER = {
+TAG_PARAMS = {
     'title': 'TIT2',
     'cover': 'APIC',
     'album': 'TALB',
@@ -18,8 +19,9 @@ TAG_PARAMETER = {
 
 class Mp3FileHandler(AudioExtensionHandler):
     """
-    This function treat MP3 tags, There is no reference of MP3 in the code elsewhere,
-    to handle a new file type, implement a similar class who is the children of AudioBasics
+    This function treat MP3 tags, There is no reference of MP3 in the
+    code elsewhere, to handle a new file type, implement a similar class
+    who is the children of AudioBasics.
     """
 
     @staticmethod
@@ -56,14 +58,15 @@ class Mp3FileHandler(AudioExtensionHandler):
 
     def get_tag_research(self):
         return [
-            self.get_one_tag(TAG_PARAMETER['title'], 'text'),
-            self.get_one_tag(TAG_PARAMETER['artist'], 'text'),
-            self.get_one_tag(TAG_PARAMETER['album'], 'text')
+            self.get_one_tag(TAG_PARAMS['title'], 'text'),
+            self.get_one_tag(TAG_PARAMS['artist'], 'text'),
+            self.get_one_tag(TAG_PARAMS['album'], 'text')
         ]
 
     def get_tag(self, tag_key):
         """
-        We handle tag using a switch, it is working well because it is basically the structure.
+        We handle tag using a switch, it is working well because it
+        is basically the structure.
         """
 
         if tag_key == 'cover':
@@ -84,11 +87,11 @@ class Mp3FileHandler(AudioExtensionHandler):
         elif tag_key == 'length':
             return music_length_to_string(self.audio.info.length)
         else:
-            return self.get_one_tag(TAG_PARAMETER[tag_key], 'text')
+            return self.get_one_tag(TAG_PARAMS[tag_key], 'text')
 
     def check_tag_existence(self, key):
         """ Every thing is in the title"""
-        return len(self.id3.getall(TAG_PARAMETER[key])) > 0
+        return len(self.id3.getall(TAG_PARAMS[key])) > 0
 
     def set_tag(self, tag_key, tag_value):
 
@@ -120,8 +123,9 @@ class Mp3FileHandler(AudioExtensionHandler):
                     )
                 )
         else:
-            self.id3.delall(TAG_PARAMETER[tag_key])
-            self.id3.add(globals()[TAG_PARAMETER[tag_key]](encoding=3, text=tag_value))
+            self.id3.delall(TAG_PARAMS[tag_key])
+            self.id3.add(globals()[TAG_PARAMS[tag_key]](encoding=3,
+                                                        text=tag_value))
 
     def save_modifications(self):
         """

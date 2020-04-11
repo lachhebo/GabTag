@@ -11,5 +11,6 @@ install:
   - pip install coverage codecov pytest-cov
 
 script:
+  - flake8
   - pytest --cov=./
   - codecov
