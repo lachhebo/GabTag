@@ -108,7 +108,7 @@ def _init_template(self, cls, base_init_template):
     # TODO: could disallow using a metaclass.. but this is good enough
     # .. if you disagree, feel free to fix it and issue a PR :)
     if self.__class__ is not cls:
-        raise TypeError("Inheritance from classes with @GtkTemplate decorators "
+        raise TypeError("Inheritance from classes with @GtkTemplate decorators"
                         "is not allowed at this time")
 
     connected_signals = set()
@@ -248,7 +248,9 @@ class _GtkTemplate(object):
         # - Prefer the resource path first
 
         try:
-            template_bytes = Gio.resources_lookup_data(self.ui, Gio.ResourceLookupFlags.NONE)
+            template_bytes = Gio.resources_lookup_data(
+                                            self.ui,
+                                            Gio.ResourceLookupFlags.NONE)
         except GLib.GError:
             ui = self.ui
             if isinstance(ui, (list, tuple)):
@@ -269,4 +271,3 @@ class _GtkTemplate(object):
 #    GtkTemplate = lambda c: c
 # else:
 GtkTemplate = _GtkTemplate
-

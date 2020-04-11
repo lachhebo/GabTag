@@ -17,10 +17,11 @@
 
 import gi
 import sys
-gi.require_version('Gtk', '3.0')
 
 from gi.repository import Gtk, Gio, GLib
 from .window import GabtagWindow
+
+gi.require_version('Gtk', '3.0')
 
 
 class Application(Gtk.Application):

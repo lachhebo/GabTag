@@ -1,14 +1,12 @@
 import io
 import math
-from threading import RLock
-
 import gi
+from threading import RLock
 from PIL import Image
-
 from . import gabtag_logger
-
-gi.require_version('Gtk', '3.0')
 from gi.repository import GdkPixbuf, GLib
+gi.require_version('Gtk', '3.0')
+
 
 verrou_tags = RLock()
 verrou_mbz = RLock()
@@ -18,7 +16,8 @@ verrou_lyrics = RLock()
 class View:
     class __View:
 
-        def __init__(self, tree_view, title, album, artist, genre, cover, track, year, length, size, mbz, lyrics):
+        def __init__(self, tree_view, title, album, artist, genre, cover,
+                     track, year, length, size, mbz, lyrics):
             """
             Here, we initialise the widget we are going to use in the future.
             """
@@ -75,13 +74,14 @@ class View:
 
                         try:
                             glib_bytes = GLib.Bytes.new(img.tobytes())
-                            pixbuf = GdkPixbuf.Pixbuf.new_from_bytes(glib_bytes,  # TODO ERROR HAPPENS WITH SOME COVER
-                                                                     GdkPixbuf.Colorspace.RGB,
-                                                                     False,
-                                                                     8,
-                                                                     img.width,
-                                                                     img.height,
-                                                                     len(img.getbands()) * img.width)
+                            pixbuf = GdkPixbuf.Pixbuf.new_from_bytes(
+                                                glib_bytes,
+                                                GdkPixbuf.Colorspace.RGB,
+                                                False,
+                                                8,
+                                                img.width,
+                                                img.height,
+                                                len(img.getbands())*img.width)
 
                             pixbuf = pixbuf.scale_simple(
                                 250, 250, GdkPixbuf.InterpType.BILINEAR)
@@ -148,16 +148,18 @@ class View:
                     width = math.sqrt(glib_bytes.get_size() / 3)
                     height = math.sqrt(glib_bytes.get_size() / 3)
 
-                pixbuf = GdkPixbuf.Pixbuf.new_from_bytes(glib_bytes,  # TODO ERROR HAPPENS WITH SOME COVER
-                                                         GdkPixbuf.Colorspace.RGB,
-                                                         False,
-                                                         8,
-                                                         width,
-                                                         height,
-                                                         len(img.getbands()) * img.width)
+                pixbuf = GdkPixbuf.Pixbuf.new_from_bytes(
+                                            glib_bytes,
+                                            GdkPixbuf.Colorspace.RGB,
+                                            False,
+                                            8,
+                                            width,
+                                            height,
+                                            len(img.getbands()) * img.width)
 
-                pixbuf = pixbuf.scale_simple(
-                    self.cover_width, self.cover_height, GdkPixbuf.InterpType.BILINEAR)
+                pixbuf = pixbuf.scale_simple(self.cover_width,
+                                             self.cover_height,
+                                             GdkPixbuf.InterpType.BILINEAR)
 
                 self.cover.set_from_pixbuf(pixbuf)
 
@@ -165,16 +167,18 @@ class View:
             with Image.open(name_file) as img:
                 glib_bytes = GLib.Bytes.new(img.tobytes())
 
-                pixbuf = GdkPixbuf.Pixbuf.new_from_bytes(glib_bytes,
-                                                         GdkPixbuf.Colorspace.RGB,
-                                                         False,
-                                                         8,
-                                                         img.width,
-                                                         img.height,
-                                                         len(img.getbands()) * img.width)
+                pixbuf = GdkPixbuf.Pixbuf.new_from_bytes(
+                                            glib_bytes,
+                                            GdkPixbuf.Colorspace.RGB,
+                                            False,
+                                            8,
+                                            img.width,
+                                            img.height,
+                                            len(img.getbands()) * img.width)
 
-                pixbuf = pixbuf.scale_simple(
-                    self.cover_width, self.cover_height, GdkPixbuf.InterpType.BILINEAR)
+                pixbuf = pixbuf.scale_simple(self.cover_width,
+                                             self.cover_height,
+                                             GdkPixbuf.InterpType.BILINEAR)
 
                 self.cover.set_from_pixbuf(pixbuf)
 
@@ -187,7 +191,8 @@ class View:
                 self.set_track_permission(
                     multiple_rows, tags_dict['track']['value'])
 
-                # Same thing for the labels # TODO show size and length for the concatenation of songs selectioned
+                # TODO show size and length for the concatenation of songs
+                # Same thing for the labels
                 self.set_size(multiple_rows, tags_dict['size']['value'])
                 self.set_length(multiple_rows, tags_dict['length']['value'])
 
@@ -198,7 +203,8 @@ class View:
                 self.year.set_text(tags_dict['year']['value'])
                 # TODO : print tags lyrics in case of missing internet lyrics
 
-                if tags_dict['cover']['value'] != '':  # A test to handle if there is a cover
+                # A test to handle if there is a cover
+                if tags_dict['cover']['value'] != '':
                     if tags_dict['cover']['value'] != self.last_cover:
                         # A test to detect bytes file
                         if type(tags_dict['cover']['value']) == bytes:
@@ -218,13 +224,16 @@ class View:
 
     __instance = None
 
-    def __init__(self, tree_view, title, album, artist, genre, cover, track, year, length, size, mbz, lyrics):
+    def __init__(self,
+                 tree_view, title, album, artist, genre, cover, track,
+                 year, length, size, mbz, lyrics):
         """ Virtually private constructor. """
         if View.__instance is not None:
             raise Exception('This class is a singleton!')
         else:
-            View.__instance = View.__View(
-                tree_view, title, album, artist, genre, cover, track, year, length, size, mbz, lyrics)
+            View.__instance = View.__View(tree_view, title, album, artist,
+                                          genre, cover, track, year, length,
+                                          size, mbz, lyrics)
 
     @staticmethod
     def get_instance():

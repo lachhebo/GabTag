@@ -1,6 +1,7 @@
 import gi
+from gi.repository import Gtk
+
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gio, Gtk
 
 
 class TreeView:
@@ -15,13 +16,19 @@ class TreeView:
                 self.view.set_model(self.store)
 
                 renderer = Gtk.CellRendererText()
-                column = Gtk.TreeViewColumn(
-                    'Name', renderer, text=0, weight=2, weight_set=True)
+                column = Gtk.TreeViewColumn('Name',
+                                            renderer,
+                                            text=0,
+                                            weight=2,
+                                            weight_set=True)
                 self.view.append_column(column)
 
                 renderer = Gtk.CellRendererText()
-                column = Gtk.TreeViewColumn(
-                    'Data Crawled', renderer, text=1, weight=2, weight_set=True)
+                column = Gtk.TreeViewColumn('Data Crawled',
+                                            renderer,
+                                            text=1,
+                                            weight=2,
+                                            weight_set=True)
                 self.view.append_column(column)
 
         def remove_crawled(self, name_files):

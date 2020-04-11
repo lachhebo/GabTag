@@ -37,7 +37,8 @@ class CrawlerModification(Thread):
                         [name_file], self.directory)
 
         else:
-            self.data_crawler.update_data_crawled(self.modification, self.directory)
+            self.data_crawler.update_data_crawled(self.modification,
+                                                  self.directory)
 
         if self.is_selection_equal_to(self.model.selection):
             model, list_iteration = self.model.selection.get_selected_rows()
@@ -55,7 +56,8 @@ class CrawlerModification(Thread):
             if self.is_selection_equal_to(self.model.selection):
                 if data_scrapped is not None:
                     self.model.view.show_mbz(data_scrapped)
-                if lyrics_scrapped is not None:  # TODO :Check why it happen to be None in some case :
+                # TODO :Check why it happen to be None in some case :
+                if lyrics_scrapped is not None:
                     self.model.view.show_lyrics(lyrics_scrapped)
         else:
             pass
