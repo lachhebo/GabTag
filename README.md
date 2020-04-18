@@ -37,8 +37,3 @@ The board is accessible here :
 
 https://trello.com/b/rlSeLAIB/gabtag-board
 
-## Support/Donation :
-
-If you like Gabtag and would like to support the development of this project, please donate below!
-
-[<img height="30" src="https://raw.githubusercontent.com/lachhebo/GabTag/screenshots/donate.png" alt="PayPal"/>](https://www.paypal.me/lachhebo)
