@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.22.1 -->
+<!-- Generated with glade 3.22.2 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
   <object class="GtkAdjustment" id="adjustment1">
@@ -187,6 +187,7 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="shadow_type">in</property>
+            <property name="min_content_width">460</property>
             <child>
               <object class="GtkTreeView" id="tree_view_id">
                 <property name="visible">True</property>
@@ -223,6 +224,8 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="shadow_type">in</property>
+            <property name="min_content_width">460</property>
+            <property name="max_content_width">300</property>
             <child>
               <object class="GtkViewport">
                 <property name="visible">True</property>
@@ -843,4 +846,3 @@
     </child>
   </template>
 </interface>
-
