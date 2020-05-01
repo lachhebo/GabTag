@@ -1,5 +1,5 @@
-mutagen==1.42.0
-pycairo>=1.11.1
+mutagen
+pycairo
 musicbrainzngs
 PyLyrics
 pygobject
