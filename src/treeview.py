@@ -15,21 +15,22 @@ class TreeView:
             if self.store is not None and self.view is not None:
                 self.view.set_model(self.store)
 
-                renderer = Gtk.CellRendererText()
-                column = Gtk.TreeViewColumn('Name',
-                                            renderer,
-                                            text=0,
-                                            weight=2,
-                                            weight_set=True)
-                self.view.append_column(column)
+                renderer_filename = Gtk.CellRendererText()
+                column_filename = Gtk.TreeViewColumn('filename',
+                                                     renderer_filename,
+                                                     text=0,
+                                                     weight=2,
+                                                     weight_set=True)
 
-                renderer = Gtk.CellRendererText()
-                column = Gtk.TreeViewColumn('Data Crawled',
-                                            renderer,
-                                            text=1,
-                                            weight=2,
-                                            weight_set=True)
-                self.view.append_column(column)
+                renderer_data = Gtk.CellRendererText()
+                column_data_gathered = Gtk.TreeViewColumn('data gathered',
+                                                          renderer_data,
+                                                          text=1,
+                                                          weight=2,
+                                                          weight_set=True)
+
+                self.view.append_column(column_data_gathered)
+                self.view.append_column(column_filename)
 
         def remove_crawled(self, name_files):
             line_number = -1
