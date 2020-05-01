@@ -1,7 +1,7 @@
 import musicbrainzngs as mb
 import requests
 from os import walk
-from PyLyrics import getLyrics
+from PyLyrics import PyLyrics
 from .audio_getter import is_extension_managed, get_file_manager
 from .tools import remove_extension, reorder_data
 from .treeview import TreeView
@@ -83,7 +83,7 @@ class DataCrawler:
                     pass
                 else:
                     try:
-                        self.lyrics[name_file] = getLyrics(
+                        self.lyrics[name_file] = PyLyrics.getLyrics(
                             tags[1], tags[0])
                     except requests.exceptions.ConnectionError:
                         self.lyrics[name_file] = ''
