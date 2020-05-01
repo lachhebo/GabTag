@@ -1,4 +1,5 @@
-from mutagen.id3 import ID3, APIC
+from mutagen.id3 import ID3, TIT2, APIC, TALB, TPE1  # noqa:F401
+from mutagen.id3 import TCON, TRCK, TDRC, USLT   # noqa:F401
 from mutagen.mp3 import MP3
 
 from .audio_extension_handler import AudioExtensionHandler
