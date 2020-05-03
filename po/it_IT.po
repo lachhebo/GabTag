@@ -142,7 +142,7 @@ msgstr "Lunghezza"
 
 #: src/window.ui:538
 msgid "Size"
-msgstr "Dmensione"
+msgstr "Dimensione"
 
 #: src/window.ui:575
 msgid "Reset Modification"
