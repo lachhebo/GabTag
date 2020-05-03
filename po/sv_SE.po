@@ -1,0 +1,208 @@
+# Swedish translation for GabTag.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the gabtag package.
+# Åke Engelbrektson <eson@svenskasprakfiler.se>, 2020.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: gabtag\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-06-06 15:04-0400\n"
+"PO-Revision-Date: 2020-05-02 14:43+0200\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.0.6\n"
+"Last-Translator: Åke Engelbrektson <eson@svenskasprakfiler.se>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: sv_SE\n"
+
+#: data/com.github.lachhebo.Gabtag.desktop.in:3
+msgid "Gabtag"
+msgstr "Gabtag"
+
+#: data/com.github.lachhebo.Gabtag.desktop.in:4
+msgid "Modify audio tags"
+msgstr "Ändra ljudtaggar"
+
+#: data/com.github.lachhebo.Gabtag.desktop.in:5
+msgid "com.github.lachhebo.Gabtag"
+msgstr "com.github.lachhebo.Gabtag"
+
+#: data/com.github.lachhebo.Gabtag.appdata.xml.in:4
+msgid "GabTag"
+msgstr "GabTag"
+
+#: data/com.github.lachhebo.Gabtag.appdata.xml.in:14
+msgid "An audio tagging tool"
+msgstr "Ett ljudtaggningsverktyg"
+
+#: data/com.github.lachhebo.Gabtag.appdata.xml.in:16
+msgid ""
+"GabTag is a Linux audio tagging tool written in GTK 3, which makes it very "
+"suitable for gtk based desktop users."
+msgstr ""
+"GabTag är ett ljudtaggningsverktyg för Linux, skrivet i GTK 3, vilket är "
+"mycket passande för användare av GTK-baserade skrivbord."
+
+#: data/com.github.lachhebo.Gabtag.appdata.xml.in:20
+msgid ""
+"It allow users to select several file and modify their tags, It is also "
+"possible to directly let GabTag automatically find tags and lyrics for the "
+"audio files using online data."
+msgstr ""
+"Det låter användare välja ett flertal filer och tagga om dem. Det är också "
+"möjligt att låta GabTag automatiskt hitta taggar och låttexter för "
+"ljudfilerna, med online-data."
+
+#: data/com.github.lachhebo.Gabtag.appdata.xml.in:24
+msgid ""
+"GabTag is written in Python 3, uses Mutagen to handle audio tag. It also "
+"uses MusicBrainz database to find audio tags and lyrics.wikia.com to find "
+"lyrics online."
+msgstr ""
+"GabTag är skrivet i Python 3, använder Mutagen för att hantera ljudtaggar. "
+"Det använder också MusicBrainz databas för att hitta ljudtaggar och lyrics."
+"wikia.com för att hitta låttexter på nätet."
+
+#: data/com.github.lachhebo.Gabtag.appdata.xml.in:38
+msgid "Ismaël Lachheb"
+msgstr "Ismaël Lachheb"
+
+#: src/window.ui:17 src/window.ui:97
+msgid "About"
+msgstr "Om"
+
+#: src/window.ui:21
+msgid "gabtag is an  open-source audio tagging tool written in gtk3."
+msgstr ""
+"GabTag är ett öppen-källkodsverktyg för taggning av ljud, skrivet i GTK3."
+
+#: src/window.ui:69
+msgid "Reset files"
+msgstr "Återställ filerna"
+
+#: src/window.ui:83
+msgid "Set online tags"
+msgstr "Använd online-taggar"
+
+#: src/window.ui:132
+msgid "Add a Folder to modify tags"
+msgstr "Lägg till en mapp för att ändra taggar"
+
+#: src/window.ui:134
+msgid "Open"
+msgstr "Öppna"
+
+#: src/window.ui:167
+msgid "Save All"
+msgstr "Spara alla"
+
+#: src/window.ui:211
+msgid "Name"
+msgstr "Namn"
+
+#: src/window.ui:252
+msgid "Album"
+msgstr "Album"
+
+#: src/window.ui:270
+msgid "Artist"
+msgstr "Artist"
+
+#: src/window.ui:288
+msgid "Genre"
+msgstr "Genre"
+
+#: src/window.ui:306
+msgid "Title"
+msgstr "Titel"
+
+#: src/window.ui:394
+msgid "Cover"
+msgstr "Omslag"
+
+#: src/window.ui:406
+msgid "Load"
+msgstr "Läs in"
+
+#: src/window.ui:410
+msgid "Load a cover (jpeg or png)"
+msgstr "Läs in ett omslag (jpeg eller png)"
+
+#: src/window.ui:453
+msgid "Track number"
+msgstr "Spårnummer"
+
+#: src/window.ui:471
+msgid "Year"
+msgstr "År"
+
+#: src/window.ui:523
+msgid "Length"
+msgstr "Längd"
+
+#: src/window.ui:538
+msgid "Size"
+msgstr "Storlek"
+
+#: src/window.ui:575
+msgid "Reset Modification"
+msgstr "Återställ ändringar"
+
+#: src/window.ui:579
+msgid "Remove modification made to fields."
+msgstr "Ta bort gjorda ändringar i fälten."
+
+#: src/window.ui:593
+msgid "Save Modification"
+msgstr "Spara ändringar"
+
+#: src/window.ui:598
+msgid "Save the modification made to this file."
+msgstr "Spara ändringar gjorda i denna fil."
+
+#: src/window.ui:619
+msgid "MusicBrainz Tags"
+msgstr "MusicBrainz taggar"
+
+#: src/window.ui:637
+msgid "Title "
+msgstr "Titel "
+
+#: src/window.ui:658
+msgid "Album "
+msgstr "Album "
+
+#: src/window.ui:678
+msgid "Artist "
+msgstr "Artist "
+
+#: src/window.ui:698
+msgid "Genre "
+msgstr "Genre "
+
+#: src/window.ui:718
+msgid "Track  "
+msgstr "Spår  "
+
+#: src/window.ui:738
+msgid "Year "
+msgstr "År "
+
+#: src/window.ui:753
+msgid "Set Tags"
+msgstr "Använd taggar"
+
+#: src/window.ui:757
+msgid "Use the MusicBrainz tags"
+msgstr "Använd MusicBrainz taggar"
+
+#: src/window.ui:789
+msgid "Lyrics "
+msgstr "Texter "
+
+#: src/window.ui:814
+msgid "Set Lyrics"
+msgstr "Använd text"
