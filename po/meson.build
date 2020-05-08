@@ -1,1 +1,1 @@
-i18n.gettext('src', preset: 'glib')
+i18n.gettext('gabtag', preset: 'glib')
