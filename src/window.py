@@ -23,55 +23,67 @@ from .crawler_directory import CrawlerDirectory
 from .view import View
 from .version import __version__
 from .model import Model
-from .gi_composites import GtkTemplate
 from gi.repository import Gtk
 
 import gi
 gi.require_version('Gtk', '3.0')
 
 
-@GtkTemplate(ui='/com/github/lachhebo/Gabtag/window.ui')
+@Gtk.Template(resource_path='/com/github/lachhebo/Gabtag/window.ui')
 class GabtagWindow(Gtk.ApplicationWindow):
     __gtype_name__ = 'GabtagWindow'
 
     # HeaderBar
-    id_popover_menu = GtkTemplate.Child()
-    id_about_window = GtkTemplate.Child()
+    id_popover_menu = Gtk.Template.Child()
+    id_about_window = Gtk.Template.Child()
 
     # Table
-    tree_view_id = GtkTemplate.Child()
-    liststore1 = GtkTemplate.Child()
+    tree_view_id = Gtk.Template.Child()
+    liststore1 = Gtk.Template.Child()
 
     # Tags
-    id_album = GtkTemplate.Child()
-    id_artist = GtkTemplate.Child()
-    id_type = GtkTemplate.Child()
-    id_title = GtkTemplate.Child()
-    id_cover = GtkTemplate.Child()
-    id_year = GtkTemplate.Child()
-    id_track = GtkTemplate.Child()
+    id_album = Gtk.Template.Child()
+    id_artist = Gtk.Template.Child()
+    id_type = Gtk.Template.Child()
+    id_title = Gtk.Template.Child()
+    id_cover = Gtk.Template.Child()
+    id_year = Gtk.Template.Child()
+    id_track = Gtk.Template.Child()
 
     # Infos
-    id_info_length = GtkTemplate.Child()
-    id_info_size = GtkTemplate.Child()
+    id_info_length = Gtk.Template.Child()
+    id_info_size = Gtk.Template.Child()
 
     # MusicBrainz
 
-    id_album_mbz = GtkTemplate.Child()
-    id_artist_mbz = GtkTemplate.Child()
-    id_genre_mbz = GtkTemplate.Child()
-    id_title_mbz = GtkTemplate.Child()
-    id_cover_mbz = GtkTemplate.Child()
-    id_year_mbz = GtkTemplate.Child()
-    id_track_mbz = GtkTemplate.Child()
+    id_album_mbz = Gtk.Template.Child()
+    id_artist_mbz = Gtk.Template.Child()
+    id_genre_mbz = Gtk.Template.Child()
+    id_title_mbz = Gtk.Template.Child()
+    id_cover_mbz = Gtk.Template.Child()
+    id_year_mbz = Gtk.Template.Child()
+    id_track_mbz = Gtk.Template.Child()
 
     # Pylyrics
 
-    id_lyrics = GtkTemplate.Child()
+    id_lyrics = Gtk.Template.Child()
+
+    # Buttons
+
+    but_open = Gtk.Template.Child()
+    id_reset_all = Gtk.Template.Child()
+    id_auto_tag = Gtk.Template.Child()
+    id_about = Gtk.Template.Child()
+    but_save = Gtk.Template.Child()
+    id_load_cover = Gtk.Template.Child()
+    id_reset_one = Gtk.Template.Child()
+    id_save_one = Gtk.Template.Child()
+    id_setmbz_but = Gtk.Template.Child()
+    id_st_lyrics_but = Gtk.Template.Child()
+    tree_selection_id = Gtk.Template.Child()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.init_template()
 
         View(
             self.tree_view_id,
@@ -101,7 +113,26 @@ class GabtagWindow(Gtk.ApplicationWindow):
         self.selectioned = None
         self.is_opened_directory = False
 
-    @GtkTemplate.Callback
+        # Connect Buttons
+
+        self.id_reset_all.connect('clicked', self.reset_all_clicked)
+        self.id_auto_tag.connect('clicked', self.on_set_online_tags)
+        self.id_about.connect('clicked', self.about_clicked)
+        self.but_open.connect('clicked', self.open_clicked)
+        self.but_save.connect('clicked', self.but_saved_cliqued)
+        self.id_load_cover.connect('clicked', self.load_cover_clicked)
+        self.id_reset_one.connect('clicked', self.reset_all_clicked)
+        self.id_save_one.connect('clicked', self.clicked_save_one)
+        self.id_setmbz_but.connect('clicked', self.on_set_mbz)
+        self.id_st_lyrics_but.connect('clicked', self.on_set_lyrics)
+        self.tree_selection_id.connect('changed', self.selected_changed)
+        self.id_album.connect('changed', self.album_changed)
+        self.id_artist.connect('changed', self.artist_changed)
+        self.id_type.connect('changed', self.type_changed)
+        self.id_title.connect('changed', self.title_changed)
+        self.id_year.connect('changed', self.year_changed)
+        self.id_track.connect('changed', self.track_changed)
+
     def but_saved_cliqued(self, widget):
         if self.is_opened_directory:
             model = Model.get_instance()
@@ -112,7 +143,6 @@ class GabtagWindow(Gtk.ApplicationWindow):
             model.save_modifications(self.selectioned)
             thread.start()
 
-    @GtkTemplate.Callback
     def clicked_save_one(self, widget):
         if self.is_real_selection == 1:
             self.is_real_selection = 0
@@ -125,7 +155,6 @@ class GabtagWindow(Gtk.ApplicationWindow):
             thread.start()
             self.is_real_selection = 1
 
-    @GtkTemplate.Callback
     def reset_one_clicked(self, widget):
         if self.is_real_selection == 1:
             self.is_real_selection = 0
@@ -133,7 +162,6 @@ class GabtagWindow(Gtk.ApplicationWindow):
             model.reset_one(self.selectioned)
             self.is_real_selection = 1
 
-    @GtkTemplate.Callback
     def reset_all_clicked(self, widget):
         if self.is_real_selection == 1:
             self.is_real_selection = 0
@@ -141,13 +169,11 @@ class GabtagWindow(Gtk.ApplicationWindow):
             model.reset_all(self.selectioned)
             self.is_real_selection = 1
 
-    @GtkTemplate.Callback
     def about_clicked(self, widget):
         self.id_about_window.set_version(__version__)
         self.id_about_window.run()
         self.id_about_window.hide()
 
-    @GtkTemplate.Callback
     def open_clicked(self, widget):
         self.is_real_selection = 0
         dialog = Gtk.FileChooserDialog('Please choose a folder',
@@ -177,11 +203,9 @@ class GabtagWindow(Gtk.ApplicationWindow):
 
         self.is_real_selection = 1
 
-    @GtkTemplate.Callback
     def on_menu_but_toggled(self, widget):
         pass
 
-    @GtkTemplate.Callback
     def title_changed(self, widget):
         if self.is_real_selection == 1:
             self.is_real_selection = 0
@@ -190,7 +214,6 @@ class GabtagWindow(Gtk.ApplicationWindow):
                 self.selectioned, 'title', widget.get_text())
             self.is_real_selection = 1
 
-    @GtkTemplate.Callback
     def artist_changed(self, widget):
         if self.is_real_selection == 1:
             self.is_real_selection = 0
@@ -199,7 +222,6 @@ class GabtagWindow(Gtk.ApplicationWindow):
                 self.selectioned, 'artist', widget.get_text())
             self.is_real_selection = 1
 
-    @GtkTemplate.Callback
     def album_changed(self, widget):
         if self.is_real_selection == 1:
             self.is_real_selection = 0
@@ -208,7 +230,6 @@ class GabtagWindow(Gtk.ApplicationWindow):
                 self.selectioned, 'album', widget.get_text())
             self.is_real_selection = 1
 
-    @GtkTemplate.Callback
     def type_changed(self, widget):
         if self.is_real_selection == 1:
             self.is_real_selection = 0
@@ -217,7 +238,6 @@ class GabtagWindow(Gtk.ApplicationWindow):
                 self.selectioned, 'genre', widget.get_text())
             self.is_real_selection = 1
 
-    @GtkTemplate.Callback
     def track_changed(self, widget):
         if self.is_real_selection == 1:
             self.is_real_selection = 0
@@ -226,7 +246,6 @@ class GabtagWindow(Gtk.ApplicationWindow):
                 self.selectioned, 'track', widget.get_text())
             self.is_real_selection = 1
 
-    @GtkTemplate.Callback
     def year_changed(self, widget):
         if self.is_real_selection == 1:
             self.is_real_selection = 0
@@ -235,7 +254,6 @@ class GabtagWindow(Gtk.ApplicationWindow):
                 self.selectioned, 'year', widget.get_text())
             self.is_real_selection = 1
 
-    @GtkTemplate.Callback
     def load_cover_clicked(self, widget):
         if self.is_real_selection == 1:
             self.is_real_selection = 0
@@ -262,7 +280,6 @@ class GabtagWindow(Gtk.ApplicationWindow):
             dialog.destroy()
             self.is_real_selection = 1
 
-    @GtkTemplate.Callback
     def selected_changed(self, selection):
         if self.is_real_selection == 1:
             self.is_real_selection = 0
@@ -273,7 +290,6 @@ class GabtagWindow(Gtk.ApplicationWindow):
 
             self.is_real_selection = 1
 
-    @GtkTemplate.Callback
     def on_set_mbz(self, widget):
         if self.is_real_selection == 1:
             self.is_real_selection = 0
@@ -284,16 +300,6 @@ class GabtagWindow(Gtk.ApplicationWindow):
 
             self.is_real_selection = 1
 
-    @GtkTemplate.Callback
-    def on_rename_files(self, widget):
-        if self.is_opened_directory:
-            self.is_real_selection = 0
-            model = Model.get_instance()
-            model.rename_files()
-            model.update_list(self.liststore1)
-            self.is_real_selection = 1
-
-    @GtkTemplate.Callback
     def on_set_online_tags(self, widget):
         if self.is_opened_directory:
             if self.is_real_selection == 1:
@@ -307,7 +313,6 @@ class GabtagWindow(Gtk.ApplicationWindow):
 
                 self.is_real_selection = 1
 
-    @GtkTemplate.Callback
     def on_set_lyrics(self, widget):
         if self.is_opened_directory:
             if self.is_real_selection == 1:
