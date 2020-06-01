@@ -10,10 +10,16 @@ destdir = environ.get('DESTDIR', '')
 # Package managers set this so we don't need to run
 if not destdir:
     print('Updating icon cache...')
-    call(['gtk-update-icon-cache', '-qtf',
+    call(['gtk-update-icon-cache', '-tf',
           path.join(datadir,
                     'icons',
                     'hicolor')])
+
+    print('Prepare symbolic icon ...')
+    call(['gtk-encode-symbolic-svg','-o',
+            path.join(datadir, 'icons', 'hicolor', 'symbolic', 'apps'),
+            path.join(datadir,'icons','hicolor','symbolic','apps', 'com.github.lachhebo.Gabtag-symbolic.svg'),
+            '16x16'])
 
     print('Updating desktop database...')
     call(['update-desktop-database', '-q', path.join(datadir, 'applications')])
