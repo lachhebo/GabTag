@@ -22,4 +22,4 @@ git clone https://github.com/flathub/com.github.lachhebo.Gabtag.git
 cd com.github.lachhebo.Gabtag
 sed -i 's/"tag": "'${LATEST_TAG}'"/"tag": "'${RELEASE_NUMBER}'"/g' com.github.lachhebo.Gabtag.json
 git commit -am "upgrade to new verson "${RELEASE_NUMBER}
-git push https://lachhebo:{GITHUB_PASSWORD}@github.com/flathub/com.github.lachhebo.Gabtag.git
+git push https://lachhebo:{PASSWORD_DEPLOYEMENT}@github.com/flathub/com.github.lachhebo.Gabtag.git
