@@ -13,7 +13,7 @@ sed -i 's/'${LATEST_VERSION}'/'${RELEASE_NUMBER}'/g'  src/version.py
 ## commit those modification and create a new release tag
 git commit -am 'upgrade version to '${RELEASE_NUMBER}
 git tag -a ${RELEASE_NUMBER} -m "version"${RELEASE_NUMBER}
-git push --tags
+git push
 
 
 ## clone flathub repo and update manifest to match latest tags
@@ -22,4 +22,4 @@ git clone https://github.com/flathub/com.github.lachhebo.Gabtag.git
 cd com.github.lachhebo.Gabtag
 sed -i 's/"tag": "'${LATEST_TAG}'"/"tag": "'${RELEASE_NUMBER}'"/g' com.github.lachhebo.Gabtag.json
 git commit -am "upgrade to new verson "${RELEASE_NUMBER}
-git push
+git push https://lachhebo:{GITHUB_PASSWORD}@github.com/flathub/com.github.lachhebo.Gabtag.git
