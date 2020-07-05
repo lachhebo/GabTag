@@ -16,10 +16,20 @@ if not destdir:
                     'hicolor')])
 
     print('Prepare symbolic icon ...')
-    call(['gtk-encode-symbolic-svg','-o',
-            path.join(datadir, 'icons', 'hicolor', 'symbolic', 'apps'),
-            path.join(datadir,'icons','hicolor','symbolic','apps', 'com.github.lachhebo.Gabtag-symbolic.svg'),
-            '16x16'])
+    call(['gtk-encode-symbolic-svg',
+          '-o',
+          path.join(datadir,
+                    'icons',
+                    'hicolor',
+                    'symbolic',
+                    'apps'),
+          path.join(datadir,
+                    'icons',
+                    'hicolor',
+                    'symbolic',
+                    'apps',
+                    'com.github.lachhebo.Gabtag-symbolic.svg'),
+          '16x16'])
 
     print('Updating desktop database...')
     call(['update-desktop-database', '-q', path.join(datadir, 'applications')])

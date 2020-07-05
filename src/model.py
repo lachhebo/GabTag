@@ -429,14 +429,14 @@ class Model:
                     audio = get_file_manager(name_file, self.directory)
                     for key in contkey_dico:
                         if contkey_dico[key] == 1:
-
-                            value = self.check_tag_equal_key_value(
-                                        audio.check_tag_existence(key),
-                                        audio.get_tag(key), name_file,
-                                        key,
-                                        self.tags_dictionary[key]["value"])
-
-                            contkey_dico[key] = value
+                            if key not in ["length", "size"]:
+                                value = self.check_tag_equal_key_value(
+                                            audio.check_tag_existence(key),
+                                            audio.get_tag(key),
+                                            name_file,
+                                            key,
+                                            self.tags_dictionary[key]["value"])
+                                contkey_dico[key] = value
                 for key in contkey_dico:
                     if contkey_dico[key] == 0:
                         self.tags_dictionary[key]["value"] = ""

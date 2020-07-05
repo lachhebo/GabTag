@@ -1,5 +1,4 @@
 import os
-
 import gi
 import musicbrainzngs as mb
 from gi.repository import Gtk
