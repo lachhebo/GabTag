@@ -3,6 +3,10 @@ LATEST_VERSION=$(git describe --tags --abbrev=0 2>/dev/null | sed -En 's/v//p')
 LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null) 
 RELEASE_NUMBER="${1}"
 
+
+git config --global user.email "ismael.lachheb@protonmail.com"
+git config --global user.name "Ismaël Lachheb"
+
 ## update version information
 
 sed -i 's/version="'${LATEST_VERSION}'"/version="'${RELEASE_NUMBER}'"/g' data/com.github.lachhebo.Gabtag.appdata.xml.in
