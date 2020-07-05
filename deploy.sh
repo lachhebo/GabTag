@@ -14,6 +14,7 @@ sed -i 's/'${LATEST_VERSION}'/'${RELEASE_NUMBER}'/g'  src/version.py
 git commit -am 'upgrade version to '${RELEASE_NUMBER}
 git tag -a ${RELEASE_NUMBER} -m "version"${RELEASE_NUMBER}
 git push
+git push --tags
 
 
 ## clone flathub repo and update manifest to match latest tags
