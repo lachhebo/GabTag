@@ -5,3 +5,6 @@ PyLyrics
 pygobject
 Pillow
 flake8
+pytest 
+pytest-coverage
+pytest-bdd

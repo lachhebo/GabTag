@@ -1,4 +1,3 @@
-import os
 from os import walk
 from threading import Thread
 
@@ -10,7 +9,7 @@ from .view import View
 
 
 class Model:
-    class __Model:
+    class _Model:
 
         def __init__(self):
             """
@@ -49,14 +48,15 @@ class Model:
 
         def reset_all(self, selection):
             """
-            Reset modification and reupdate the view,it suppose that something
-             is selectioned (True)
+            Cancel modification before it being saved
+            and reupdate the view,it supposes that something
+            is selectioned (True)
             """
             self.modification = {}
             self.view.erase()
             self.update_view(selection)
 
-            tree_handler = TreeView.get_instance()
+            tree_handler = TreeView.get_instance()  # TODO: in self ?
             tree_handler.remove_bold_font(self.file_name)
 
         def reset_one(self, selection):
@@ -226,30 +226,6 @@ class Model:
                     is_waiting_lyrics = 0
                     self.view.show_lyrics(lyrics)
 
-        def rename_files(self):
-            # TODO remove this useless function and use a correct one)
-            file_list = []
-            for (_, _, file_names) in walk(self.directory):
-                file_list.extend(file_names)
-                break
-
-            for name_file in file_list:
-                if is_extension_managed(name_file):
-                    audio = get_file_manager(name_file, self.directory)
-                    new_name = {}
-                    for key in self.tags_dictionary:
-                        new_name[key] = audio.get_tag(key)
-
-                    path_string = new_name['title'] + '-'
-                    path_string = path_string + new_name['album'] + '-'
-                    path_string = path_string + new_name['artist']
-                    path_string = path_string + audio.get_extension()
-
-                    param2 = os.path.join(self.directory, path_string)
-                    param1 = os.path.join(self.directory, name_file)
-
-                    os.rename(param1, param2)
-
         def update_modifications(self, selection, tag_changed, new_value):
             """
             If the file name is already a key in the directory, add or update
@@ -321,31 +297,22 @@ class Model:
                 multiple_line_selected = 0
 
             if len(list_iterator) == 1:
-                lyrics = self.data_crawler.get_lyrics(
-                    model, list_iterator, multiple_line_selected)
+                lyrics = self.data_crawler.get_lyrics(model,
+                                                      list_iterator,
+                                                      multiple_line_selected)
                 self.update_modifications(selection, 'lyrics', lyrics)
 
         def set_data_crawled(self, selection):
 
-            model, list_iterator = selection.get_selected_rows()
-
-            if len(list_iterator) > 1:
-                multiple_line_selected = 1
-            else:
-                multiple_line_selected = 0
-
-            data_scrapped = self.data_crawler.get_tags(
-                model, list_iterator, multiple_line_selected)
-
-            new_data_scrapped = {}
+            data_scrapped, new_data = self._preprocess_data_scrapped(selection)
 
             for key in data_scrapped:
                 if data_scrapped[key] != "":
-                    new_data_scrapped[key] = data_scrapped[key]
+                    new_data[key] = data_scrapped[key]
 
-            for key in new_data_scrapped:
+            for key in new_data:
                 self.update_modifications(
-                    selection, key, new_data_scrapped[key])
+                    selection, key, new_data[key])
 
         def update_modification_name_file(self, name_file, key, new_value):
             self.modification[name_file][key] = new_value
@@ -431,11 +398,11 @@ class Model:
                         if contkey_dico[key] == 1:
                             if key not in ["length", "size"]:
                                 value = self.check_tag_equal_key_value(
-                                            audio.check_tag_existence(key),
-                                            audio.get_tag(key),
-                                            name_file,
-                                            key,
-                                            self.tags_dictionary[key]["value"])
+                                    audio.check_tag_existence(key),
+                                    audio.get_tag(key),
+                                    name_file,
+                                    key,
+                                    self.tags_dictionary[key]["value"])
                                 contkey_dico[key] = value
                 for key in contkey_dico:
                     if contkey_dico[key] == 0:
@@ -466,8 +433,9 @@ class Model:
                                       key,
                                       key_value):
             """
-            We check that the tag 'key' is equal to key_value for name_file
-            else we return 0.We first look in modification then in the
+            We check that the tag 'key' is equal to key_value
+            for name_file and return 1 else we return 0.We first
+            look in modification then in the
             tag audio file.
             """
 
@@ -484,18 +452,30 @@ class Model:
             else:
                 return 1
 
-    __instance = None
+        def _preprocess_data_scrapped(self, selection):
+            model, list_iterator = selection.get_selected_rows()
+            if len(list_iterator) > 1:
+                multiple_line_selected = 1
+            else:
+                multiple_line_selected = 0
+            data_scrapped = self.data_crawler.get_tags(model,
+                                                       list_iterator,
+                                                       multiple_line_selected)
+            new_data_scrapped = {}
+            return data_scrapped, new_data_scrapped
+
+    _instance = None
 
     def __init__(self):
         """ Virtually private constructor. """
-        if Model.__instance is not None:
+        if Model._instance is not None:
             raise Exception("This class is a singleton!")
         else:
-            Model.__instance = Model.__Model()
+            Model._instance = Model._Model()
 
     @staticmethod
     def get_instance():
         """ Static access method. """
-        if Model.__instance is None:
+        if Model._instance is None:
             Model()
-        return Model.__instance
+        return Model._instance

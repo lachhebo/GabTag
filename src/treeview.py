@@ -6,7 +6,7 @@ gi.require_version('Gtk', '3.0')
 
 class TreeView:
 
-    class __TreeView:
+    class _TreeView:
 
         def __init__(self, store, view):
             self.store = store
@@ -104,7 +104,7 @@ class TreeView:
         if TreeView.__instance is not None:
             raise Exception('This class is a singleton!')
         else:
-            TreeView.__instance = TreeView.__TreeView(store, view)
+            TreeView.__instance = TreeView._TreeView(store, view)
 
     @staticmethod
     def get_instance():

@@ -1,7 +1,7 @@
 {
     "app-id": "com.github.lachhebo.Gabtag",
     "runtime": "org.gnome.Platform",
-    "runtime-version": "3.38",
+    "runtime-version": "40",
     "sdk": "org.gnome.Sdk",
     "command": "gabtag",
     "finish-args": [
@@ -125,8 +125,8 @@
             "builddir": true,
             "sources": [
                 {
-                    "type": "git",
-                    "url": "file:///home/isma/Projets/GabTag"
+                    "type": "dir",
+                    "path": "/home/ismail/Projects/GabTag"
                 }
             ]
         }
