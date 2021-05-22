@@ -18,10 +18,10 @@
 import gi
 import sys
 
+gi.require_version('Gtk', '3.0')  # noqa: E402
+
 from gi.repository import Gtk, Gio, GLib
 from .window import GabtagWindow
-
-gi.require_version('Gtk', '3.0')
 
 
 class Application(Gtk.Application):
