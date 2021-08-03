@@ -297,21 +297,6 @@ class Model:
 
         return False
 
-    def set_data_lyrics(self, selection):
-
-        model, list_iterator = selection.get_selected_rows()
-
-        if len(list_iterator) > 1:
-            multiple_line_selected = 1
-        else:
-            multiple_line_selected = 0
-
-        if len(list_iterator) == 1:
-            lyrics = self.data_crawler.get_lyrics(
-                model, list_iterator, multiple_line_selected
-            )
-            self.update_modifications(selection, "lyrics", lyrics)
-
     def set_data_crawled(self, selection):
 
         data_scrapped, new_data = self._preprocess_data_scrapped(selection)
@@ -323,7 +308,7 @@ class Model:
         for key in new_data:
             self.update_modifications(selection, key, new_data[key])
 
-    def update_modification_name_file(self, name_file, key, new_value):
+    def update_modification_name_file(self, name_file: str, key: str, new_value:str) -> None:
         self.modification[name_file][key] = new_value
 
         tree_handler = TREE_VIEW
@@ -356,7 +341,7 @@ class Model:
         for key in self.tags_dictionary:
             self.tags_dictionary[key]["value"] = ""
 
-    def save_modifications(self, selection):
+    def save_modifications(self):
         """
         For each key file in modification, we get the tags inside
         the nested dictionary and integer them on the audio tag file.
