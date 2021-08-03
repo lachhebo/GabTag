@@ -17,21 +17,25 @@
 
 from .tools import add_filters
 from .treeview import TreeView
-from .crawler_data import DataCrawler
+from .crawler_data import DATA_CRAWLER, DataCrawler
 from .crawler_modification import CrawlerModification
 from .crawler_directory import CrawlerDirectory
 from .view import View
 from .version import __version__
-from .model import Model
+from .model import MODEL, Model
 from gi.repository import Gtk
+from .logger import LOGGER
 
 import gi
-gi.require_version('Gtk', '3.0')
 
 
-@Gtk.Template(resource_path='/com/github/lachhebo/Gabtag/window.ui')
+logger = LOGGER
+gi.require_version("Gtk", "3.0")
+
+
+@Gtk.Template(resource_path="/com/github/lachhebo/Gabtag/window.ui")
 class GabtagWindow(Gtk.ApplicationWindow):
-    __gtype_name__ = 'GabtagWindow'
+    __gtype_name__ = "GabtagWindow"
 
     # HeaderBar
     id_popover_menu = Gtk.Template.Child()
@@ -96,61 +100,60 @@ class GabtagWindow(Gtk.ApplicationWindow):
             self.id_year,
             self.id_info_length,
             self.id_info_size,
-            [self.id_title_mbz,
+            [
+                self.id_title_mbz,
                 self.id_album_mbz,
                 self.id_artist_mbz,
                 self.id_genre_mbz,
                 self.id_cover_mbz,
                 self.id_track_mbz,
-                self.id_year_mbz
-             ],
-            self.id_lyrics
+                self.id_year_mbz,
+            ],
+            self.id_lyrics,
         )
 
         self.tree_view = TreeView(self.liststore1, self.tree_view_id)
-        self.data_crawler = DataCrawler.get_instance()
+        self.data_crawler = DATA_CRAWLER
         self.is_real_selection = 0
         self.selectioned = None
         self.is_opened_directory = False
 
         # Connect Buttons
 
-        self.id_reset_all.connect('clicked', self.reset_all_clicked)
-        self.id_auto_tag.connect('clicked', self.on_set_online_tags)
-        self.id_about.connect('clicked', self.about_clicked)
-        self.but_open.connect('clicked', self.open_clicked)
-        self.but_save.connect('clicked', self.but_saved_cliqued)
-        self.id_load_cover.connect('clicked', self.load_cover_clicked)
-        self.id_reset_one.connect('clicked', self.reset_all_clicked)
-        self.id_save_one.connect('clicked', self.clicked_save_one)
-        self.id_setmbz_but.connect('clicked', self.on_set_mbz)
-        self.id_st_lyrics_but.connect('clicked', self.on_set_lyrics)
-        self.tree_selection_id.connect('changed', self.selected_changed)
-        self.id_album.connect('changed', self.album_changed)
-        self.id_artist.connect('changed', self.artist_changed)
-        self.id_type.connect('changed', self.type_changed)
-        self.id_title.connect('changed', self.title_changed)
-        self.id_year.connect('changed', self.year_changed)
-        self.id_track.connect('changed', self.track_changed)
+        self.id_reset_all.connect("clicked", self.reset_all_clicked)
+        self.id_auto_tag.connect("clicked", self.on_set_online_tags)
+        self.id_about.connect("clicked", self.about_clicked)
+        self.but_open.connect("clicked", self.open_clicked)
+        self.but_save.connect("clicked", self.but_saved_cliqued)
+        self.id_load_cover.connect("clicked", self.load_cover_clicked)
+        self.id_reset_one.connect("clicked", self.reset_all_clicked)
+        self.id_save_one.connect("clicked", self.clicked_save_one)
+        self.id_setmbz_but.connect("clicked", self.on_set_mbz)
+        self.id_st_lyrics_but.connect("clicked", self.on_set_lyrics)
+        self.tree_selection_id.connect("changed", self.selected_changed)
+        self.id_album.connect("changed", self.album_changed)
+        self.id_artist.connect("changed", self.artist_changed)
+        self.id_type.connect("changed", self.type_changed)
+        self.id_title.connect("changed", self.title_changed)
+        self.id_year.connect("changed", self.year_changed)
+        self.id_track.connect("changed", self.track_changed)
 
     def but_saved_cliqued(self, widget):
         if self.is_opened_directory:
-            model = Model.get_instance()
-            thread = CrawlerModification(model.modification.copy(),
-                                         self.liststore1,
-                                         self.selectioned,
-                                         0)
+            model = MODEL
+            thread = CrawlerModification(
+                model.modification.copy(), self.liststore1, self.selectioned, 0
+            )
             model.save_modifications(self.selectioned)
             thread.start()
 
     def clicked_save_one(self, widget):
         if self.is_real_selection == 1:
             self.is_real_selection = 0
-            model = Model.get_instance()
-            thread = CrawlerModification(model.modification.copy(),
-                                         self.liststore1,
-                                         self.selectioned,
-                                         1)
+            model = MODEL
+            thread = CrawlerModification(
+                model.modification.copy(), self.liststore1, self.selectioned, 1
+            )
             model.save_one(self.selectioned)
             thread.start()
             self.is_real_selection = 1
@@ -158,14 +161,14 @@ class GabtagWindow(Gtk.ApplicationWindow):
     def reset_one_clicked(self, widget):
         if self.is_real_selection == 1:
             self.is_real_selection = 0
-            model = Model.get_instance()
+            model = MODEL
             model.reset_one(self.selectioned)
             self.is_real_selection = 1
 
     def reset_all_clicked(self, widget):
         if self.is_real_selection == 1:
             self.is_real_selection = 0
-            model = Model.get_instance()
+            model = MODEL
             model.reset_all(self.selectioned)
             self.is_real_selection = 1
 
@@ -176,20 +179,19 @@ class GabtagWindow(Gtk.ApplicationWindow):
 
     def open_clicked(self, widget):
         self.is_real_selection = 0
-        dialog = Gtk.FileChooserDialog('Please choose a folder',
-                                       self,
-                                       Gtk.FileChooserAction.SELECT_FOLDER,
-                                       (Gtk.STOCK_CANCEL,
-                                        Gtk.ResponseType.CANCEL,
-                                        'Select',
-                                        Gtk.ResponseType.OK
-                                        ))
+        dialog = Gtk.FileChooserDialog(
+            "Please choose a folder",
+            self,
+            Gtk.FileChooserAction.SELECT_FOLDER,
+            (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL, "Select", Gtk.ResponseType.OK),
+        )
         dialog.set_default_size(800, 400)
 
         response = dialog.run()
 
-        model = Model.get_instance()
+        model = MODEL
         if response == Gtk.ResponseType.OK:
+            logger.info(type(self.selectioned))
             self.is_opened_directory = True
             model.view.erase()
             self.data_crawler.update_directory(dialog.get_filename())
@@ -209,72 +211,68 @@ class GabtagWindow(Gtk.ApplicationWindow):
     def title_changed(self, widget):
         if self.is_real_selection == 1:
             self.is_real_selection = 0
-            model = Model.get_instance()
-            model.update_modifications(
-                self.selectioned, 'title', widget.get_text())
+            model = MODEL
+            model.update_modifications(self.selectioned, "title", widget.get_text())
             self.is_real_selection = 1
 
     def artist_changed(self, widget):
         if self.is_real_selection == 1:
             self.is_real_selection = 0
-            model = Model.get_instance()
-            model.update_modifications(
-                self.selectioned, 'artist', widget.get_text())
+            model = MODEL
+            model.update_modifications(self.selectioned, "artist", widget.get_text())
             self.is_real_selection = 1
 
     def album_changed(self, widget):
         if self.is_real_selection == 1:
             self.is_real_selection = 0
-            model = Model.get_instance()
-            model.update_modifications(
-                self.selectioned, 'album', widget.get_text())
+            model = MODEL
+            model.update_modifications(self.selectioned, "album", widget.get_text())
             self.is_real_selection = 1
 
     def type_changed(self, widget):
         if self.is_real_selection == 1:
             self.is_real_selection = 0
-            model = Model.get_instance()
-            model.update_modifications(
-                self.selectioned, 'genre', widget.get_text())
+            model = MODEL
+            model.update_modifications(self.selectioned, "genre", widget.get_text())
             self.is_real_selection = 1
 
     def track_changed(self, widget):
         if self.is_real_selection == 1:
             self.is_real_selection = 0
-            model = Model.get_instance()
-            model.update_modifications(
-                self.selectioned, 'track', widget.get_text())
+            model = MODEL
+            model.update_modifications(self.selectioned, "track", widget.get_text())
             self.is_real_selection = 1
 
     def year_changed(self, widget):
         if self.is_real_selection == 1:
             self.is_real_selection = 0
-            model = Model.get_instance()
-            model.update_modifications(
-                self.selectioned, 'year', widget.get_text())
+            model = MODEL
+            model.update_modifications(self.selectioned, "year", widget.get_text())
             self.is_real_selection = 1
 
     def load_cover_clicked(self, widget):
         if self.is_real_selection == 1:
             self.is_real_selection = 0
-            model = Model.get_instance()
+            model = MODEL
 
-            dialog = Gtk.FileChooserDialog('Please choose a file',
-                                           self,
-                                           Gtk.FileChooserAction.OPEN,
-                                           (Gtk.STOCK_CANCEL,
-                                            Gtk.ResponseType.CANCEL,
-                                            Gtk.STOCK_OPEN,
-                                            Gtk.ResponseType.OK
-                                            ))
+            dialog = Gtk.FileChooserDialog(
+                "Please choose a file",
+                self,
+                Gtk.FileChooserAction.OPEN,
+                (
+                    Gtk.STOCK_CANCEL,
+                    Gtk.ResponseType.CANCEL,
+                    Gtk.STOCK_OPEN,
+                    Gtk.ResponseType.OK,
+                ),
+            )
 
             add_filters(dialog)
             response = dialog.run()
 
             if response == Gtk.ResponseType.OK:
                 file_cover = dialog.get_filename()
-                model.update_modifications(
-                    self.selectioned, 'cover', file_cover)
+                model.update_modifications(self.selectioned, "cover", file_cover)
                 model.update_view(self.selectioned)
 
             dialog.destroy()
@@ -285,7 +283,7 @@ class GabtagWindow(Gtk.ApplicationWindow):
             self.is_real_selection = 0
             self.selectioned = selection
 
-            model = Model.get_instance()
+            model = MODEL
             model.update_view(selection)
 
             self.is_real_selection = 1
@@ -294,7 +292,7 @@ class GabtagWindow(Gtk.ApplicationWindow):
         if self.is_real_selection == 1:
             self.is_real_selection = 0
 
-            model = Model.get_instance()
+            model = MODEL
             model.set_data_crawled(self.selectioned)
             model.update_view(self.selectioned)
 
@@ -304,7 +302,7 @@ class GabtagWindow(Gtk.ApplicationWindow):
         if self.is_opened_directory:
             if self.is_real_selection == 1:
                 self.is_real_selection = 0
-                model = Model.get_instance()
+                model = MODEL
 
                 model.set_online_tags()
 
@@ -318,7 +316,7 @@ class GabtagWindow(Gtk.ApplicationWindow):
             if self.is_real_selection == 1:
                 self.is_real_selection = 0
 
-                model = Model.get_instance()
+                model = MODEL
                 model.set_data_lyrics(self.selectioned)
 
                 self.is_real_selection = 1

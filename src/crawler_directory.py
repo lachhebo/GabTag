@@ -1,16 +1,15 @@
 from threading import Thread
-from .crawler_data import DataCrawler
-from .model import Model
+from .crawler_data import DATA_CRAWLER
+from .model import MODEL
 
 
 class CrawlerDirectory(Thread):
-
     def __init__(self, directory, store):
         Thread.__init__(self)
-        self.data_crawler = DataCrawler.get_instance()
+        self.data_crawler = DATA_CRAWLER
         self.directory = directory
         self.store = store
-        self.model = Model.get_instance()
+        self.model = MODEL
 
     def run(self):
         file_list = self.data_crawler.get_file_list(self.directory)
@@ -35,14 +34,22 @@ class CrawlerDirectory(Thread):
                 file_list4.append(file)
                 i = 1
 
-        thread_mbz1 = Thread(target=self.data_crawler.get_data_from_online,
-                             args=(file_list1, self.directory))
-        thread_mbz2 = Thread(target=self.data_crawler.get_data_from_online,
-                             args=(file_list2, self.directory))
-        thread_mbz3 = Thread(target=self.data_crawler.get_data_from_online,
-                             args=(file_list3, self.directory))
-        thread_mbz4 = Thread(target=self.data_crawler.get_data_from_online,
-                             args=(file_list4, self.directory))
+        thread_mbz1 = Thread(
+            target=self.data_crawler.get_data_from_online,
+            args=(file_list1, self.directory),
+        )
+        thread_mbz2 = Thread(
+            target=self.data_crawler.get_data_from_online,
+            args=(file_list2, self.directory),
+        )
+        thread_mbz3 = Thread(
+            target=self.data_crawler.get_data_from_online,
+            args=(file_list3, self.directory),
+        )
+        thread_mbz4 = Thread(
+            target=self.data_crawler.get_data_from_online,
+            args=(file_list4, self.directory),
+        )
 
         thread_mbz1.start()
         thread_mbz2.start()

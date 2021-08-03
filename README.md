@@ -1,4 +1,4 @@
-# <img width="30" src="data/icons/hicolor/scalable/apps/com.github.lachhebo.Gabtag.svg"/> GabTag [![Build Status](https://travis-ci.com/lachhebo/GabTag.svg?branch=master)](https://travis-ci.com/lachhebo/GabTag) [![codecov](https://codecov.io/gh/lachhebo/GabTag/branch/master/graph/badge.svg)](https://codecov.io/gh/lachhebo/GabTag)
+# <img width="30" src="data/icons/hicolor/scalable/apps/com.github.lachhebo.Gabtag.svg"/> GabTag [![codecov](https://codecov.io/gh/lachhebo/GabTag/branch/master/graph/badge.svg)](https://codecov.io/gh/lachhebo/GabTag)
 
 
 ## Description :
@@ -31,9 +31,19 @@ It allows users to select several files and modify their tags. It is also possib
 - [x] Automatic completion of tags (from online data)
 - [x] Lyrics (from online data)
 - [ ] Multi-folder modification
-- [ ] Acoustic ID integration 
+- [ ] Acoustic ID integration
 
-The board is accessible here : 
 
-https://trello.com/b/rlSeLAIB/gabtag-board
+## Contributing
 
+To run test:
+
+make install
+
+To install 
+
+make install
+
+to run gabtag:
+
+make run 

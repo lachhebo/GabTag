@@ -3,7 +3,7 @@ from os import path
 from .audio_mp3_file_handler import Mp3FileHandler
 from .tools import get_file_extension
 
-HANDLED_EXTENSIONS = ['mp3']
+HANDLED_EXTENSIONS = ["mp3"]
 
 
 def is_extension_managed(filename):

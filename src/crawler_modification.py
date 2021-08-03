@@ -1,21 +1,20 @@
 from threading import Thread
-from .crawler_data import DataCrawler
-from .model import Model
-from .treeview import TreeView
+from .crawler_data import DATA_CRAWLER
+from .model import MODEL
+from .treeview import TREE_VIEW
 
 
 class CrawlerModification(Thread):
-
     def __init__(self, modification, store, selection, some_file):
         Thread.__init__(self)
-        self.data_crawler = DataCrawler.get_instance()
-        self.model = Model.get_instance()
+        self.data_crawler = DATA_CRAWLER
+        self.model = MODEL
         self.directory = self.model.directory
         self.modification = modification
         self.store = store
         self.some_file = some_file
         self.selection = selection
-        self.tree_view = TreeView.get_instance()
+        self.tree_view = TREE_VIEW
 
         model, list_iteration = self.model.selection.get_selected_rows()
 
@@ -33,12 +32,10 @@ class CrawlerModification(Thread):
             for i in range(len(list_iteration)):  # TODO
                 name_file = model[list_iteration[i]][0]
                 if name_file in self.modification:
-                    self.data_crawler.update_data_crawled(
-                        [name_file], self.directory)
+                    self.data_crawler.update_data_crawled([name_file], self.directory)
 
         else:
-            self.data_crawler.update_data_crawled(self.modification,
-                                                  self.directory)
+            self.data_crawler.update_data_crawled(self.modification, self.directory)
 
         if self.is_selection_equal_to(self.model.selection):
             model, list_iteration = self.model.selection.get_selected_rows()
@@ -49,9 +46,11 @@ class CrawlerModification(Thread):
                 multiple_line_selected = 0
 
             data_scrapped = self.data_crawler.get_tags(
-                model, list_iteration, multiple_line_selected)
+                model, list_iteration, multiple_line_selected
+            )
             lyrics_scrapped = self.data_crawler.get_lyrics(
-                model, list_iteration, multiple_line_selected)
+                model, list_iteration, multiple_line_selected
+            )
 
             if self.is_selection_equal_to(self.model.selection):
                 if data_scrapped is not None:

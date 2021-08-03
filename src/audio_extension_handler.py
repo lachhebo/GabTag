@@ -2,7 +2,6 @@ from abc import abstractmethod
 
 
 class AudioExtensionHandler:
-
     @abstractmethod
     def get_tag(self, tag_key):
         pass

@@ -2,12 +2,12 @@ from unittest.mock import patch
 
 from src import model
 
-TESTED_MODULE = 'src.model'
+TESTED_MODULE = "src.model"
 
 
 def test_check_dictionary_update_tags_dictionary_when_a_file_is_modified():
     # Arrange
-    testmodel = model.Model.get_instance()
+    testmodel = model.Model()
     testmodel.modification = {"testkey": {"album": "a", "artist": "c"}}
 
     # Act
@@ -17,54 +17,50 @@ def test_check_dictionary_update_tags_dictionary_when_a_file_is_modified():
     assert "a" == testmodel.tags_dictionary["album"]["value"]
     assert "c" == testmodel.tags_dictionary["artist"]["value"]
 
-    model.Model._instance = None
-
 
 def test_check_tag_equal_key_value_return_1_if_tag_is_equal_to_expected_value():
     # Arrange
-    testmodel = model.Model.get_instance()
-    testmodel.modification = {
-        "testkey": {
-            "album": "nqnt",
-            "artist": "vald"}}
+    testmodel = model.Model()
+    testmodel.modification = {"testkey": {"album": "nqnt", "artist": "vald"}}
 
     # Act
-    value_test1 = testmodel.check_tag_equal_key_value(0, "", "testkey", "artist", "vald")
-    value_test2 = testmodel.check_tag_equal_key_value(1, "xeu", "testkey", "album", "xeu")
+    value_test1 = testmodel.check_tag_equal_key_value(
+        0, "", "testkey", "artist", "vald"
+    )
+    value_test2 = testmodel.check_tag_equal_key_value(
+        1, "xeu", "testkey", "album", "xeu"
+    )
 
     # Assert
     assert value_test1 == 1
     assert value_test2 == 0
 
-    model.Model._instance = None
-
 
 def test_erase_tag_results_in_erasing_tags_dictionary():
     # Given
-    mymodel = model.Model.get_instance()
-    mymodel.tags_dictionary["title"]['value'] = 'jojo'
+    mymodel = model.Model()
+    mymodel.tags_dictionary["title"]["value"] = "jojo"
 
     # When
     mymodel.erase_tag()
 
     # Then
     for key in mymodel.tags_dictionary:
-        assert mymodel.tags_dictionary[key]['value'] == ''
-    model.Model._instance = None
+        assert mymodel.tags_dictionary[key]["value"] == ""
 
 
-@patch(f'{TESTED_MODULE}.View')
-@patch(f'{TESTED_MODULE}.TreeView.get_instance')
-@patch(f'{TESTED_MODULE}.Model._Model.update_view')
-@patch(f'{TESTED_MODULE}.TreeView._TreeView.remove_bold_font')
-def test_reset_all_check_erasure_of_tags_modification_on_tree(mock_bold, mock_update_view,
-                                                              mock_tree, mock_view):
+@patch(f"{TESTED_MODULE}.VIEW")
+@patch(f"{TESTED_MODULE}.Model.update_view")
+@patch(f"{TESTED_MODULE}.TREE_VIEW.remove_bold_font")
+def test_reset_all_check_erasure_of_tags_modification_on_tree(
+    mock_bold, mock_update_view, mock_view
+):
     # Given
-    testmodel = model.Model.get_instance()
-    testmodel.modification = {'jojo': 'jojo'}
+    testmodel = model.Model()
+    testmodel.modification = {"jojo": "jojo"}
     expected_filename = "ost.mp3"
     testmodel.file_name = expected_filename
-    selection = {'jaja'}
+    selection = {"jaja"}
 
     # When
     testmodel.reset_all(selection)
@@ -72,10 +68,7 @@ def test_reset_all_check_erasure_of_tags_modification_on_tree(mock_bold, mock_up
     # Then
     assert testmodel.modification == {}
     mock_update_view.assert_called_once_with(selection)
-    mock_tree().remove_bold_font.assert_called_once_with(expected_filename)
-
-    # cleanup
-    model.Model._instance = None
+    mock_bold.assert_called_once_with(expected_filename)
 
 
 def test_set_data_lyrics__get_and_set_lyrics_when_one_line_involved():
@@ -172,6 +165,7 @@ def test_wait_for_lyrics___call_get_lyrics_until_selection_changes_then_display_
 
 def test_wait_for_mbz___call_get_tags_until_selection_changes_then_display_it():
     pass
+
 
 def test_update_view__clean_all_get_tags_and_display_them():
     pass

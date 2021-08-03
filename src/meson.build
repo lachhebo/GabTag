@@ -44,7 +44,9 @@ gabtag_sources = [
 
   'crawler_data.py',
   'crawler_directory.py',
-  'crawler_modification.py'
+  'crawler_modification.py',
+
+  'logger.py'
 ]
 
 install_data(gabtag_sources, install_dir: moduledir)
