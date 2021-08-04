@@ -7,9 +7,13 @@ setupenv:
 
 
 test:
-	flake8 src/
 	pytest tests --cov=src/
 
+lint:
+	black src/
+	black tests/
+	flake8 src
+	flake8 tests
 
 install:
 	flatpak install flathub org.gnome.Sdk/x86_64/40

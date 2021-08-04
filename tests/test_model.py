@@ -1,8 +1,38 @@
-from unittest.mock import Mock, patch
+from unittest.mock import Mock, call, patch
 
 from src import model
 
 TESTED_MODULE = "src.model"
+
+
+@patch(f"{TESTED_MODULE}.Model.update_list")
+def test_update_directory__reset_modifications(mock_update_list):
+    # given
+    testmodel = model.Model()
+    directory = Mock()
+    store = Mock()
+
+    # when
+    testmodel.update_directory(directory, store)
+
+    # then
+    assert testmodel.modification == {}
+
+@patch(f'{TESTED_MODULE}.VIEW')
+@patch(f'{TESTED_MODULE}.TREE_VIEW')
+@patch(f'{TESTED_MODULE}.Model.update_view')
+def test_reset_all__clear_view_modificaton_and_tree(m_update, m_tree, m_view):
+    # given
+    selection = Mock()
+    testmodel = model.Model()
+
+    # when 
+    testmodel.reset_all(selection)
+
+    # then
+    assert testmodel.modification == {}
+    m_tree.remove_bold_font.assert_called()
+
 
 
 def test_check_dictionary_update_tags_dictionary_when_a_file_is_modified():
@@ -71,14 +101,17 @@ def test_reset_all_check_erasure_of_tags_modification_on_tree(
     mock_bold.assert_called_once_with(expected_filename)
 
 
-@patch(f"{TESTED_MODULE}.Model.file_modified", return_value = False)
+@patch(f"{TESTED_MODULE}.Model.file_modified", return_value=False)
 @patch(f"{TESTED_MODULE}.TREE_VIEW.remove_bold_font")
-def test_update_modification_name_file__remove_bold_fonts_if_modification_removed(mock_bold, mock_file):
+def test_update_modification_name_file__remove_bold_fonts_if_modification_removed(
+    mock_bold, mock_file
+):
     # Given
     testmodel = model.Model()
-    testmodel.modification = {"ost.mp4": {
-        "title": "naruto",
-    },
+    testmodel.modification = {
+        "ost.mp4": {
+            "title": "naruto",
+        },
     }
 
     # When
@@ -88,14 +121,17 @@ def test_update_modification_name_file__remove_bold_fonts_if_modification_remove
     mock_bold.assert_called_with(["ost.mp4"])
 
 
-@patch(f"{TESTED_MODULE}.Model.file_modified", return_value = True)
+@patch(f"{TESTED_MODULE}.Model.file_modified", return_value=True)
 @patch(f"{TESTED_MODULE}.TREE_VIEW.add_bold_font")
-def test_update_modification_name_file__add_bold_fonts_if_file_modified(mock_bold, mock_file):
-        # Given
+def test_update_modification_name_file__add_bold_fonts_if_file_modified(
+    mock_bold, mock_file
+):
+    # Given
     testmodel = model.Model()
-    testmodel.modification = {"ost.mp4": {
-        "title": "naruto",
-    },
+    testmodel.modification = {
+        "ost.mp4": {
+            "title": "naruto",
+        },
     }
 
     # When
@@ -105,15 +141,18 @@ def test_update_modification_name_file__add_bold_fonts_if_file_modified(mock_bol
     mock_bold.assert_called_with(["ost.mp4"])
 
 
-@patch(f"{TESTED_MODULE}.Model.file_modified", return_value = True)
+@patch(f"{TESTED_MODULE}.Model.file_modified", return_value=True)
 @patch(f"{TESTED_MODULE}.TREE_VIEW.add_bold_font")
 @patch(f"{TESTED_MODULE}.TREE_VIEW.remove_bold_font")
-def test_set_online_tags__set_tags_found_for_name_file_if_file_already_modified(mock1, mock2, mock3):
+def test_set_online_tags__set_tags_found_for_name_file_if_file_already_modified(
+    mock1, mock2, mock3
+):
     # Given
     testmodel = model.Model()
-    testmodel.modification = {"ost.mp4": {
-        "title": "naruto",
-    },
+    testmodel.modification = {
+        "ost.mp4": {
+            "title": "naruto",
+        },
     }
     testmodel.data_crawler = Mock()
     testmodel.data_crawler.tag_finder = {
@@ -122,7 +161,6 @@ def test_set_online_tags__set_tags_found_for_name_file_if_file_already_modified(
         },
     }
 
-
     # When
     testmodel.set_online_tags()
 
@@ -130,12 +168,13 @@ def test_set_online_tags__set_tags_found_for_name_file_if_file_already_modified(
     assert testmodel.modification["ost.mp4"]["title"] == "pain"
 
 
-
-@patch(f"{TESTED_MODULE}.Model.file_modified", return_value = True)
+@patch(f"{TESTED_MODULE}.Model.file_modified", return_value=True)
 @patch(f"{TESTED_MODULE}.TREE_VIEW.add_bold_font")
 @patch(f"{TESTED_MODULE}.TREE_VIEW.remove_bold_font")
-def test_set_online_tags__set_tags_found_for_name_file_if_file_not_modified(mock1, mock2, mock3):
-        # Given
+def test_set_online_tags__set_tags_found_for_name_file_if_file_not_modified(
+    mock1, mock2, mock3
+):
+    # Given
     testmodel = model.Model()
     testmodel.modification = {}
     testmodel.data_crawler = Mock()
@@ -145,25 +184,27 @@ def test_set_online_tags__set_tags_found_for_name_file_if_file_not_modified(mock
         },
     }
 
-
     # When
     testmodel.set_online_tags()
 
     # Then
     assert testmodel.modification["ost.mp4"]["title"] == "pain"
 
+
 @patch(f"{TESTED_MODULE}.TREE_VIEW.remove_bold_font")
 @patch(f"{TESTED_MODULE}.get_file_manager")
-def test_save_modifications__set_tags_for_each_file_in_modification(mock_audio, mock_bold):
+def test_save_modifications__set_tags_for_each_file_in_modification(
+    mock_audio, mock_bold
+):
     # Given
     testmodel = model.Model()
-    testmodel.modification = {"ost.mp4": {
-        "title": "naruto",
+    testmodel.modification = {
+        "ost.mp4": {
+            "title": "naruto",
         },
     }
     audio = Mock()
     mock_audio.return_value = audio
-
 
     # When
     testmodel.save_modifications()
@@ -172,18 +213,21 @@ def test_save_modifications__set_tags_for_each_file_in_modification(mock_audio, 
     audio.set_tag.assert_called_with("title", "naruto")
     assert testmodel.modification == {}
 
+
 @patch(f"{TESTED_MODULE}.TREE_VIEW.remove_bold_font")
 @patch(f"{TESTED_MODULE}.get_file_manager")
-def test_save_modifications__remove_bold_fonts_for_each_file_in_modification(mock_audio, mock_bold):
+def test_save_modifications__remove_bold_fonts_for_each_file_in_modification(
+    mock_audio, mock_bold
+):
     # Given
     testmodel = model.Model()
-    testmodel.modification = {"ost.mp4": {
-        "title": "naruto",
+    testmodel.modification = {
+        "ost.mp4": {
+            "title": "naruto",
         },
     }
     audio = Mock()
     mock_audio.return_value = audio
-
 
     # When
     testmodel.save_modifications()
@@ -193,63 +237,199 @@ def test_save_modifications__remove_bold_fonts_for_each_file_in_modification(moc
 
 
 @patch(f"{TESTED_MODULE}.TREE_VIEW")
-def test_set_data_crawled__update_modification_with_data_scrapped_if_one_file(mock_tree):
-    pass
+def test_set_data_crawled__update_modification_with_data_scrapped(mock_tree):
+    # given
+    selection = Mock()
+    selection.get_selected_rows.return_value = ("fake_model", ["file"])
+    testmodel = model.Model()
+    testmodel.update_modifications = Mock()
+    testmodel.data_crawler.get_tags = Mock()
+    testmodel.data_crawler.get_tags.return_value = {
+        "title": "test",
+        "album": "",
+        "year": "2020",
+        "genre": "pop",
+        "cover": "cov",
+    }
+
+    calls = [
+        call(selection, "title", "test"),
+        call(selection, "year", "2020"),
+        call(selection, "genre", "pop"),
+        call(selection, "cover", "cov"),
+    ]
+
+    # when
+    testmodel.set_data_crawled(selection)
+
+    # then
+    testmodel.update_modifications.assert_has_calls(calls, any_order=True)
 
 
-def test_set_data_crawled__update_modification_with_data_scrapped_if_multiple_files():
-    pass
+@patch(f"{TESTED_MODULE}.TREE_VIEW")
+def test_set_data_crawled__update_modification_with_data_scrapped_if_multiple_files(
+    mock_tree,
+):
+    # given
+    selection = Mock()
+    selection.get_selected_rows.return_value = ("fake_model", ["file1", "file2"])
+    testmodel = model.Model()
+    testmodel.update_modifications = Mock()
+    testmodel.data_crawler.get_tags = Mock()
+    testmodel.data_crawler.get_tags.return_value = {
+        "title": "test",
+        "album": "",
+        "year": "2020",
+        "genre": "pop",
+        "cover": "cov",
+    }
+
+    calls = [
+        call(selection, "title", "test"),
+        call(selection, "year", "2020"),
+        call(selection, "genre", "pop"),
+        call(selection, "cover", "cov"),
+    ]
+
+    # when
+    testmodel.set_data_crawled(selection)
+
+    # then
+    testmodel.update_modifications.assert_has_calls(calls, any_order=True)
 
 
-def test_file_modified__return_true_if_tag_is_different_from_value_in_modification():
-    pass
+@patch(f"{TESTED_MODULE}.get_file_manager")
+def test_file_modified__return_false_if_no_modification(mock_get_file_manager):
+    # given
+    testmodel = model.Model()
+    audio_mock = Mock()
+    mock_get_file_manager.return_value = audio_mock
+    audio_mock.get_tags.return_value = {
+        "title": "fake_title",
+        "album": "fake_album",
+        "type": "fake type",
+    }
+    testmodel.modification = {}
+
+    # when
+    result = testmodel.file_modified("fake_file")
+
+    # then
+    assert result is False
 
 
-def test_file_modified__return_true_if_tag_not_in_modifications():
-    pass
+@patch(f"{TESTED_MODULE}.get_file_manager")
+def test_file_modified__return_false_if_modif_are_equal_to_file(mock_get_file_manager):
+    # given
+    testmodel = model.Model()
+    audio_mock = Mock()
+    mock_get_file_manager.return_value = audio_mock
+    audio_mock.get_tags.return_value = {
+        "title": "fake_title",
+        "album": "fake_album",
+        "type": "fake type",
+    }
+    testmodel.modification = {
+        "fake_file": {
+            "title": "fake_title",
+            "album": "fake_album",
+            "type": "fake type",
+        },
+    }
+
+    # when
+    result = testmodel.file_modified("fake_file")
+
+    # then
+    assert result is False
 
 
-def test_file_modified__return_true_if_tag_in_modification_are_equal_to_tags():
-    pass
+@patch(f"{TESTED_MODULE}.get_file_manager")
+def test_file_modified__return_true_if_modifications(mock_get_file_manager):
+    # given
+    testmodel = model.Model()
+    audio_mock = Mock()
+    mock_get_file_manager.return_value = audio_mock
+    audio_mock.get_tags.return_value = {
+        "title": "fake_title",
+        "album": "fake_album",
+        "type": "fake type",
+    }
+    testmodel.modification = {
+        "fake_file": {
+            "title": "fake_modified_title",
+            "album": "fake_album",
+            "type": "fake type",
+        },
+    }
+
+    # when
+    result = testmodel.file_modified("fake_file")
+
+    # then
+    assert result is True
 
 
-def test_update_modifications__if_one_file_modified_already_in_modifications_update_modification():
-    pass
+@patch(f"{TESTED_MODULE}.TREE_VIEW")
+def test_update_modifications__if_one_file_modified_not_already_in_modifications_update_modification(
+    mock_tree,
+):
+    # given
+    testmodel = model.Model()
+    testmodel.file_modified = Mock()
+    selection = Mock()
+    selection.get_selected_rows.return_value = ({"file1": ["thunder"]}, ["file1"])
+
+    # when
+    testmodel.update_modifications(selection, "title", "arto")
+
+    # then
+    testmodel.modification == {
+        "thunder": {
+            "title": "arto",
+        },
+    }
 
 
-def test_update_modifications__if_one_file_modified_already_not_in_modifications_update_modification():
-    pass
+@patch(f"{TESTED_MODULE}.TREE_VIEW")
+def test_update_modifications__if_one_file_modified__in_modifications_update_modification(
+    mock_tree,
+):
+    # given
+    testmodel = model.Model()
+    testmodel.file_modified = Mock()
+    selection = Mock()
+    selection.get_selected_rows.return_value = ({"file1": ["thunder"]}, ["file1"])
+    testmodel.modification = {
+        "thunder": {
+            "title": "test",
+        },
+    }
 
+    # when
+    testmodel.update_modifications(selection, "title", "arto")
 
-def test_update_modifications__if_one_file_is_modified_add_bold_fonts():
-    pass
-
-
-def test_update_modifications__if_one_file_modification_removed_add_bold_fonts():
-    pass
-
-
-def test_update_modifications__if_multiple_files_modified_already_in_modifications_update_modification():
-    pass
-
-
-def test_update_modifications__if_multiple_files__modified_already_not_in_modifications_update_modification():
-    pass
-
-
-def test_update_modifications__if_multiple_files__is_modified_add_bold_fonts():
-    pass
-
-
-def test_update_modifications__if_multiple_files_modification_removed_add_bold_fonts():
-    pass
-
-
+    # then
+    testmodel.modification == {
+        "thunder": {
+            "title": "arto",
+        },
+    }
 
 
 def test_wait_for_mbz___call_get_tags_until_selection_changes_then_display_it():
+    # given
+
+    # when
+
+    # then
     pass
 
 
 def test_update_view__clean_all_get_tags_and_display_them():
+    # given
+
+    # when
+
+    # then
     pass

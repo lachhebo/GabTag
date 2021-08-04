@@ -50,7 +50,6 @@ class GabtagWindow(Gtk.ApplicationWindow):
     id_year_mbz = Gtk.Template.Child()
     id_track_mbz = Gtk.Template.Child()
 
-
     # Buttons
 
     but_open = Gtk.Template.Child()
@@ -67,10 +66,9 @@ class GabtagWindow(Gtk.ApplicationWindow):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        TREE_VIEW.store = self.liststore1, 
+        TREE_VIEW.store = (self.liststore1,)
         TREE_VIEW.view = self.tree_view_id
 
-    
         VIEW.tree_view_id = self.tree_view_id
         VIEW.id_title = self.id_title
         VIEW.id_album = self.id_album
@@ -88,7 +86,6 @@ class GabtagWindow(Gtk.ApplicationWindow):
         VIEW.id_cover_mbz = self.id_cover_mbz
         VIEW.id_track_mbz = self.id_track_mbz
         VIEW.id_year_mbz = self.id_year_mbz
-
 
         # Connect Buttons
 

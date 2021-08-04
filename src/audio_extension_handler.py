@@ -17,3 +17,7 @@ class AudioExtensionHandler:
     @abstractmethod
     def check_tag_existence(self, key):
         pass
+
+    @abstractmethod
+    def get_tags(self):
+        pass

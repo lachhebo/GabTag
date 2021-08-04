@@ -80,6 +80,23 @@ class Mp3FileHandler(AudioExtensionHandler):
         else:
             return self.get_one_tag(TAG_PARAMS[tag_key], "text")
 
+    def get_tags(self):
+        tags = [
+            "title",
+            "album",
+            "artist",
+            "genre",
+            "cover",
+            "year",
+            "track",
+            "length",
+            "size",
+        ]
+        result = {}
+        for tag in tags:
+            result[tag] = self.get_tag(tag)
+        return result
+
     def check_tag_existence(self, key):
         """Every thing is in the title"""
         return len(self.id3.getall(TAG_PARAMS[key])) > 0

@@ -65,8 +65,7 @@ class Model:
 
         for i in range(0, len(list_iter)):
             name_file = model[list_iter[i]][0]
-            if name_file in self.modification:
-                self.modification[name_file] = {}
+            self.modification[name_file] = {}
 
             tree_handler = TREE_VIEW
             tree_handler.remove_bold_font([name_file])
@@ -171,7 +170,6 @@ class Model:
         else:
             self.view.show_mbz(data_scrapped)
 
-
     def wait_for_mbz(
         self,
         model,
@@ -208,52 +206,17 @@ class Model:
 
         model, list_iter = selection.get_selected_rows()
 
-        name_file = model[list_iter][0]
-
-        if len(list_iter) == 1:  # TODO try to merge the case ==1 and >1
-            if name_file in self.modification:
-                alpha = self.modification[name_file]
-                alpha[tag_changed] = new_value
-            else:
-                self.modification[name_file] = {}
-                alpha = self.modification[name_file]
-                alpha[tag_changed] = new_value
-
-            tree_handler = TREE_VIEW
-            if self.file_modified(name_file):
-                tree_handler.add_bold_font([name_file])
-            else:
-                tree_handler.remove_bold_font([name_file])
-
-        elif len(list_iter) > 1:
-            for i in range(0, len(list_iter)):
-                if model[list_iter[i]][0] in self.modification:
-                    alpha = self.modification[model[list_iter[i]][0]]
-                    alpha[tag_changed] = new_value
-
-                else:
-                    self.modification[model[list_iter[i]][0]] = {}
-                    alpha = self.modification[model[list_iter[i]][0]]
-                    alpha[tag_changed] = new_value
-                tree_handler = TREE_VIEW
-                if self.file_modified(name_file):
-                    tree_handler.add_bold_font([model[list_iter[i]][0]])
-                else:
-                    tree_handler.remove_bold_font([model[list_iter[i]][0]])
+        for i in range(0, len(list_iter)):
+            name_file = model[list_iter[i]][0]
+            self._update_modif_for_one_file(tag_changed, new_value, name_file)
 
     def file_modified(self, name_file: str) -> bool:
+        if name_file not in self.modification:
+            return False
 
         audio = get_file_manager(name_file, self.directory)
-
-        audio_tag = {}
-        tag_modified = {}
-        for key in self.tags_dictionary:
-            audio_tag[key] = audio.get_tag(key)
-
-        if name_file in self.modification:
-            tag_modified = self.modification[name_file]
-        else:
-            pass
+        audio_tag = audio.get_tags()
+        tag_modified = self.modification[name_file]
 
         for key_tag in tag_modified:
             if tag_modified[key_tag] != audio_tag[key_tag]:
@@ -261,7 +224,9 @@ class Model:
 
         return False
 
-    def update_modification_name_file(self, name_file: str, key: str, new_value:str) -> None:
+    def update_modification_name_file(
+        self, name_file: str, key: str, new_value: str
+    ) -> None:
         self.modification[name_file][key] = new_value
 
         tree_handler = TREE_VIEW
@@ -399,7 +364,6 @@ class Model:
         else:
             return 1
 
-
     def set_data_crawled(self, selection):
 
         data_scrapped, new_data = self._preprocess_data_scrapped(selection)
@@ -411,7 +375,6 @@ class Model:
         for key in new_data:
             self.update_modifications(selection, key, new_data[key])
 
-            
     def _preprocess_data_scrapped(self, selection):
         model, list_iterator = selection.get_selected_rows()
         if len(list_iterator) > 1:
@@ -423,6 +386,17 @@ class Model:
         )
         new_data_scrapped = {}
         return data_scrapped, new_data_scrapped
+
+    def _update_modif_for_one_file(self, tag_changed, new_value, name_file):
+        if name_file not in self.modification:
+            self.modification[name_file] = {}
+
+        self.modification[name_file][tag_changed] = new_value
+
+        if self.file_modified(name_file):
+            TREE_VIEW.add_bold_font([name_file])
+        else:
+            TREE_VIEW.remove_bold_font([name_file])
 
 
 MODEL = Model()

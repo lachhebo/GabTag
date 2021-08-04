@@ -42,7 +42,6 @@ class View:
         self.track_mbz = None
         self.year_mbz = None
 
-
     def show_mbz(self, data_scrapped):
         with verrou_mbz:
 

@@ -13,9 +13,7 @@ import gi
 gi.require_version("Gtk", "3.0")
 
 
-
 class Controller:
-
     def __init__(self) -> None:
         self.window = None
         self.is_real_selection: bool = 0
@@ -26,10 +24,9 @@ class Controller:
     def but_saved_cliqued(self, widget):
         if self.is_opened_directory:
             model = MODEL
-            thread = CrawlerModification(model.modification.copy(),
-                                            self.liststore1,
-                                            self.selectioned,
-                                            0)
+            thread = CrawlerModification(
+                model.modification.copy(), self.liststore1, self.selectioned, 0
+            )
             model.save_modifications(self.selectioned)
             thread.start()
 
@@ -37,10 +34,9 @@ class Controller:
         if self.is_real_selection == 1:
             self.is_real_selection = 0
             model = MODEL
-            thread = CrawlerModification(model.modification.copy(),
-                                         self.liststore1,
-                                         self.selectioned,
-                                         1)
+            thread = CrawlerModification(
+                model.modification.copy(), self.liststore1, self.selectioned, 1
+            )
             model.save_one(self.selectioned)
             thread.start()
             self.is_real_selection = 1
@@ -196,7 +192,6 @@ class Controller:
                     model.update_view(self.selectioned)
 
                 self.is_real_selection = 1
-
 
 
 CONTROLER = Controller()

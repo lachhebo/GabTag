@@ -13,8 +13,9 @@ from src import controller
 
 TESTED_MODULE = "src.controller"
 
-  
+
 # title
+
 
 @patch(f"{TESTED_MODULE}.MODEL.update_modifications")
 def test_title_change_run_update_modifications(mock_modif):
@@ -23,22 +24,20 @@ def test_title_change_run_update_modifications(mock_modif):
     widget = Mock()
     controller.is_real_selection = 1
 
-
     # when
     controller.title_changed(widget)
 
     # then
     assert controller.is_real_selection == 1
     mock_modif.assert_called()
-    
-    
+
+
 @patch(f"{TESTED_MODULE}.MODEL.update_modifications")
 def test_title_change_doesnt_run_update_modifications_if_no_selection(mock_modif):
     # given
     controller = Controller()
     widget = Mock()
     controller.is_real_selection = 0
-
 
     # when
     controller.title_changed(widget)
@@ -47,8 +46,8 @@ def test_title_change_doesnt_run_update_modifications_if_no_selection(mock_modif
     mock_modif.assert_not_called()
 
 
-
 # artist
+
 
 @patch(f"{TESTED_MODULE}.MODEL.update_modifications")
 def test_artist_change_run_update_modifications(mock_modif):
@@ -57,22 +56,20 @@ def test_artist_change_run_update_modifications(mock_modif):
     widget = Mock()
     controller.is_real_selection = 1
 
-
     # when
     controller.artist_changed(widget)
 
     # then
     assert controller.is_real_selection == 1
     mock_modif.assert_called()
-    
-    
+
+
 @patch(f"{TESTED_MODULE}.MODEL.update_modifications")
 def test_artist_change_doesnt_run_update_modifications_if_no_selection(mock_modif):
     # given
     controller = Controller()
     widget = Mock()
     controller.is_real_selection = 0
-
 
     # when
     controller.artist_changed(widget)
@@ -83,6 +80,7 @@ def test_artist_change_doesnt_run_update_modifications_if_no_selection(mock_modi
 
 # album
 
+
 @patch(f"{TESTED_MODULE}.MODEL.update_modifications")
 def test_album_change_run_update_modifications(mock_modif):
     # given
@@ -90,22 +88,20 @@ def test_album_change_run_update_modifications(mock_modif):
     widget = Mock()
     controller.is_real_selection = 1
 
-
     # when
     controller.album_changed(widget)
 
     # then
     assert controller.is_real_selection == 1
     mock_modif.assert_called()
-    
-    
+
+
 @patch(f"{TESTED_MODULE}.MODEL.update_modifications")
 def test_artist_change_doesnt_run_update_modifications_if_no_selection(mock_modif):
     # given
     controller = Controller()
     widget = Mock()
     controller.is_real_selection = 0
-
 
     # when
     controller.album_changed(widget)
@@ -114,8 +110,8 @@ def test_artist_change_doesnt_run_update_modifications_if_no_selection(mock_modi
     mock_modif.assert_not_called()
 
 
-
 # type
+
 
 @patch(f"{TESTED_MODULE}.MODEL.update_modifications")
 def test_type_change_run_update_modifications(mock_modif):
@@ -124,15 +120,14 @@ def test_type_change_run_update_modifications(mock_modif):
     widget = Mock()
     controller.is_real_selection = 1
 
-
     # when
     controller.type_changed(widget)
 
     # then
     assert controller.is_real_selection == 1
     mock_modif.assert_called()
-    
-    
+
+
 @patch(f"{TESTED_MODULE}.MODEL.update_modifications")
 def test_type_change_doesnt_run_update_modifications_if_no_selection(mock_modif):
     # given
@@ -140,14 +135,15 @@ def test_type_change_doesnt_run_update_modifications_if_no_selection(mock_modif)
     widget = Mock()
     controller.is_real_selection = 0
 
-
     # when
     controller.type_changed(widget)
 
     # then
     mock_modif.assert_not_called()
 
+
 # track
+
 
 @patch(f"{TESTED_MODULE}.MODEL.update_modifications")
 def test_track_change_run_update_modifications(mock_modif):
@@ -156,22 +152,20 @@ def test_track_change_run_update_modifications(mock_modif):
     widget = Mock()
     controller.is_real_selection = 1
 
-
     # when
     controller.track_changed(widget)
 
     # then
     assert controller.is_real_selection == 1
     mock_modif.assert_called()
-    
-    
+
+
 @patch(f"{TESTED_MODULE}.MODEL.update_modifications")
 def test_track_change_doesnt_run_update_modifications_if_no_selection(mock_modif):
     # given
     controller = Controller()
     widget = Mock()
     controller.is_real_selection = 0
-
 
     # when
     controller.track_changed(widget)
@@ -182,6 +176,7 @@ def test_track_change_doesnt_run_update_modifications_if_no_selection(mock_modif
 
 # year
 
+
 @patch(f"{TESTED_MODULE}.MODEL.update_modifications")
 def test_year_change_run_update_modifications(mock_modif):
     # given
@@ -189,15 +184,14 @@ def test_year_change_run_update_modifications(mock_modif):
     widget = Mock()
     controller.is_real_selection = 1
 
-
     # when
     controller.year_changed(widget)
 
     # then
     assert controller.is_real_selection == 1
     mock_modif.assert_called()
-    
-    
+
+
 @patch(f"{TESTED_MODULE}.MODEL.update_modifications")
 def test_year_change_doesnt_run_update_modifications_if_no_selection(mock_modif):
     # given
@@ -205,17 +199,19 @@ def test_year_change_doesnt_run_update_modifications_if_no_selection(mock_modif)
     widget = Mock()
     controller.is_real_selection = 0
 
-
     # when
     controller.year_changed(widget)
 
     # then
     mock_modif.assert_not_called()
 
-@patch(f'{TESTED_MODULE}.add_filters')
-@patch(f'{TESTED_MODULE}.MODEL')
-@patch(f'{TESTED_MODULE}.Gtk.FileChooserDialog')
-def test_load_cover_clicked__run_updata_modifcations_and_update_view_if_dialog_return_ok(mock_d, mock_model, m_filters):
+
+@patch(f"{TESTED_MODULE}.add_filters")
+@patch(f"{TESTED_MODULE}.MODEL")
+@patch(f"{TESTED_MODULE}.Gtk.FileChooserDialog")
+def test_load_cover_clicked__run_updata_modifcations_and_update_view_if_dialog_return_ok(
+    mock_d, mock_model, m_filters
+):
     # given
     mock_dialog = Mock()
     mock_d.return_value = mock_dialog
@@ -225,7 +221,7 @@ def test_load_cover_clicked__run_updata_modifcations_and_update_view_if_dialog_r
     widget = Mock()
 
     # when
-    controller.load_cover_clicked(widget) 
+    controller.load_cover_clicked(widget)
 
     # then
 
@@ -233,10 +229,12 @@ def test_load_cover_clicked__run_updata_modifcations_and_update_view_if_dialog_r
     mock_model.update_view.assert_called()
 
 
-@patch(f'{TESTED_MODULE}.add_filters')
-@patch(f'{TESTED_MODULE}.MODEL')
-@patch(f'{TESTED_MODULE}.Gtk.FileChooserDialog')
-def test_load_cover_clicked__dont_run_update_modifcations_and_update_view_if_dialog_return_ok(mock_d, mock_model, m_filters):
+@patch(f"{TESTED_MODULE}.add_filters")
+@patch(f"{TESTED_MODULE}.MODEL")
+@patch(f"{TESTED_MODULE}.Gtk.FileChooserDialog")
+def test_load_cover_clicked__dont_run_update_modifcations_and_update_view_if_dialog_return_ok(
+    mock_d, mock_model, m_filters
+):
     # given
     mock_dialog = Mock()
     mock_d.return_value = mock_dialog
@@ -246,16 +244,17 @@ def test_load_cover_clicked__dont_run_update_modifcations_and_update_view_if_dia
     widget = Mock()
 
     # when
-    controller.load_cover_clicked(widget) 
+    controller.load_cover_clicked(widget)
 
     # then
 
     mock_model.update_modifications.assert_not_called()
     mock_model.update_view.assert_not_called()
 
-@patch(f'{TESTED_MODULE}.MODEL')
+
+@patch(f"{TESTED_MODULE}.MODEL")
 def test_selected_changed_update_the_view(mock_model):
-    # given 
+    # given
     controller = Controller()
     controller.is_real_selection = 1
     selection = Mock()
@@ -267,10 +266,9 @@ def test_selected_changed_update_the_view(mock_model):
     mock_model.update_view.assert_called()
 
 
-
-@patch(f'{TESTED_MODULE}.MODEL')
+@patch(f"{TESTED_MODULE}.MODEL")
 def test_selected_changed_doesnt_update_the_view_if_no_selection(mock_model):
-    # given 
+    # given
     controller = Controller()
     controller.is_real_selection = 0
     selection = Mock()
@@ -282,11 +280,9 @@ def test_selected_changed_doesnt_update_the_view_if_no_selection(mock_model):
     mock_model.update_view.assert_not_called()
 
 
-
-
-@patch(f'{TESTED_MODULE}.MODEL')
+@patch(f"{TESTED_MODULE}.MODEL")
 def test_on_set_mbz__update_the_view_if_selection_changed(mock_model):
-    # given 
+    # given
     controller = Controller()
     controller.is_real_selection = 1
     widget = Mock()
@@ -299,10 +295,9 @@ def test_on_set_mbz__update_the_view_if_selection_changed(mock_model):
     mock_model.set_data_crawled.assert_called()
 
 
-
-@patch(f'{TESTED_MODULE}.MODEL')
+@patch(f"{TESTED_MODULE}.MODEL")
 def test_on_set_mbz__doesnt_update_the_view_if_no_selection(mock_model):
-    # given 
+    # given
     controller = Controller()
     controller.is_real_selection = 0
     widget = Mock()
@@ -315,13 +310,12 @@ def test_on_set_mbz__doesnt_update_the_view_if_no_selection(mock_model):
     mock_model.set_data_crawled.assert_not_called()
 
 
-
-@patch(f'{TESTED_MODULE}.MODEL')
+@patch(f"{TESTED_MODULE}.MODEL")
 def test_on_set_online_tags__set_the_online_tags_using(mock_model):
-    # given 
+    # given
     controller = Controller()
     controller.is_real_selection = 1
-    controller.is_opened_directory  = True
+    controller.is_opened_directory = True
     controller.selectioned = Mock()
     widget = Mock()
 
@@ -332,10 +326,9 @@ def test_on_set_online_tags__set_the_online_tags_using(mock_model):
     mock_model.update_view.assert_called()
 
 
-
-@patch(f'{TESTED_MODULE}.MODEL')
+@patch(f"{TESTED_MODULE}.MODEL")
 def test_on_set_online_tags__doesnt_update_the_view_if_no_selection(mock_model):
-    # given 
+    # given
     controller = Controller()
     controller.is_real_selection = 0
     widget = Mock()
@@ -345,5 +338,3 @@ def test_on_set_online_tags__doesnt_update_the_view_if_no_selection(mock_model):
 
     # then
     mock_model.update_view.assert_not_called()
-
-
