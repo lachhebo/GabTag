@@ -155,7 +155,7 @@ def test_set_online_tags__set_tags_found_for_name_file_if_file_not_modified(mock
 @patch(f"{TESTED_MODULE}.TREE_VIEW.remove_bold_font")
 @patch(f"{TESTED_MODULE}.get_file_manager")
 def test_save_modifications__set_tags_for_each_file_in_modification(mock_audio, mock_bold):
-            # Given
+    # Given
     testmodel = model.Model()
     testmodel.modification = {"ost.mp4": {
         "title": "naruto",
@@ -172,16 +172,28 @@ def test_save_modifications__set_tags_for_each_file_in_modification(mock_audio, 
     audio.set_tag.assert_called_with("title", "naruto")
     assert testmodel.modification == {}
 
+@patch(f"{TESTED_MODULE}.TREE_VIEW.remove_bold_font")
+@patch(f"{TESTED_MODULE}.get_file_manager")
+def test_save_modifications__remove_bold_fonts_for_each_file_in_modification(mock_audio, mock_bold):
+    # Given
+    testmodel = model.Model()
+    testmodel.modification = {"ost.mp4": {
+        "title": "naruto",
+        },
+    }
+    audio = Mock()
+    mock_audio.return_value = audio
 
-def test_save_modifications__remove_bold_fonts_for_each_file_in_modification():
-    pass
+
+    # When
+    testmodel.save_modifications()
+
+    # Then
+    mock_bold.assert_called_with(["ost.mp4"])
 
 
-def test_save_modifications__reset_modifications():
-    pass
-
-
-def test_set_data_crawled__update_modification_with_data_scrapped_if_one_file():
+@patch(f"{TESTED_MODULE}.TREE_VIEW")
+def test_set_data_crawled__update_modification_with_data_scrapped_if_one_file(mock_tree):
     pass
 
 
@@ -233,8 +245,6 @@ def test_update_modifications__if_multiple_files_modification_removed_add_bold_f
     pass
 
 
-def test_wait_for_lyrics___call_get_lyrics_until_selection_changes_then_display_it():
-    pass
 
 
 def test_wait_for_mbz___call_get_tags_until_selection_changes_then_display_it():

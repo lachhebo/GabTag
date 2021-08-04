@@ -1,149 +1,35 @@
-# window.py
-#
-# Copyright 2019 Ismaël Lachheb
-#
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-from .tools import add_filters
-from .treeview import TreeView
-from .crawler_data import DATA_CRAWLER, DataCrawler
-from .crawler_modification import CrawlerModification
-from .crawler_directory import CrawlerDirectory
-from .view import View
+from src.crawler_data import DATA_CRAWLER
+from .model import MODEL
 from .version import __version__
-from .model import MODEL, Model
+from .tools import add_filters
+from .crawler_directory import CrawlerDirectory
+from .crawler_modification import CrawlerModification
+
 from gi.repository import Gtk
-from .logger import LOGGER
 
 import gi
 
 
-logger = LOGGER
 gi.require_version("Gtk", "3.0")
 
 
-@Gtk.Template(resource_path="/com/github/lachhebo/Gabtag/window.ui")
-class GabtagWindow(Gtk.ApplicationWindow):
-    __gtype_name__ = "GabtagWindow"
 
-    # HeaderBar
-    id_popover_menu = Gtk.Template.Child()
-    id_about_window = Gtk.Template.Child()
+class Controller:
 
-    # Table
-    tree_view_id = Gtk.Template.Child()
-    liststore1 = Gtk.Template.Child()
-
-    # Tags
-    id_album = Gtk.Template.Child()
-    id_artist = Gtk.Template.Child()
-    id_type = Gtk.Template.Child()
-    id_title = Gtk.Template.Child()
-    id_cover = Gtk.Template.Child()
-    id_year = Gtk.Template.Child()
-    id_track = Gtk.Template.Child()
-
-    # Infos
-    id_info_length = Gtk.Template.Child()
-    id_info_size = Gtk.Template.Child()
-
-    # MusicBrainz
-
-    id_album_mbz = Gtk.Template.Child()
-    id_artist_mbz = Gtk.Template.Child()
-    id_genre_mbz = Gtk.Template.Child()
-    id_title_mbz = Gtk.Template.Child()
-    id_cover_mbz = Gtk.Template.Child()
-    id_year_mbz = Gtk.Template.Child()
-    id_track_mbz = Gtk.Template.Child()
-
-    # Pylyrics
-
-    id_lyrics = Gtk.Template.Child()
-
-    # Buttons
-
-    but_open = Gtk.Template.Child()
-    id_reset_all = Gtk.Template.Child()
-    id_auto_tag = Gtk.Template.Child()
-    id_about = Gtk.Template.Child()
-    but_save = Gtk.Template.Child()
-    id_load_cover = Gtk.Template.Child()
-    id_reset_one = Gtk.Template.Child()
-    id_save_one = Gtk.Template.Child()
-    id_setmbz_but = Gtk.Template.Child()
-    id_st_lyrics_but = Gtk.Template.Child()
-    tree_selection_id = Gtk.Template.Child()
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-
-        View(
-            self.tree_view_id,
-            self.id_title,
-            self.id_album,
-            self.id_artist,
-            self.id_type,
-            self.id_cover,
-            self.id_track,
-            self.id_year,
-            self.id_info_length,
-            self.id_info_size,
-            [
-                self.id_title_mbz,
-                self.id_album_mbz,
-                self.id_artist_mbz,
-                self.id_genre_mbz,
-                self.id_cover_mbz,
-                self.id_track_mbz,
-                self.id_year_mbz,
-            ],
-            self.id_lyrics,
-        )
-
-        self.tree_view = TreeView(self.liststore1, self.tree_view_id)
+    def __init__(self) -> None:
+        self.window = None
+        self.is_real_selection: bool = 0
         self.data_crawler = DATA_CRAWLER
-        self.is_real_selection = 0
         self.selectioned = None
         self.is_opened_directory = False
-
-        # Connect Buttons
-
-        self.id_reset_all.connect("clicked", self.reset_all_clicked)
-        self.id_auto_tag.connect("clicked", self.on_set_online_tags)
-        self.id_about.connect("clicked", self.about_clicked)
-        self.but_open.connect("clicked", self.open_clicked)
-        self.but_save.connect("clicked", self.but_saved_cliqued)
-        self.id_load_cover.connect("clicked", self.load_cover_clicked)
-        self.id_reset_one.connect("clicked", self.reset_all_clicked)
-        self.id_save_one.connect("clicked", self.clicked_save_one)
-        self.id_setmbz_but.connect("clicked", self.on_set_mbz)
-        self.id_st_lyrics_but.connect("clicked", self.on_set_lyrics)
-        self.tree_selection_id.connect("changed", self.selected_changed)
-        self.id_album.connect("changed", self.album_changed)
-        self.id_artist.connect("changed", self.artist_changed)
-        self.id_type.connect("changed", self.type_changed)
-        self.id_title.connect("changed", self.title_changed)
-        self.id_year.connect("changed", self.year_changed)
-        self.id_track.connect("changed", self.track_changed)
 
     def but_saved_cliqued(self, widget):
         if self.is_opened_directory:
             model = MODEL
-            thread = CrawlerModification(
-                model.modification.copy(), self.liststore1, self.selectioned, 0
-            )
+            thread = CrawlerModification(model.modification.copy(),
+                                            self.liststore1,
+                                            self.selectioned,
+                                            0)
             model.save_modifications(self.selectioned)
             thread.start()
 
@@ -151,9 +37,10 @@ class GabtagWindow(Gtk.ApplicationWindow):
         if self.is_real_selection == 1:
             self.is_real_selection = 0
             model = MODEL
-            thread = CrawlerModification(
-                model.modification.copy(), self.liststore1, self.selectioned, 1
-            )
+            thread = CrawlerModification(model.modification.copy(),
+                                         self.liststore1,
+                                         self.selectioned,
+                                         1)
             model.save_one(self.selectioned)
             thread.start()
             self.is_real_selection = 1
@@ -191,7 +78,6 @@ class GabtagWindow(Gtk.ApplicationWindow):
 
         model = MODEL
         if response == Gtk.ResponseType.OK:
-            logger.info(type(self.selectioned))
             self.is_opened_directory = True
             model.view.erase()
             self.data_crawler.update_directory(dialog.get_filename())
@@ -257,7 +143,7 @@ class GabtagWindow(Gtk.ApplicationWindow):
 
             dialog = Gtk.FileChooserDialog(
                 "Please choose a file",
-                self,
+                self.window,
                 Gtk.FileChooserAction.OPEN,
                 (
                     Gtk.STOCK_CANCEL,
@@ -311,12 +197,6 @@ class GabtagWindow(Gtk.ApplicationWindow):
 
                 self.is_real_selection = 1
 
-    def on_set_lyrics(self, widget):
-        if self.is_opened_directory:
-            if self.is_real_selection == 1:
-                self.is_real_selection = 0
 
-                model = MODEL
-                model.set_data_lyrics(self.selectioned)
 
-                self.is_real_selection = 1
+CONTROLER = Controller()

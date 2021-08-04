@@ -29,7 +29,6 @@ class Model:
             "track": {"value": ""},
             "length": {"value": ""},
             "size": {"value": ""},
-            "lyrics": {"value": ""},
         }
 
         self.data_crawler = DATA_CRAWLER
@@ -135,9 +134,6 @@ class Model:
         data_scrapped = self.data_crawler.get_tags(
             model, list_iteration, multiple_line_selected
         )
-        lyrics_scrapped = self.data_crawler.get_lyrics(
-            model, list_iteration, multiple_line_selected
-        )
 
         self.view.show_tags(self.tags_dictionary, multiple_line_selected)
 
@@ -175,10 +171,6 @@ class Model:
         else:
             self.view.show_mbz(data_scrapped)
 
-        if lyrics_scrapped is None:
-            self.view.show_lyrics("File not crawled yet on lyrics.wikia")
-        else:
-            self.view.show_lyrics(lyrics_scrapped)
 
     def wait_for_mbz(
         self,
@@ -207,34 +199,6 @@ class Model:
             if data_gat is not None and selection_are_equal2:
                 is_waiting_mbz = 0
                 self.view.show_mbz(data_gat)
-
-    def wait_for_lyrics(
-        self,
-        model,
-        list_iteration,
-        len_selection,
-        file_selection,
-        multiple_line_selected,
-    ):
-
-        is_waiting_lyrics = 1
-        selection_are_equal = is_selection_equal(
-            self.selection, len_selection, file_selection
-        )
-
-        while selection_are_equal and is_waiting_lyrics == 1:
-
-            lyrics = self.data_crawler.get_lyrics(
-                model, list_iteration, multiple_line_selected
-            )
-
-            selection_are_equal2 = is_selection_equal(
-                self.selection, len_selection, file_selection
-            )
-
-            if lyrics is not None and selection_are_equal2:
-                is_waiting_lyrics = 0
-                self.view.show_lyrics(lyrics)
 
     def update_modifications(self, selection, tag_changed, new_value):
         """
@@ -296,17 +260,6 @@ class Model:
                 return True
 
         return False
-
-    def set_data_crawled(self, selection):
-
-        data_scrapped, new_data = self._preprocess_data_scrapped(selection)
-
-        for key in data_scrapped:
-            if data_scrapped[key] != "":
-                new_data[key] = data_scrapped[key]
-
-        for key in new_data:
-            self.update_modifications(selection, key, new_data[key])
 
     def update_modification_name_file(self, name_file: str, key: str, new_value:str) -> None:
         self.modification[name_file][key] = new_value
@@ -446,6 +399,19 @@ class Model:
         else:
             return 1
 
+
+    def set_data_crawled(self, selection):
+
+        data_scrapped, new_data = self._preprocess_data_scrapped(selection)
+
+        for key in data_scrapped:
+            if data_scrapped[key] != "":
+                new_data[key] = data_scrapped[key]
+
+        for key in new_data:
+            self.update_modifications(selection, key, new_data[key])
+
+            
     def _preprocess_data_scrapped(self, selection):
         model, list_iterator = selection.get_selected_rows()
         if len(list_iterator) > 1:

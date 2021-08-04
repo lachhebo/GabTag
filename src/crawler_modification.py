@@ -48,16 +48,10 @@ class CrawlerModification(Thread):
             data_scrapped = self.data_crawler.get_tags(
                 model, list_iteration, multiple_line_selected
             )
-            lyrics_scrapped = self.data_crawler.get_lyrics(
-                model, list_iteration, multiple_line_selected
-            )
 
             if self.is_selection_equal_to(self.model.selection):
                 if data_scrapped is not None:
                     self.model.view.show_mbz(data_scrapped)
-                # TODO :Check why it happen to be None in some case :
-                if lyrics_scrapped is not None:
-                    self.model.view.show_lyrics(lyrics_scrapped)
         else:
             pass
 

@@ -3,7 +3,6 @@ import math
 import gi
 from threading import RLock
 from PIL import Image
-from . import gabtag_logger
 from gi.repository import GdkPixbuf, GLib
 
 gi.require_version("Gtk", "3.0")
@@ -11,7 +10,6 @@ gi.require_version("Gtk", "3.0")
 
 verrou_tags = RLock()
 verrou_mbz = RLock()
-verrou_lyrics = RLock()
 
 
 class View:
@@ -44,16 +42,6 @@ class View:
         self.track_mbz = None
         self.year_mbz = None
 
-        self.lyrics = None
-
-        if self.lyrics is not None:
-            self.lyrics.set_justification(2)  # CENTER
-            self.lyrics.set_wrap_mode(2)  # Cut between Word
-            self.lyrics_buf = self.lyrics.get_buffer()
-
-    def show_lyrics(self, lyrics_scrapped):
-        with verrou_lyrics:
-            self.lyrics_buf.set_text(lyrics_scrapped)
 
     def show_mbz(self, data_scrapped):
         with verrou_mbz:
@@ -88,7 +76,6 @@ class View:
                         self.cover_mbz.set_from_pixbuf(pixbuf)
                     except TypeError as error_message:
                         self.cover_mbz.set_from_icon_name("gtk-missing-image", 6)
-                        gabtag_logger.error(error_message)
             else:
                 self.cover_mbz.set_from_icon_name("gtk-missing-image", 6)
 
@@ -104,7 +91,6 @@ class View:
         self.track.set_text("")
         self.cover.set_from_icon_name("gtk-missing-image", 6)
         self.last_cover = ""
-        self.show_lyrics("")
         self.show_mbz(
             {
                 "title": "",
@@ -208,7 +194,6 @@ class View:
             self.album.set_text(tags_dict["album"]["value"])
             self.artist.set_text(tags_dict["artist"]["value"])
             self.year.set_text(tags_dict["year"]["value"])
-            # TODO : print tags lyrics in case of missing internet lyrics
 
             # A test to handle if there is a cover
             if tags_dict["cover"]["value"] != "":

@@ -1,7 +1,5 @@
 import musicbrainzngs as mb
-import requests
 from os import walk
-from PyLyrics import PyLyrics
 from .audio_getter import is_extension_managed, get_file_manager
 from .tools import remove_extension, reorder_data
 from .treeview import TREE_VIEW
@@ -15,7 +13,6 @@ class DataCrawler:
             "GabTag", version=__version__, contact="ismael.lachheb@protonmail.com"
         )
         self.tag_finder = {}
-        self.lyrics = {}
         self.view = VIEW
         self.tree_view = TREE_VIEW
         self.directory = ""
@@ -72,23 +69,6 @@ class DataCrawler:
                 else:
                     self.tree_view.add_crawled([name_file])
 
-    def crawl_lyrics(self, name_file, directory):
-        if is_extension_managed(name_file):
-            audio = get_file_manager(name_file, directory)
-
-            tags = audio.get_tag_research()
-
-            if tags[0] == "" or tags[1] == "":
-                pass
-            else:
-                try:
-                    self.lyrics[name_file] = PyLyrics.getLyrics(tags[1], tags[0])
-                except requests.exceptions.ConnectionError:
-                    self.lyrics[name_file] = ""
-                except ValueError:
-                    messge = "Lyrics not available for this song or artist"
-                    self.lyrics[name_file] = messge
-
     def update_data_crawled(self, modifications, directory):
         for name_file in modifications:
             self.tree_view.remove_crawled([name_file])
@@ -97,11 +77,9 @@ class DataCrawler:
             self.crawl_one_file(name_file, directory)
             if self.stop(directory):
                 break
-            self.crawl_lyrics(name_file, directory)
 
     def erase_data(self):
         self.tag_finder = {}
-        self.lyrics = {}
 
     def get_file_list(self, directory):
         self.directory = directory
@@ -122,7 +100,6 @@ class DataCrawler:
                     break
 
                 self.crawl_one_file(name_file, directory)
-                self.crawl_lyrics(name_file, directory)
 
                 if self.stop(directory):
                     break
@@ -130,8 +107,7 @@ class DataCrawler:
     def is_finished(self, file_list):
         for name_file in file_list:
             if name_file in self.tag_finder:
-                if name_file not in self.lyrics:
-                    return False
+                return False
             else:
                 return False
         return True
@@ -144,19 +120,6 @@ class DataCrawler:
 
     def update_directory(self, directory):
         self.directory = directory
-
-    def get_lyrics(self, model, list_iterator, is_multiples_line_selected):
-        if is_multiples_line_selected:
-            return "No lyrics on Multiple File"
-        else:
-            name_file = model[list_iterator][0]
-            if name_file in self.lyrics:
-                if self.lyrics[name_file] != "":
-                    return self.lyrics[name_file]
-                else:
-                    return "Lyrics not available"
-            else:
-                return None
 
     def get_tags(self, model, list_iterator, is_multiple_lines_selected):
 

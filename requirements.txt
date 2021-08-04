@@ -1,7 +1,6 @@
 mutagen
 pycairo
 musicbrainzngs
-PyLyrics
 pygobject
 Pillow
 flake8

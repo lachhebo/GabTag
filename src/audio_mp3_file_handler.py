@@ -14,7 +14,6 @@ TAG_PARAMS = {
     "genre": "TCON",
     "track": "TRCK",
     "year": "TDRC",
-    "lyrics": "USLT",
 }
 
 
@@ -72,15 +71,6 @@ class Mp3FileHandler(AudioExtensionHandler):
 
         if tag_key == "cover":
             return self.get_one_tag("APIC", "data")
-        elif tag_key == "lyrics":
-            if self.id3 is not None:
-                tag_needed = self.id3.getall("USLT")
-                if len(tag_needed) > 0:
-                    return tag_needed[0].text
-                else:
-                    return ""
-            else:
-                return ""
         elif tag_key == "year":
             return str(self.get_one_tag("TDRC", "text"))
         elif tag_key == "size":
