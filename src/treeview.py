@@ -9,6 +9,7 @@ class TreeView:
         self.store = store
         self.view = view
 
+    def add_columns(self):
         if self.store is not None and self.view is not None:
             self.view.set_model(self.store)
 
@@ -25,7 +26,7 @@ class TreeView:
             self.view.append_column(column_data_gathered)
             self.view.append_column(column_filename)
 
-    def remove_crawled(self, name_files):
+    def manage_crawled(self, name_files, add=True):
         line_number = -1
         i = 0
 
@@ -39,9 +40,12 @@ class TreeView:
             if line_number != -1:
                 path = Gtk.TreePath(line_number)
                 list_iterator = self.store.get_iter(path)
-                self.store.set_value(list_iterator, 1, "No")
+                if add:
+                    self.store.set_value(list_iterator, 1, "Yes")
+                else:
+                    self.store.set_value(list_iterator, 1, "No")
 
-    def add_crawled(self, name_files):
+    def manage_bold_font(self, name_files, add=True):
         line_number = -1
         i = 0
 
@@ -55,40 +59,10 @@ class TreeView:
             if line_number != -1:
                 path = Gtk.TreePath(line_number)
                 list_iterator = self.store.get_iter(path)
-                self.store.set_value(list_iterator, 1, "Yes")
-
-    def add_bold_font(self, name_files):
-        line_number = -1
-        i = 0
-
-        for filename in name_files:
-            for row in self.store:
-                if row[0] == filename:
-                    line_number = i
+                if add:
+                    self.store.set_value(list_iterator, 2, 700)
                 else:
-                    i = i + 1
-
-            if line_number != -1:
-                path = Gtk.TreePath(line_number)
-                list_iterator = self.store.get_iter(path)
-                self.store.set_value(list_iterator, 2, 700)
-
-    def remove_bold_font(self, name_files):
-
-        line_number = -1
-        i = 0
-
-        for filename in name_files:
-            for row in self.store:
-                if row[0] == filename:
-                    line_number = i
-                else:
-                    i = i + 1
-
-            if line_number != -1:
-                path = Gtk.TreePath(line_number)
-                list_iterator = self.store.get_iter(path)
-                self.store.set_value(list_iterator, 2, 400)
+                    self.store.set_value(list_iterator, 2, 400)
 
 
 TREE_VIEW = TreeView(None, None)

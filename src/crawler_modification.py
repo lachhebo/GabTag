@@ -40,30 +40,21 @@ class CrawlerModification(Thread):
         if self.is_selection_equal_to(self.model.selection):
             model, list_iteration = self.model.selection.get_selected_rows()
 
-            if len(list_iteration) > 1:
-                multiple_line_selected = 1
-            else:
-                multiple_line_selected = 0
-
-            data_scrapped = self.data_crawler.get_tags(
-                model, list_iteration, multiple_line_selected
-            )
+            data_scrapped = self.data_crawler.get_tags(model, list_iteration)
 
             if self.is_selection_equal_to(self.model.selection):
                 if data_scrapped is not None:
                     self.model.view.show_mbz(data_scrapped)
-        else:
-            pass
 
-    def is_selection_equal_to(self, selection):
+    def is_selection_equal_to(self, selection) -> bool:
         model, list_iteration = selection.get_selected_rows()
 
-        if len(list_iteration) == self.length_of_selection:
-            for i in range(len(list_iteration)):
-                name_file = model[list_iteration[i]][0]
-                if name_file not in self.file_names:
-                    return False
-        else:
+        if len(list_iteration) != self.length_of_selection:
             return False
+
+        for i in range(len(list_iteration)):
+            name_file = model[list_iteration[i]][0]
+            if name_file not in self.file_names:
+                return False
 
         return True

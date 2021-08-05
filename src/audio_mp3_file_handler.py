@@ -1,3 +1,5 @@
+from typing import Dict
+
 from mutagen.id3 import ID3, TIT2, APIC, TALB, TPE1  # noqa:F401
 from mutagen.id3 import TCON, TRCK, TDRC, USLT  # noqa:F401
 from mutagen.mp3 import MP3
@@ -80,7 +82,7 @@ class Mp3FileHandler(AudioExtensionHandler):
         else:
             return self.get_one_tag(TAG_PARAMS[tag_key], "text")
 
-    def get_tags(self):
+    def get_tags(self) -> Dict:
         tags = [
             "title",
             "album",
@@ -98,7 +100,6 @@ class Mp3FileHandler(AudioExtensionHandler):
         return result
 
     def check_tag_existence(self, key):
-        """Every thing is in the title"""
         return len(self.id3.getall(TAG_PARAMS[key])) > 0
 
     def set_tag(self, tag_key, tag_value):

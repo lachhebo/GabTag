@@ -1,4 +1,6 @@
 import os
+from typing import Dict
+
 import gi
 import musicbrainzngs as mb
 
@@ -7,7 +9,7 @@ gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk  # noqa: E402
 
 
-def remove_extension(filename):
+def remove_extension(filename: str):
     """
     return the filename without the extension
     """
@@ -15,7 +17,7 @@ def remove_extension(filename):
     return namelist[0:-1]
 
 
-def reorder_data(music_brainz_data):
+def reorder_data(music_brainz_data: Dict):
     """
     take a bunch of data from mz and make it in the form { title = , ...}
     """
@@ -135,3 +137,19 @@ def add_filters(dialog):
     filter_jpeg.set_name("jpeg")
     filter_jpeg.add_mime_type("image/jpeg")
     dialog.add_filter(filter_jpeg)
+
+
+def set_label(view_label, multiple_rows, value):
+    if multiple_rows == 1:
+        view_label.set_text("")
+    else:
+        view_label.set_text(value)
+
+
+def set_text_widget_permission(text_widget, multiple_rows, value):
+    if multiple_rows == 1:
+        text_widget.set_text("")
+        text_widget.set_editable(0)
+    else:
+        text_widget.set_editable(1)
+        text_widget.set_text(value)

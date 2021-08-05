@@ -1,12 +1,6 @@
-from src.controller import CONTROLER
-from .tools import add_filters
+from .controller import CONTROLER
 from .treeview import TREE_VIEW
-from .crawler_data import DATA_CRAWLER
-from .crawler_modification import CrawlerModification
-from .crawler_directory import CrawlerDirectory
-from .view import VIEW, View
-from .version import __version__
-from .model import MODEL
+from .view import VIEW
 from gi.repository import Gtk
 
 import gi
@@ -66,8 +60,9 @@ class GabtagWindow(Gtk.ApplicationWindow):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        TREE_VIEW.store = (self.liststore1,)
+        TREE_VIEW.store = self.liststore1
         TREE_VIEW.view = self.tree_view_id
+        TREE_VIEW.add_columns()
 
         VIEW.tree_view_id = self.tree_view_id
         VIEW.id_title = self.id_title

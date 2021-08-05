@@ -1,4 +1,4 @@
-from src.crawler_data import DATA_CRAWLER
+from .crawler_data import DATA_CRAWLER
 from .model import MODEL
 from .version import __version__
 from .tools import add_filters
@@ -76,7 +76,7 @@ class Controller:
         if response == Gtk.ResponseType.OK:
             self.is_opened_directory = True
             model.view.erase()
-            self.data_crawler.update_directory(dialog.get_filename())
+            self.data_crawler.directory = dialog.get_filename()
             model.update_directory(dialog.get_filename(), self.liststore1)
             thread = CrawlerDirectory(model.directory, self.liststore1)
             thread.start()

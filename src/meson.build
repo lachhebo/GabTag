@@ -36,7 +36,7 @@ gabtag_sources = [
 
   'treeview.py',
   'view.py',
-  'window.py',
+  'window_gtk.py',
   'controller.py',
 
   'audio_extension_handler.py',

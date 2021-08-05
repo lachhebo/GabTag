@@ -14,49 +14,23 @@ class CrawlerDirectory(Thread):
     def run(self):
         file_list = self.data_crawler.get_file_list(self.directory)
 
-        file_list1 = []
-        file_list2 = []
-        file_list3 = []
-        file_list4 = []
+        file_list1 = file_list[0 : int(len(file_list) / 4)]
+        file_list2 = file_list[int(len(file_list) / 4) : int(2 * len(file_list) / 4)]
+        file_list3 = file_list[
+            int(2 * len(file_list) / 4) : int(3 * len(file_list) / 4)
+        ]
+        file_list4 = file_list[int(3 * len(file_list) / 4) :]
 
-        i = 1
-        for file in file_list:
-            if i == 1:
-                file_list1.append(file)
-                i = 2
-            elif i == 2:
-                file_list2.append(file)
-                i = 3
-            elif i == 3:
-                file_list3.append(file)
-                i = 4
-            elif i == 4:
-                file_list4.append(file)
-                i = 1
+        thread_pool = []
+        file_list_pool = [file_list1, file_list2, file_list3, file_list4]
 
-        thread_mbz1 = Thread(
-            target=self.data_crawler.get_data_from_online,
-            args=(file_list1, self.directory),
-        )
-        thread_mbz2 = Thread(
-            target=self.data_crawler.get_data_from_online,
-            args=(file_list2, self.directory),
-        )
-        thread_mbz3 = Thread(
-            target=self.data_crawler.get_data_from_online,
-            args=(file_list3, self.directory),
-        )
-        thread_mbz4 = Thread(
-            target=self.data_crawler.get_data_from_online,
-            args=(file_list4, self.directory),
-        )
+        for file_list_slice in file_list_pool:
+            thread = Thread(
+                target=self.data_crawler.get_data_from_online,
+                args=(file_list_slice, self.directory),
+            )
+            thread.start()
+            thread_pool.append(thread)
 
-        thread_mbz1.start()
-        thread_mbz2.start()
-        thread_mbz3.start()
-        thread_mbz4.start()
-
-        thread_mbz1.join()
-        thread_mbz2.join()
-        thread_mbz3.join()
-        thread_mbz4.join()
+        for thread in thread_pool:
+            thread.join()

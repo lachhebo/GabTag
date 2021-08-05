@@ -18,7 +18,7 @@
 import gi
 import sys
 
-from .window import GabtagWindow
+from .window_gtk import GabtagWindow
 
 gi.require_version("Gtk", "3.0")
 

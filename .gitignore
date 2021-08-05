@@ -11,3 +11,8 @@ venv/
 build.sh
 python3-gabtag/
 gabtag-repo/
+*.ipynb
+.coverage
+.vscode/*
+htmlcov/*
+.ipynb_checkpoints/*

@@ -15,20 +15,19 @@ class Model:
         """
         self.directory = ""
         self.modification = {}
-        self.audio_tags = {}
         self.view = VIEW
         self.selection = None
         self.file_name = []
         self.tags_dictionary = {
-            "title": {"value": ""},
-            "album": {"value": ""},
-            "artist": {"value": ""},
-            "genre": {"value": ""},
-            "cover": {"value": ""},
-            "year": {"value": ""},
-            "track": {"value": ""},
-            "length": {"value": ""},
-            "size": {"value": ""},
+            "title": "",
+            "album": "",
+            "artist": "",
+            "genre": "",
+            "cover": "",
+            "year": "",
+            "track": "",
+            "length": "",
+            "size": "",
         }
 
         self.data_crawler = DATA_CRAWLER
@@ -54,11 +53,11 @@ class Model:
         self.update_view(selection)
 
         tree_handler = TREE_VIEW
-        tree_handler.remove_bold_font(self.file_name)
+        tree_handler.manage_bold_font(self.file_name, add=False)
 
     def reset_one(self, selection):
         """
-        Find the selected rows and delete the related dictionnary
+        Find the selected rows and delete the related dictionary
         nested in modifications. Then update view
         """
         model, list_iter = selection.get_selected_rows()
@@ -68,7 +67,7 @@ class Model:
             self.modification[name_file] = {}
 
             tree_handler = TREE_VIEW
-            tree_handler.remove_bold_font([name_file])
+            tree_handler.manage_bold_font([name_file], add=False)
 
         self.update_view(selection)
 
@@ -91,7 +90,7 @@ class Model:
                     if key in file_modification:
                         audio.set_tag(key, file_modification[key])
 
-                tree_handler.remove_bold_font([name_file])
+                tree_handler.manage_bold_font([name_file], add=False)
                 audio.save_modifications()
 
             self.modification[name_file] = {}
@@ -130,9 +129,7 @@ class Model:
 
         multiple_line_selected = self.get_tags(model, list_iteration)  # return a bool
 
-        data_scrapped = self.data_crawler.get_tags(
-            model, list_iteration, multiple_line_selected
-        )
+        data_scrapped = self.data_crawler.get_tags(model, list_iteration)
 
         self.view.show_tags(self.tags_dictionary, multiple_line_selected)
 
@@ -176,7 +173,6 @@ class Model:
         list_iteration,
         len_selection,
         file_selection,
-        multiple_line_selected,
     ):
 
         is_waiting_mbz = 1
@@ -186,9 +182,7 @@ class Model:
 
         while selection_are_equal and is_waiting_mbz == 1:
 
-            data_gat = self.data_crawler.get_tags(
-                model, list_iteration, multiple_line_selected
-            )
+            data_gat = self.data_crawler.get_tags(model, list_iteration)
 
             selection_are_equal2 = is_selection_equal(
                 self.selection, len_selection, file_selection
@@ -231,12 +225,12 @@ class Model:
 
         tree_handler = TREE_VIEW
         if self.file_modified(name_file):
-            tree_handler.add_bold_font([name_file])
+            tree_handler.manage_bold_font([name_file])
         else:
-            tree_handler.remove_bold_font([name_file])
+            tree_handler.manage_bold_font([name_file], add=False)
 
     def set_online_tags(self):
-        tag_founds = self.data_crawler.tag_finder
+        tag_founds = self.data_crawler.tag_founds
 
         for name_file in tag_founds:
             if name_file in self.modification:
@@ -257,7 +251,7 @@ class Model:
         erase current tags value
         """
         for key in self.tags_dictionary:
-            self.tags_dictionary[key]["value"] = ""
+            self.tags_dictionary[key] = ""
 
     def save_modifications(self):
         """
@@ -275,7 +269,7 @@ class Model:
                 if key in file_modifications:
                     audio.set_tag(key, file_modifications[key])
 
-            tree_handler.remove_bold_font([filename])
+            tree_handler.manage_bold_font([filename], add=False)
 
             audio.save_modifications()
 
@@ -289,45 +283,45 @@ class Model:
         value are shown.
         """
 
-        name_file = model[list_iterator][0]
-        audio = get_file_manager(name_file, self.directory)
+        name_file = model[list_iterator[0]][0]
 
-        for key in self.tags_dictionary:
-            self.tags_dictionary[key]["value"] = audio.get_tag(key)
+        if name_file in self.modification:
+            self.update_tags_dictionary(name_file)  # Look in Modification
+        else:
+            audio = get_file_manager(name_file, self.directory)
 
-        self.audio_tags = self.tags_dictionary.copy()
-        self.check_dictionary(name_file)  # Look in Modification
+            for key in self.tags_dictionary:
+                self.tags_dictionary[key] = audio.get_tag(key)
 
         if len(list_iterator) > 1:
 
-            contkey_dico = self.tags_dictionary.copy()
-
-            for key in self.tags_dictionary:
-                contkey_dico[key] = 1
+            same_tags = {key: True for key in self.tags_dictionary.keys()}
 
             for i in range(1, len(list_iterator)):
                 name_file = model[list_iterator[i]][0]
                 audio = get_file_manager(name_file, self.directory)
-                for key in contkey_dico:
-                    if contkey_dico[key] == 1:
+                for key in same_tags:
+                    if same_tags[key] is True:
                         if key not in ["length", "size"]:
                             value = self.check_tag_equal_key_value(
                                 audio.check_tag_existence(key),
                                 audio.get_tag(key),
                                 name_file,
                                 key,
-                                self.tags_dictionary[key]["value"],
+                                self.tags_dictionary[key],
                             )
-                            contkey_dico[key] = value
-            for key in contkey_dico:
-                if contkey_dico[key] == 0:
-                    self.tags_dictionary[key]["value"] = ""
+                            same_tags[key] = value
+                        else:
+                            same_tags[key] = False
+            for key in same_tags:
+                if same_tags[key] is False:
+                    self.tags_dictionary[key] = ""
 
             return 1  # we return 1 if multiple rows
         else:
             return 0  # O otherwise
 
-    def check_dictionary(self, name_file):
+    def update_tags_dictionary(self, name_file):
         """
         Check in the filename modification dictionary the existence of
         tags and update the current list of tags with found values.
@@ -339,11 +333,11 @@ class Model:
 
         for key in self.tags_dictionary:
             if key in dict_tag_changed:
-                self.tags_dictionary[key]["value"] = dict_tag_changed[key]
+                self.tags_dictionary[key] = dict_tag_changed[key]
 
     def check_tag_equal_key_value(
         self, audio_key_exist, audio_tag_value, name_file, key, key_value
-    ):
+    ) -> bool:
         """
         We check that the tag 'key' is equal to key_value
         for name_file and return 1 else we return 0.We first
@@ -352,17 +346,17 @@ class Model:
         """
 
         if name_file in self.modification:
-            dict_tag_changed = self.modification[name_file]
-            if key in dict_tag_changed:
-                if key_value != dict_tag_changed[key]:
-                    return 0
+            modified_tags = self.modification[name_file]
+            if key in modified_tags:
+                if key_value != modified_tags[key]:
+                    return False
                 else:
-                    return 1
+                    return True
 
         if not audio_key_exist or key_value != audio_tag_value:
-            return 0
-        else:
-            return 1
+            return False
+
+        return True
 
     def set_data_crawled(self, selection):
 
@@ -377,13 +371,7 @@ class Model:
 
     def _preprocess_data_scrapped(self, selection):
         model, list_iterator = selection.get_selected_rows()
-        if len(list_iterator) > 1:
-            multiple_line_selected = 1
-        else:
-            multiple_line_selected = 0
-        data_scrapped = self.data_crawler.get_tags(
-            model, list_iterator, multiple_line_selected
-        )
+        data_scrapped = self.data_crawler.get_tags(model, list_iterator)
         new_data_scrapped = {}
         return data_scrapped, new_data_scrapped
 
@@ -394,9 +382,9 @@ class Model:
         self.modification[name_file][tag_changed] = new_value
 
         if self.file_modified(name_file):
-            TREE_VIEW.add_bold_font([name_file])
+            TREE_VIEW.manage_bold_font([name_file])
         else:
-            TREE_VIEW.remove_bold_font([name_file])
+            TREE_VIEW.manage_bold_font([name_file], add=False)
 
 
 MODEL = Model()

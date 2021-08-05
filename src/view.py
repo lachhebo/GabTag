@@ -5,6 +5,8 @@ from threading import RLock
 from PIL import Image
 from gi.repository import GdkPixbuf, GLib
 
+from .tools import set_text_widget_permission, set_label
+
 gi.require_version("Gtk", "3.0")
 
 
@@ -102,34 +104,6 @@ class View:
             }
         )
 
-    def set_title_permission(self, multiple_rows, title):
-        if multiple_rows == 1:
-            self.title.set_text("")
-            self.title.set_editable(0)
-        else:
-            self.title.set_editable(1)
-            self.title.set_text(title)
-
-    def set_track_permission(self, multiple_rows, track):
-        if multiple_rows == 1:
-            self.track.set_text("")
-            self.track.set_editable(0)
-        else:
-            self.track.set_editable(1)
-            self.track.set_text(track)
-
-    def set_size(self, multiple_rows, size):
-        if multiple_rows == 1:
-            self.size.set_text("")
-        else:
-            self.size.set_text(size)
-
-    def set_length(self, multiple_rows, length):
-        if multiple_rows == 1:
-            self.length.set_text("")
-        else:
-            self.length.set_text(length)
-
     def show_cover_from_bytes(self, bytes_file):
         with Image.open(io.BytesIO(bytes_file)) as img:
             glib_bytes = GLib.Bytes.new(img.tobytes())
@@ -179,31 +153,29 @@ class View:
     def show_tags(self, tags_dict, multiple_rows):
         with verrou_tags:
             # We show those tags uniquely if there is only one row selected
-            # TODO is it really useful ? I don't think so
-            self.set_title_permission(multiple_rows, tags_dict["title"]["value"])
-            self.set_track_permission(multiple_rows, tags_dict["track"]["value"])
+            set_text_widget_permission(self.title, multiple_rows, tags_dict["title"])
+            set_text_widget_permission(self.track, multiple_rows, tags_dict["track"])
 
             # TODO show size and length for the concatenation of songs
-            # Same thing for the labels
-            self.set_size(multiple_rows, tags_dict["size"]["value"])
-            self.set_length(multiple_rows, tags_dict["length"]["value"])
+            set_label(self.size, multiple_rows, tags_dict["size"])
+            set_label(self.length, multiple_rows, tags_dict["length"])
 
             # We show the tag currently in tags_dict
-            self.genre.set_text(tags_dict["genre"]["value"])
-            self.album.set_text(tags_dict["album"]["value"])
-            self.artist.set_text(tags_dict["artist"]["value"])
-            self.year.set_text(tags_dict["year"]["value"])
+            self.genre.set_text(tags_dict["genre"])
+            self.album.set_text(tags_dict["album"])
+            self.artist.set_text(tags_dict["artist"])
+            self.year.set_text(tags_dict["year"])
 
             # A test to handle if there is a cover
-            if tags_dict["cover"]["value"] != "":
-                if tags_dict["cover"]["value"] != self.last_cover:
+            if tags_dict["cover"] != "":
+                if tags_dict["cover"] != self.last_cover:
                     # A test to detect bytes file
-                    if type(tags_dict["cover"]["value"]) == bytes:
-                        self.show_cover_from_bytes(tags_dict["cover"]["value"])
-                        self.last_cover = tags_dict["cover"]["value"]
+                    if type(tags_dict["cover"]) == bytes:
+                        self.show_cover_from_bytes(tags_dict["cover"])
+                        self.last_cover = tags_dict["cover"]
                     else:
-                        self.show_cover_from_file(tags_dict["cover"]["value"])
-                        self.last_cover = tags_dict["cover"]["value"]
+                        self.show_cover_from_file(tags_dict["cover"])
+                        self.last_cover = tags_dict["cover"]
                 else:
                     pass
             else:
