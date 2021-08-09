@@ -1,197 +1,99 @@
-from .crawler_data import DATA_CRAWLER
-from .model import MODEL
-from .version import __version__
-from .tools import add_filters
-from .crawler_directory import CrawlerDirectory
-from .crawler_modification import CrawlerModification
+from threading import Thread
+from typing import List
 
-from gi.repository import Gtk
+from .crawler_data import DATA_CRAWLER
+from .dir_manager import DIR_MANAGER
+from .model import MODEL
+from .treeview import TREE_VIEW
+from .tools import get_file_list, is_selection_valid
 
 import gi
 
+from .view import VIEW
 
 gi.require_version("Gtk", "3.0")
 
 
+def wait_for_mbz(names_files):
+    is_waiting_mbz = True
+    while is_selection_valid(names_files) and is_waiting_mbz:
+        data_gat = DATA_CRAWLER.get_tags(names_files)
+        if data_gat is not None and is_selection_valid(names_files):
+            VIEW.show_mbz(data_gat)
+            is_waiting_mbz = False
+
+
 class Controller:
     def __init__(self) -> None:
-        self.window = None
-        self.is_real_selection: bool = 0
-        self.data_crawler = DATA_CRAWLER
-        self.selectioned = None
-        self.is_opened_directory = False
-
-    def but_saved_cliqued(self, widget):
-        if self.is_opened_directory:
-            model = MODEL
-            thread = CrawlerModification(
-                model.modification.copy(), self.liststore1, self.selectioned, 0
-            )
-            model.save_modifications(self.selectioned)
-            thread.start()
-
-    def clicked_save_one(self, widget):
-        if self.is_real_selection == 1:
-            self.is_real_selection = 0
-            model = MODEL
-            thread = CrawlerModification(
-                model.modification.copy(), self.liststore1, self.selectioned, 1
-            )
-            model.save_one(self.selectioned)
-            thread.start()
-            self.is_real_selection = 1
-
-    def reset_one_clicked(self, widget):
-        if self.is_real_selection == 1:
-            self.is_real_selection = 0
-            model = MODEL
-            model.reset_one(self.selectioned)
-            self.is_real_selection = 1
-
-    def reset_all_clicked(self, widget):
-        if self.is_real_selection == 1:
-            self.is_real_selection = 0
-            model = MODEL
-            model.reset_all(self.selectioned)
-            self.is_real_selection = 1
-
-    def about_clicked(self, widget):
-        self.id_about_window.set_version(__version__)
-        self.id_about_window.run()
-        self.id_about_window.hide()
-
-    def open_clicked(self, widget):
-        self.is_real_selection = 0
-        dialog = Gtk.FileChooserDialog(
-            "Please choose a folder",
-            self,
-            Gtk.FileChooserAction.SELECT_FOLDER,
-            (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL, "Select", Gtk.ResponseType.OK),
-        )
-        dialog.set_default_size(800, 400)
-
-        response = dialog.run()
-
-        model = MODEL
-        if response == Gtk.ResponseType.OK:
-            self.is_opened_directory = True
-            model.view.erase()
-            self.data_crawler.directory = dialog.get_filename()
-            model.update_directory(dialog.get_filename(), self.liststore1)
-            thread = CrawlerDirectory(model.directory, self.liststore1)
-            thread.start()
-
-        dialog.destroy()
-
-        # List mp3 file on the folder on the tree view :
-
-        self.is_real_selection = 1
-
-    def on_menu_but_toggled(self, widget):
         pass
 
-    def title_changed(self, widget):
-        if self.is_real_selection == 1:
-            self.is_real_selection = 0
-            model = MODEL
-            model.update_modifications(self.selectioned, "title", widget.get_text())
-            self.is_real_selection = 1
+    @property
+    def directory(self):
+        return DIR_MANAGER.directory
 
-    def artist_changed(self, widget):
-        if self.is_real_selection == 1:
-            self.is_real_selection = 0
-            model = MODEL
-            model.update_modifications(self.selectioned, "artist", widget.get_text())
-            self.is_real_selection = 1
+    @staticmethod
+    def update_directory(directory: str):
+        DIR_MANAGER.directory = directory
+        DIR_MANAGER.files_name = get_file_list(directory)
+        DIR_MANAGER.is_open_directory = True
+        TREE_VIEW.update_tree_view_list(DIR_MANAGER.files_name)
+        MODEL.reset_all()
 
-    def album_changed(self, widget):
-        if self.is_real_selection == 1:
-            self.is_real_selection = 0
-            model = MODEL
-            model.update_modifications(self.selectioned, "album", widget.get_text())
-            self.is_real_selection = 1
+    @staticmethod
+    def reset_all():  # TODO: check it
+        """
+        Cancel modification before it being saved
+        and reupdate the view,it supposes that something
+        is selection (True)
+        """
+        VIEW.erase()
+        MODEL.reset_all()
+        # self.update_view()
+        # TREE_VIEW.manage_bold_font(names_file, add=False)
 
-    def type_changed(self, widget):
-        if self.is_real_selection == 1:
-            self.is_real_selection = 0
-            model = MODEL
-            model.update_modifications(self.selectioned, "genre", widget.get_text())
-            self.is_real_selection = 1
+    @staticmethod
+    def reset_one(name_files: List):
+        """
+        Find the selected rows and delete the related dictionary
+        nested in modifications. Then update view
+        """
 
-    def track_changed(self, widget):
-        if self.is_real_selection == 1:
-            self.is_real_selection = 0
-            model = MODEL
-            model.update_modifications(self.selectioned, "track", widget.get_text())
-            self.is_real_selection = 1
+        MODEL.reset(name_files)
+        TREE_VIEW.manage_bold_font(name_files, add=False)
 
-    def year_changed(self, widget):
-        if self.is_real_selection == 1:
-            self.is_real_selection = 0
-            model = MODEL
-            model.update_modifications(self.selectioned, "year", widget.get_text())
-            self.is_real_selection = 1
+    def update_view(self, names_files):
+        """
+        Erase the view and the current tag value then get tags for
+        selected row (or rows) and show them.
+        """
+        VIEW.erase()
+        MODEL.erase_tag()
 
-    def load_cover_clicked(self, widget):
-        if self.is_real_selection == 1:
-            self.is_real_selection = 0
-            model = MODEL
+        multiple_line_selected = MODEL.set_tags_dictionary(names_files)  # return a int
+        data_scrapped = DATA_CRAWLER.get_tags(names_files)
 
-            dialog = Gtk.FileChooserDialog(
-                "Please choose a file",
-                self.window,
-                Gtk.FileChooserAction.OPEN,
-                (
-                    Gtk.STOCK_CANCEL,
-                    Gtk.ResponseType.CANCEL,
-                    Gtk.STOCK_OPEN,
-                    Gtk.ResponseType.OK,
-                ),
+        VIEW.show_tags(MODEL.tags_dictionary, multiple_line_selected)
+
+        if data_scrapped is None:
+            VIEW.show_mbz(
+                {
+                    "title": "",
+                    "artist": "",
+                    "album": "",
+                    "track": "",
+                    "year": "",
+                    "genre": "",
+                    "cover": "",
+                }
             )
 
-            add_filters(dialog)
-            response = dialog.run()
-
-            if response == Gtk.ResponseType.OK:
-                file_cover = dialog.get_filename()
-                model.update_modifications(self.selectioned, "cover", file_cover)
-                model.update_view(self.selectioned)
-
-            dialog.destroy()
-            self.is_real_selection = 1
-
-    def selected_changed(self, selection):
-        if self.is_real_selection == 1:
-            self.is_real_selection = 0
-            self.selectioned = selection
-
-            model = MODEL
-            model.update_view(selection)
-
-            self.is_real_selection = 1
-
-    def on_set_mbz(self, widget):
-        if self.is_real_selection == 1:
-            self.is_real_selection = 0
-
-            model = MODEL
-            model.set_data_crawled(self.selectioned)
-            model.update_view(self.selectioned)
-
-            self.is_real_selection = 1
-
-    def on_set_online_tags(self, widget):
-        if self.is_opened_directory:
-            if self.is_real_selection == 1:
-                self.is_real_selection = 0
-                model = MODEL
-
-                model.set_online_tags()
-
-                if self.selectioned is not None:
-                    model.update_view(self.selectioned)
-
-                self.is_real_selection = 1
+            thread_waiting_mbz = Thread(
+                target=wait_for_mbz,
+                args=(names_files,),
+            )
+            thread_waiting_mbz.start()
+        else:
+            VIEW.show_mbz(data_scrapped)
 
 
-CONTROLER = Controller()
+CONTROLLER = Controller()

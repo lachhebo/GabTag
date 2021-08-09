@@ -1,0 +1,1 @@
+HANDLED_EXTENSIONS = ["mp3"]

@@ -86,7 +86,7 @@ def test_update_tags_dictionary__update_tags_dictionary_when_a_file_is_modified(
     testmodel.modification = {"testkey": {"album": "a", "artist": "c"}}
 
     # Act
-    testmodel.update_tags_dictionary("testkey")
+    testmodel.update_tags_dictionary_with_modification("testkey")
 
     # Assert
     assert "a" == testmodel.tags_dictionary["album"]
@@ -355,7 +355,7 @@ def test_file_modified__return_false_if_no_modification(mock_get_file_manager):
     testmodel.modification = {}
 
     # when
-    result = testmodel.file_modified("fake_file")
+    result = testmodel.is_file_modified("fake_file")
 
     # then
     assert result is False
@@ -381,7 +381,7 @@ def test_file_modified__return_false_if_modif_are_equal_to_file(mock_get_file_ma
     }
 
     # when
-    result = testmodel.file_modified("fake_file")
+    result = testmodel.is_file_modified("fake_file")
 
     # then
     assert result is False
@@ -407,7 +407,7 @@ def test_file_modified__return_true_if_modifications(mock_get_file_manager):
     }
 
     # when
-    result = testmodel.file_modified("fake_file")
+    result = testmodel.is_file_modified("fake_file")
 
     # then
     assert result is True
@@ -419,7 +419,7 @@ def test_update_modifications__if_one_file_modified_not_already_in_modifications
 ):
     # given
     testmodel = model.Model()
-    testmodel.file_modified = Mock()
+    testmodel.is_file_modified = Mock()
     selection = Mock()
     selection.get_selected_rows.return_value = ({"file1": ["thunder"]}, ["file1"])
 
@@ -440,7 +440,7 @@ def test_update_modifications__if_one_file_modified__in_modifications_update_mod
 ):
     # given
     testmodel = model.Model()
-    testmodel.file_modified = Mock()
+    testmodel.is_file_modified = Mock()
     selection = Mock()
     selection.get_selected_rows.return_value = ({"file1": ["thunder"]}, ["file1"])
     testmodel.modification = {
@@ -477,7 +477,7 @@ def test_get_tags__return_tags_value_for_one_file(file_manager):
     }
 
     # when
-    output = testmodel.get_tags(gmodel, list_iterator)
+    output = testmodel.set_tags_dictionary_tags(gmodel, list_iterator)
 
     # then
     assert output == 0
@@ -508,7 +508,7 @@ def test_get_tags__return_tags_value_for_multiple_files(file_manager):
     }
 
     # when
-    output = testmodel.get_tags(gmodel, list_iterator)
+    output = testmodel.set_tags_dictionary_tags(gmodel, list_iterator)
 
     # then
     assert output == 1
@@ -528,7 +528,6 @@ def test_wait_for_mbz___call_get_tags_until_selection_changes_then_display_it():
 
 def test_update_view__clean_all_get_tags_and_display_them():
     # given
-
 
     # when
 

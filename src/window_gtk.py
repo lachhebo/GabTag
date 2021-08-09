@@ -1,4 +1,4 @@
-from .controller import CONTROLER
+from .event_machine import EVENT_MACHINE
 from .treeview import TREE_VIEW
 from .view import VIEW
 from gi.repository import Gtk
@@ -65,40 +65,40 @@ class GabtagWindow(Gtk.ApplicationWindow):
         TREE_VIEW.add_columns()
 
         VIEW.tree_view_id = self.tree_view_id
-        VIEW.id_title = self.id_title
-        VIEW.id_album = self.id_album
-        VIEW.id_artist = self.id_artist
-        VIEW.id_type = self.id_type
-        VIEW.id_cover = self.id_cover
-        VIEW.id_track = self.id_track
-        VIEW.id_year = self.id_year
-        VIEW.id_info_length = self.id_info_length
-        VIEW.id_info_size = self.id_info_size
-        VIEW.id_title_mbz = self.id_title_mbz
-        VIEW.id_album_mbz = self.id_album_mbz
-        VIEW.id_artist_mbz = self.id_artist_mbz
-        VIEW.id_genre_mbz = self.id_genre_mbz
-        VIEW.id_cover_mbz = self.id_cover_mbz
-        VIEW.id_track_mbz = self.id_track_mbz
-        VIEW.id_year_mbz = self.id_year_mbz
+        VIEW.title = self.id_title
+        VIEW.album = self.id_album
+        VIEW.artist = self.id_artist
+        VIEW.genre = self.id_type
+        VIEW.cover = self.id_cover
+        VIEW.track = self.id_track
+        VIEW.year = self.id_year
+        VIEW.length = self.id_info_length
+        VIEW.size = self.id_info_size
+        VIEW.title_mbz = self.id_title_mbz
+        VIEW.album_mbz = self.id_album_mbz
+        VIEW.artist_mbz = self.id_artist_mbz
+        VIEW.genre_mbz = self.id_genre_mbz
+        VIEW.cover_mbz = self.id_cover_mbz
+        VIEW.track_mbz = self.id_track_mbz
+        VIEW.year_mbz = self.id_year_mbz
 
         # Connect Buttons
 
-        self.id_reset_all.connect("clicked", CONTROLER.reset_all_clicked)
-        self.id_auto_tag.connect("clicked", CONTROLER.on_set_online_tags)
-        self.id_about.connect("clicked", CONTROLER.about_clicked)
-        self.but_open.connect("clicked", CONTROLER.open_clicked)
-        self.but_save.connect("clicked", CONTROLER.but_saved_cliqued)
-        self.id_load_cover.connect("clicked", CONTROLER.load_cover_clicked)
-        self.id_reset_one.connect("clicked", CONTROLER.reset_all_clicked)
-        self.id_save_one.connect("clicked", CONTROLER.clicked_save_one)
-        self.id_setmbz_but.connect("clicked", CONTROLER.on_set_mbz)
-        self.tree_selection_id.connect("changed", CONTROLER.selected_changed)
-        self.id_album.connect("changed", CONTROLER.album_changed)
-        self.id_artist.connect("changed", CONTROLER.artist_changed)
-        self.id_type.connect("changed", CONTROLER.type_changed)
-        self.id_title.connect("changed", CONTROLER.title_changed)
-        self.id_year.connect("changed", CONTROLER.year_changed)
-        self.id_track.connect("changed", CONTROLER.track_changed)
+        self.id_reset_all.connect("clicked", EVENT_MACHINE.on_reset_all_clicked)
+        self.id_auto_tag.connect("clicked", EVENT_MACHINE.on_set_online_tags)
+        self.id_about.connect("clicked", EVENT_MACHINE.on_about_clicked)
+        self.but_open.connect("clicked", EVENT_MACHINE.on_open_clicked)
+        self.but_save.connect("clicked", EVENT_MACHINE.on_but_saved_clicked)
+        self.id_load_cover.connect("clicked", EVENT_MACHINE.on_load_cover_clicked)
+        self.id_reset_one.connect("clicked", EVENT_MACHINE.on_reset_all_clicked)
+        self.id_save_one.connect("clicked", EVENT_MACHINE.on_clicked_save_one)
+        self.id_setmbz_but.connect("clicked", EVENT_MACHINE.on_set_mbz)
+        self.tree_selection_id.connect("changed", EVENT_MACHINE.on_selected_changed)
+        self.id_album.connect("changed", EVENT_MACHINE.on_album_changed)
+        self.id_artist.connect("changed", EVENT_MACHINE.on_artist_changed)
+        self.id_type.connect("changed", EVENT_MACHINE.on_type_changed)
+        self.id_title.connect("changed", EVENT_MACHINE.on_title_changed)
+        self.id_year.connect("changed", EVENT_MACHINE.on_year_changed)
+        self.id_track.connect("changed", EVENT_MACHINE.on_track_changed)
 
-        CONTROLER.window = self
+        EVENT_MACHINE.window = self

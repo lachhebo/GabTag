@@ -17,8 +17,8 @@ class AudioExtensionHandler:
 
     @abstractmethod
     def check_tag_existence(self, key: str) -> bool:
-        """ return True if the tag exists, False otherwise"""
+        """return True if the tag exists, False otherwise"""
 
     @abstractmethod
     def get_tags(self) -> Dict:
-        '''return a dictionary containg the value of each tag'''
+        """return a dictionary containg the value of each tag"""

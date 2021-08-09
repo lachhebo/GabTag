@@ -1,11 +1,7 @@
-from os import walk
-from threading import Thread
+from typing import List, Any
 
-from .audio_getter import is_extension_managed, get_file_manager
+from .audio_getter import get_file_manager
 from .crawler_data import DATA_CRAWLER
-from .tools import is_selection_equal
-from .treeview import TREE_VIEW
-from .view import VIEW
 
 
 class Model:
@@ -13,11 +9,7 @@ class Model:
         """
         Initialisation of the model class
         """
-        self.directory = ""
         self.modification = {}
-        self.view = VIEW
-        self.selection = None
-        self.file_name = []
         self.tags_dictionary = {
             "title": "",
             "album": "",
@@ -30,185 +22,52 @@ class Model:
             "size": "",
         }
 
-        self.data_crawler = DATA_CRAWLER
-
-    def update_directory(self, directory, store):
-        """
-        we the user open a new directory, we remove all waiting
-        modifications
-        """
-        self.directory = directory
-        self.update_list(store)
-        self.selection = None
+    def reset_all(self) -> None:
         self.modification = {}
 
-    def reset_all(self, selection):
-        """
-        Cancel modification before it being saved
-        and reupdate the view,it supposes that something
-        is selectioned (True)
-        """
-        self.modification = {}
-        self.view.erase()
-        self.update_view(selection)
+    def erase_tag(self) -> None:
+        for key in self.tags_dictionary:
+            self.tags_dictionary[key] = ""
 
-        tree_handler = TREE_VIEW
-        tree_handler.manage_bold_font(self.file_name, add=False)
+    def reset(self, file_names: List) -> None:
+        for file_name in file_names:
+            self.modification[file_name] = {}
 
-    def reset_one(self, selection):
-        """
-        Find the selected rows and delete the related dictionary
-        nested in modifications. Then update view
-        """
-        model, list_iter = selection.get_selected_rows()
-
-        for i in range(0, len(list_iter)):
-            name_file = model[list_iter[i]][0]
-            self.modification[name_file] = {}
-
-            tree_handler = TREE_VIEW
-            tree_handler.manage_bold_font([name_file], add=False)
-
-        self.update_view(selection)
-
-    def save_one(self, selection):
+    def get_modification(self, name_file: str) -> Any:
         """
         Find the selected rows, set tags for each row and then save
         modification.
         We don't need to update the view after saving one file.
         """
-        model, list_iter = selection.get_selected_rows()
-        tree_handler = TREE_VIEW
+        if name_file in self.modification:
+            return self.modification[name_file]
 
-        for i in range(len(list_iter)):
-            name_file = model[list_iter[i]][0]
-            audio = get_file_manager(name_file, self.directory)
-            if name_file in self.modification:
-                file_modification = self.modification[name_file]
-
-                for key in self.tags_dictionary:
-                    if key in file_modification:
-                        audio.set_tag(key, file_modification[key])
-
-                tree_handler.manage_bold_font([name_file], add=False)
-                audio.save_modifications()
-
+    def update_modification(
+        self, tag_changed: str, new_value: str, name_file: str
+    ) -> bool:
+        if name_file not in self.modification:
             self.modification[name_file] = {}
 
-    def update_list(self, store):
-        """
-        Erase the list in the tree view and then update it with filename
-        with extension handled by GabTag
-        """
+        self.modification[name_file][tag_changed] = new_value
 
-        self.file_name = []
-        store.clear()
+        return self.is_file_modified(name_file)
 
-        file_list = []
-        for (_, _, files_name) in walk(self.directory):
-            file_list.extend(files_name)
-            break
-
-        for name_file in file_list:
-            if is_extension_managed(name_file):
-                self.file_name.append(name_file)
-                store.append([name_file, "No", 400])
-
-    def update_view(self, selection):
-        """
-        Erase the view and the current tag value then get tags for
-        selected row (or rows) and show them.
-        """
-
-        self.selection = selection
-
-        model, list_iteration = selection.get_selected_rows()
-
-        self.view.erase()
-        self.erase_tag()
-
-        multiple_line_selected = self.get_tags(model, list_iteration)  # return a bool
-
-        data_scrapped = self.data_crawler.get_tags(model, list_iteration)
-
-        self.view.show_tags(self.tags_dictionary, multiple_line_selected)
-
-        if data_scrapped is None:
-            self.view.show_mbz(
-                {
-                    "title": "",
-                    "artist": "",
-                    "album": "",
-                    "track": "",
-                    "year": "",
-                    "genre": "",
-                    "cover": "",
-                }
-            )
-
-            length_selection = len(list_iteration)
-            file_selection = []
-
-            for i in range(len(list_iteration)):
-                name_file = model[list_iteration[i]][0]
-                file_selection.append(name_file)
-
-            thread_waiting_mbz = Thread(
-                target=self.wait_for_mbz,
-                args=(
-                    model,
-                    list_iteration,
-                    length_selection,
-                    file_selection,
-                    multiple_line_selected,
-                ),
-            )
-            thread_waiting_mbz.start()
-        else:
-            self.view.show_mbz(data_scrapped)
-
-    def wait_for_mbz(
-        self,
-        model,
-        list_iteration,
-        len_selection,
-        file_selection,
-    ):
-
-        is_waiting_mbz = 1
-        selection_are_equal = is_selection_equal(
-            self.selection, len_selection, file_selection
-        )
-
-        while selection_are_equal and is_waiting_mbz == 1:
-
-            data_gat = self.data_crawler.get_tags(model, list_iteration)
-
-            selection_are_equal2 = is_selection_equal(
-                self.selection, len_selection, file_selection
-            )
-
-            if data_gat is not None and selection_are_equal2:
-                is_waiting_mbz = 0
-                self.view.show_mbz(data_gat)
-
-    def update_modifications(self, selection, tag_changed, new_value):
+    def update_modifications(
+        self, file_names: List, tag_changed: str, new_value: str
+    ) -> None:
         """
         If the file name is already a key in the directory, add or update
         the modified tags else create a new key in modification
         """
 
-        model, list_iter = selection.get_selected_rows()
+        for name_file in file_names:
+            self.update_modification(tag_changed, new_value, name_file)
 
-        for i in range(0, len(list_iter)):
-            name_file = model[list_iter[i]][0]
-            self._update_modif_for_one_file(tag_changed, new_value, name_file)
-
-    def file_modified(self, name_file: str) -> bool:
+    def is_file_modified(self, name_file: str) -> bool:
         if name_file not in self.modification:
             return False
 
-        audio = get_file_manager(name_file, self.directory)
+        audio = get_file_manager(name_file)
         audio_tag = audio.get_tags()
         tag_modified = self.modification[name_file]
 
@@ -218,64 +77,45 @@ class Model:
 
         return False
 
-    def update_modification_name_file(
-        self, name_file: str, key: str, new_value: str
-    ) -> None:
-        self.modification[name_file][key] = new_value
-
-        tree_handler = TREE_VIEW
-        if self.file_modified(name_file):
-            tree_handler.manage_bold_font([name_file])
-        else:
-            tree_handler.manage_bold_font([name_file], add=False)
-
-    def set_online_tags(self):
-        tag_founds = self.data_crawler.tag_founds
-
-        for name_file in tag_founds:
-            if name_file in self.modification:
-                for key in tag_founds[name_file]:
-                    self.update_modification_name_file(
-                        name_file, key, tag_founds[name_file][key]
-                    )
-
-            else:
+    def set_online_tags(self) -> None:
+        for name_file in DATA_CRAWLER.tag_founds:
+            if name_file not in self.modification:
                 self.modification[name_file] = {}
-                for key in tag_founds[name_file]:
-                    self.update_modification_name_file(
-                        name_file, key, tag_founds[name_file][key]
-                    )
 
-    def erase_tag(self):
-        """
-        erase current tags value
-        """
-        for key in self.tags_dictionary:
-            self.tags_dictionary[key] = ""
+            for key in DATA_CRAWLER.tag_founds[name_file]:
+                self.update_modification(
+                    key, DATA_CRAWLER.tag_founds[name_file][key], name_file
+                )
 
-    def save_modifications(self):
+    def save_modifications(self, tree_handler, name_files=None) -> None:
         """
         For each key file in modification, we get the tags inside
         the nested dictionary and integer them on the audio tag file.
         Eventually we save the audio tag file.
         """
-        tree_handler = TREE_VIEW
 
-        for filename in self.modification:
-            audio = get_file_manager(filename, self.directory)
-            file_modifications = self.modification[filename]
+        if name_files is None:
+            modifications = self.modification
+        else:
+            modifications = {}
+            for name in name_files:
+                modifications[name] = self.modification.get(name)
 
-            for key in self.tags_dictionary:
-                if key in file_modifications:
-                    audio.set_tag(key, file_modifications[key])
+        for filename in modifications:
+            if modifications[filename] is not None:
+                audio = get_file_manager(filename)
+                file_modifications = modifications[filename]
 
-            tree_handler.manage_bold_font([filename], add=False)
+                for key in self.tags_dictionary:
+                    if key in file_modifications:
+                        audio.set_tag(key, file_modifications[key])
 
-            audio.save_modifications()
+                tree_handler.manage_bold_font([filename], add=False)
 
-        self.modification = {}
+                audio.save_modifications()
+                self.modification[filename] = {}
 
-    def get_tags(self, model, list_iterator) -> int:
+    def set_tags_dictionary(self, names_file: List) -> int:
         """
         First we get the selected rows, we get the tag value of the
         first row, if there are several rows, we check the tag value
@@ -283,23 +123,22 @@ class Model:
         value are shown.
         """
 
-        name_file = model[list_iterator[0]][0]
+        name_file = names_file[0]
 
         if name_file in self.modification:
-            self.update_tags_dictionary(name_file)  # Look in Modification
+            self.update_tags_dictionary_with_modification(name_file)
         else:
-            audio = get_file_manager(name_file, self.directory)
+            audio = get_file_manager(name_file)
 
             for key in self.tags_dictionary:
                 self.tags_dictionary[key] = audio.get_tag(key)
 
-        if len(list_iterator) > 1:
+        if len(names_file) > 1:
 
             same_tags = {key: True for key in self.tags_dictionary.keys()}
 
-            for i in range(1, len(list_iterator)):
-                name_file = model[list_iterator[i]][0]
-                audio = get_file_manager(name_file, self.directory)
+            for name_file in names_file:
+                audio = get_file_manager(name_file)
                 for key in same_tags:
                     if same_tags[key] is True:
                         if key not in ["length", "size"]:
@@ -317,11 +156,11 @@ class Model:
                 if same_tags[key] is False:
                     self.tags_dictionary[key] = ""
 
-            return 1  # we return 1 if multiple rows
+            return 1
         else:
-            return 0  # O otherwise
+            return 0
 
-    def update_tags_dictionary(self, name_file):
+    def update_tags_dictionary_with_modification(self, name_file: str) -> None:
         """
         Check in the filename modification dictionary the existence of
         tags and update the current list of tags with found values.
@@ -336,7 +175,12 @@ class Model:
                 self.tags_dictionary[key] = dict_tag_changed[key]
 
     def check_tag_equal_key_value(
-        self, audio_key_exist, audio_tag_value, name_file, key, key_value
+        self,
+        audio_key_exist: bool,
+        audio_tag_value: Any,
+        name_file: str,
+        key: str,
+        key_value: Any,
     ) -> bool:
         """
         We check that the tag 'key' is equal to key_value
@@ -358,33 +202,16 @@ class Model:
 
         return True
 
-    def set_data_crawled(self, selection):
-
-        data_scrapped, new_data = self._preprocess_data_scrapped(selection)
+    def set_data_crawled(self, names_files: List):
+        data_scrapped = DATA_CRAWLER.get_tags(names_files)
+        new_data = {}
 
         for key in data_scrapped:
             if data_scrapped[key] != "":
                 new_data[key] = data_scrapped[key]
 
         for key in new_data:
-            self.update_modifications(selection, key, new_data[key])
-
-    def _preprocess_data_scrapped(self, selection):
-        model, list_iterator = selection.get_selected_rows()
-        data_scrapped = self.data_crawler.get_tags(model, list_iterator)
-        new_data_scrapped = {}
-        return data_scrapped, new_data_scrapped
-
-    def _update_modif_for_one_file(self, tag_changed, new_value, name_file):
-        if name_file not in self.modification:
-            self.modification[name_file] = {}
-
-        self.modification[name_file][tag_changed] = new_value
-
-        if self.file_modified(name_file):
-            TREE_VIEW.manage_bold_font([name_file])
-        else:
-            TREE_VIEW.manage_bold_font([name_file], add=False)
+            self.update_modifications(names_files, key, new_data[key])
 
 
 MODEL = Model()

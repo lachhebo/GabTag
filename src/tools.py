@@ -1,8 +1,11 @@
 import os
-from typing import Dict
+from typing import Dict, List
 
 import gi
 import musicbrainzngs as mb
+
+from .extension_manager import is_extension_managed
+from .selection_handler import SELECTION
 
 gi.require_version("Gtk", "3.0")
 
@@ -54,7 +57,7 @@ def reorder_data(music_brainz_data: Dict):
                         size=250,
                     )
 
-                    if type(file_tags) == bytes:
+                    if isinstance(file_tags, bytes):
                         break
 
                 except mb.musicbrainz.ResponseError:
@@ -79,42 +82,12 @@ def reorder_data(music_brainz_data: Dict):
     return file_tags
 
 
-def get_file_extension(filename):
-    """
-    return the file extension.
-    """
-    namelist = filename.split(".")
-    return namelist[-1]
-
-
-def get_extension_mime(filename):
-    """
-    return the type of the file (jpeg or png)
-    """
-    namelist = filename.split("/")
-    return namelist[-1]
-
-
 def get_extension_image(filename):
     """
     return a mime from a filename
     """
     namelist = filename.split(".")
     return "/image/" + namelist[-1]
-
-
-def is_selection_equal(selection, length_selection_2, file_list_selection2):
-    model, list_iteration = selection.get_selected_rows()
-
-    if len(list_iteration) == length_selection_2:
-        for i in range(len(list_iteration)):
-            name_file = model[list_iteration[i]][0]
-            if name_file not in file_list_selection2:
-                return False
-    else:
-        return False
-
-    return True
 
 
 def file_size_to_string(path_file):
@@ -153,3 +126,36 @@ def set_text_widget_permission(text_widget, multiple_rows, value):
     else:
         text_widget.set_editable(1)
         text_widget.set_text(value)
+
+
+def get_file_list(directory: str):
+    file_list = []
+    for (_, _, file_name) in os.walk(directory):
+        file_list.extend(file_name)
+        break
+
+    result = []
+    for name_file in file_list:
+        if is_extension_managed(name_file):
+            result.append(name_file)
+
+    return result
+
+
+def is_selection_valid(default_file_names: List) -> bool:
+    file_names = get_filenames_from_selection(SELECTION.selection)
+
+    if len(file_names) != len(default_file_names):
+        return False
+
+    for name_file, selected_name_file in zip(default_file_names, file_names):
+        if name_file != selected_name_file:
+            return False
+
+    return True
+
+
+def get_filenames_from_selection(selection):
+    model, list_iter = selection.get_selected_rows()
+    name_files = [model[list_iter[i]][0] for i in range(len(list_iter))]
+    return name_files

@@ -31,6 +31,10 @@ gabtag_sources = [
   'version.py',
 
   'exception.py',
+  'constant.py',
+  'extension_manager.py',
+  'dir_manager.py',
+  'selection_handler.py',
   'tools.py',
   'model.py',
 
@@ -38,6 +42,7 @@ gabtag_sources = [
   'view.py',
   'window_gtk.py',
   'controller.py',
+  'event_machine.py',
 
   'audio_extension_handler.py',
   'audio_getter.py',

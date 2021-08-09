@@ -9,4 +9,3 @@ def test_get_extension__return_mp3():
 
     # then
     assert result == ".mp3"
-

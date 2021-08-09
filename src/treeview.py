@@ -1,3 +1,5 @@
+from typing import List
+
 import gi
 from gi.repository import Gtk
 
@@ -25,6 +27,17 @@ class TreeView:
 
             self.view.append_column(column_data_gathered)
             self.view.append_column(column_filename)
+
+    def update_tree_view_list(self, file_names: List):
+        """
+        Erase the list in the tree view and then update it with filename
+        with extension handled by GabTag
+        """
+
+        self.store.clear()
+
+        for name_file in file_names:
+            self.store.append([name_file, "No", 400])
 
     def manage_crawled(self, name_files, add=True):
         line_number = -1

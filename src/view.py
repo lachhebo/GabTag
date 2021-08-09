@@ -170,7 +170,7 @@ class View:
             if tags_dict["cover"] != "":
                 if tags_dict["cover"] != self.last_cover:
                     # A test to detect bytes file
-                    if type(tags_dict["cover"]) == bytes:
+                    if isinstance(tags_dict["cover"], bytes):
                         self.show_cover_from_bytes(tags_dict["cover"])
                         self.last_cover = tags_dict["cover"]
                     else:

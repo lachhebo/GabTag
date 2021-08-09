@@ -76,11 +76,11 @@ def test_reorder_data_is_working_with_musicbrainz_data():
 
     # then
     assert output == {
-        "title": 'Bunker Sweet Bunker',
+        "title": "Bunker Sweet Bunker",
         "artist": "Les Malpolis",
-        "genre":"",
-        "cover":'',
-        "album": 'Les Malpolis élargissent leur cible',
-        "track":"7",
-        "year":"2001",
+        "genre": "",
+        "cover": "",
+        "album": "Les Malpolis élargissent leur cible",
+        "track": "7",
+        "year": "2001",
     }

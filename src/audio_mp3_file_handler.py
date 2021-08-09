@@ -110,7 +110,7 @@ class Mp3FileHandler(AudioExtensionHandler):
 
             if tag_value == "":
                 pass
-            elif type(tag_value) == bytes:
+            elif isinstance(tag_value, bytes):
                 self.id3.add(
                     APIC(
                         encoding=3,  # UTF-8

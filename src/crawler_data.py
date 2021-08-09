@@ -1,10 +1,10 @@
+from typing import Dict, List
+
 import musicbrainzngs as mb
-from os import walk
-from .audio_getter import is_extension_managed, get_file_manager
+
+from .audio_getter import get_file_manager
 from .tools import remove_extension, reorder_data
-from .treeview import TREE_VIEW
 from .version import __version__
-from .view import VIEW
 
 
 class DataCrawler:
@@ -13,14 +13,11 @@ class DataCrawler:
             "GabTag", version=__version__, contact="ismael.lachheb@protonmail.com"
         )
         self.tag_founds = {}
-        self.view = VIEW
-        self.tree_view = TREE_VIEW
-        self.directory = ""
 
-    def crawl_one_file(self, name_file, directory):
-        audio = get_file_manager(name_file, directory)
+    def crawl_one_file(self, name_file):
+        audio = get_file_manager(name_file)
 
-        tags = audio.get_tag_research()  # title, artist, album
+        tags = audio.get_tag_research()
 
         if tags[0] == "" and tags[1] == "":
             self.search_by_filename(name_file)
@@ -31,9 +28,7 @@ class DataCrawler:
         elif tags[0] == "":
             self.search_by_artist_and_name_file(name_file, tags)
 
-        self.tree_view.manage_crawled([name_file])
-
-    def search_by_artist_and_name_file(self, name_file, tags):
+    def search_by_artist_and_name_file(self, name_file: str, tags: List):
         try:
             gathered_data = mb.search_recordings(
                 query=remove_extension(name_file),
@@ -45,7 +40,7 @@ class DataCrawler:
         except mb.NetworkError:
             pass
 
-    def search_by_title_and_album(self, name_file, tags):
+    def search_by_title_and_album(self, name_file: str, tags):
         try:
             records = mb.search_recordings(recording=tags[0], release=tags[2], limit=1)
             records = reorder_data(records)
@@ -53,8 +48,7 @@ class DataCrawler:
         except mb.NetworkError:
             pass
 
-    def search_by_title_and_artist(self, name_file, tags):
-        # Using tags title artist and album if they are present
+    def search_by_title_and_artist(self, name_file: str, tags):
         try:
             gathered_data = mb.search_recordings(
                 recording=tags[0], artistname=tags[1], limit=1
@@ -63,54 +57,36 @@ class DataCrawler:
         except mb.NetworkError:
             pass
 
-    def search_by_filename(self, name_file):
+    def search_by_filename(self, name_file: str):
         mz_query = remove_extension(name_file)
         self.tag_founds[name_file] = reorder_data(
             mb.search_recordings(query=mz_query, limit=1)
         )
 
-    def update_data_crawled(self, modifications, directory):
+    def update_data_crawled(self, modifications: Dict) -> List:
+        names_file = []
         for name_file in modifications:
-            self.tree_view.manage_crawled([name_file], False)
-            if self.stop(directory):
-                break
-            self.crawl_one_file(name_file, directory)
-            if self.stop(directory):
-                break
+            self.crawl_one_file(name_file)
+            names_file.append(name_file)
+        return names_file
 
     def erase_data(self):
         self.tag_founds = {}
 
-    def get_file_list(self, directory):
-        self.directory = directory
-
-        file_list = []
-        for (_, _, file_names) in walk(directory):
-            file_list.extend(file_names)
-            break
-
-        return file_list
-
-    def get_data_from_online(self, file_list, directory):
+    def get_data_from_online(self, file_list):
         for name_file in file_list:
-            if is_extension_managed(name_file):
-                if not self.stop(directory):
-                    self.crawl_one_file(name_file, directory)
+            self.crawl_one_file(name_file)
 
-    def stop(self, directory):
-        return not self.directory == directory
-
-    def get_tags(self, model, list_iterator):
+    def get_tags(self, names_files):
 
         tags_output = None
 
-        name_file = model[list_iterator[0]][0]
+        name_file = names_files[0]
         if name_file in self.tag_founds:
             tags_output = self.tag_founds[name_file].copy()
 
-        if len(list_iterator) > 1:
-            for i in range(1, len(list_iterator)):
-                name_file = model[list_iterator[i]][0]
+        if len(names_files) > 1:
+            for name_file in names_files:
                 if name_file not in self.tag_founds:
                     return None
                 _tags = ["artist", "album", "year", "genre", "cover"]
