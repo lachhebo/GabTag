@@ -2,10 +2,13 @@ from threading import Thread
 from typing import List
 
 from .crawler_data import DATA_CRAWLER
+from .crawler_directory import CrawlerDirectory
+from .crawler_modification import CrawlerModification
 from .dir_manager import DIR_MANAGER
 from .model import MODEL
+from .selection_handler import SELECTION
 from .treeview import TREE_VIEW
-from .tools import get_file_list, is_selection_valid
+from .tools import get_file_list, is_selection_valid, get_filenames_from_selection
 
 import gi
 
@@ -14,22 +17,16 @@ from .view import VIEW
 gi.require_version("Gtk", "3.0")
 
 
-def wait_for_mbz(names_files):
-    is_waiting_mbz = True
-    while is_selection_valid(names_files) and is_waiting_mbz:
-        data_gat = DATA_CRAWLER.get_tags(names_files)
-        if data_gat is not None and is_selection_valid(names_files):
-            VIEW.show_mbz(data_gat)
-            is_waiting_mbz = False
-
-
 class Controller:
-    def __init__(self) -> None:
-        pass
 
-    @property
-    def directory(self):
-        return DIR_MANAGER.directory
+    @staticmethod
+    def wait_for_mbz(names_files):
+        is_waiting_mbz = True
+        while is_selection_valid(names_files) and is_waiting_mbz:
+            data_gat = DATA_CRAWLER.get_tags(names_files)
+            if data_gat is not None and is_selection_valid(names_files):
+                VIEW.show_mbz(data_gat)
+                is_waiting_mbz = False
 
     @staticmethod
     def update_directory(directory: str):
@@ -61,7 +58,39 @@ class Controller:
         MODEL.reset(name_files)
         TREE_VIEW.manage_bold_font(name_files, add=False)
 
-    def update_view(self, names_files):
+    @staticmethod
+    def crawl_thread_modification():
+        thread = CrawlerModification(MODEL.modification.copy(), TREE_VIEW.store)
+        MODEL.save_modifications(TREE_VIEW)
+        thread.start()
+
+    @staticmethod
+    def save_some_files():
+        name_files = get_filenames_from_selection(SELECTION.selection)
+        thread = CrawlerModification(MODEL.modification.copy(), name_files)
+        MODEL.save_modifications(TREE_VIEW, name_files=name_files)
+        thread.start()
+
+    @staticmethod
+    def reset_some_files():
+        name_files = get_filenames_from_selection(SELECTION.selection)
+        Controller.reset_one(name_files)
+
+    @staticmethod
+    def change_directory(directory):
+        VIEW.erase()
+        Controller.update_directory(directory)
+        thread = CrawlerDirectory(DIR_MANAGER.directory)
+        thread.start()
+
+    @staticmethod
+    def react_to_user_modif(tag: str, text: str):
+        name_files = get_filenames_from_selection(SELECTION.selection)
+        MODEL.update_modifications(name_files, tag, text)
+        TREE_VIEW.manage_bold_font(name_files)
+
+    @staticmethod
+    def update_view(names_files: List):
         """
         Erase the view and the current tag value then get tags for
         selected row (or rows) and show them.
@@ -88,12 +117,9 @@ class Controller:
             )
 
             thread_waiting_mbz = Thread(
-                target=wait_for_mbz,
+                target=Controller.wait_for_mbz,
                 args=(names_files,),
             )
             thread_waiting_mbz.start()
         else:
             VIEW.show_mbz(data_scrapped)
-
-
-CONTROLLER = Controller()
