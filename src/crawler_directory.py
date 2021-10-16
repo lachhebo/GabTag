@@ -9,7 +9,7 @@ from .treeview import TREE_VIEW
 def split(file_list, n=4):
     k, m = divmod(len(file_list), n)
     return (
-        file_list[i * k + min(i, m) : (i + 1) * k + min(i + 1, m)] for i in range(n)
+        file_list[i * k + min(i, m): (i + 1) * k + min(i + 1, m)] for i in range(n)
     )
 
 

@@ -75,7 +75,7 @@ class View:
                         )
 
                         self.cover_mbz.set_from_pixbuf(pixbuf)
-                    except TypeError as error_message:
+                    except TypeError:
                         self.cover_mbz.set_from_icon_name("gtk-missing-image", 6)
             else:
                 self.cover_mbz.set_from_icon_name("gtk-missing-image", 6)

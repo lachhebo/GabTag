@@ -1,10 +1,7 @@
-from .crawler_modification import CrawlerModification
 from .dir_manager import DIR_MANAGER
 from .model import MODEL
 from .selection_handler import SELECTION
-from .treeview import TREE_VIEW
 from .controller import Controller
-from .crawler_directory import CrawlerDirectory
 from .tools import add_filters, get_filenames_from_selection
 from .version import __version__
 
@@ -12,15 +9,13 @@ from gi.repository import Gtk
 
 import gi
 
-from .view import VIEW
-
 gi.require_version("Gtk", "3.0")
 
 
 class EventMachine:
     def __init__(self) -> None:
         self.window = None
-        self.is_real_selection: bool = 0
+        self.is_real_selection = 0
 
     def on_but_saved_clicked(self, widget):
         if DIR_MANAGER.is_open_directory:
