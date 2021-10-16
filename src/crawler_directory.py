@@ -1,55 +1,44 @@
 from threading import Thread
-from .crawler_data import DataCrawler
-from .model import Model
+
+from .crawler_data import DATA_CRAWLER
+from .dir_manager import DIR_MANAGER
+from .tools import get_file_list
+from .treeview import TREE_VIEW
+
+
+def split(file_list, n=4):
+    k, m = divmod(len(file_list), n)
+    return (
+        file_list[i * k + min(i, m): (i + 1) * k + min(i + 1, m)] for i in range(n)
+    )
 
 
 class CrawlerDirectory(Thread):
-
-    def __init__(self, directory, store):
+    def __init__(self, directory):
         Thread.__init__(self)
-        self.data_crawler = DataCrawler.get_instance()
         self.directory = directory
-        self.store = store
-        self.model = Model.get_instance()
 
     def run(self):
-        file_list = self.data_crawler.get_file_list(self.directory)
+        file_list = get_file_list(self.directory)
+        file_list_pool = split(file_list)
 
-        file_list1 = []
-        file_list2 = []
-        file_list3 = []
-        file_list4 = []
+        thread_pool = []
+        for file_list_slice in file_list_pool:
+            thread = Thread(
+                target=DATA_CRAWLER.get_data_from_online,
+                args=(file_list_slice,),
+            )
+            thread.start()
+            thread_pool.append(thread)
 
-        i = 1
-        for file in file_list:
-            if i == 1:
-                file_list1.append(file)
-                i = 2
-            elif i == 2:
-                file_list2.append(file)
-                i = 3
-            elif i == 3:
-                file_list3.append(file)
-                i = 4
-            elif i == 4:
-                file_list4.append(file)
-                i = 1
+        marked = []
+        while True in [thread.is_alive() for thread in thread_pool]:
+            self.check_and_mark_file_crawled(marked)
 
-        thread_mbz1 = Thread(target=self.data_crawler.get_data_from_online,
-                             args=(file_list1, self.directory))
-        thread_mbz2 = Thread(target=self.data_crawler.get_data_from_online,
-                             args=(file_list2, self.directory))
-        thread_mbz3 = Thread(target=self.data_crawler.get_data_from_online,
-                             args=(file_list3, self.directory))
-        thread_mbz4 = Thread(target=self.data_crawler.get_data_from_online,
-                             args=(file_list4, self.directory))
+        self.check_and_mark_file_crawled(marked)
 
-        thread_mbz1.start()
-        thread_mbz2.start()
-        thread_mbz3.start()
-        thread_mbz4.start()
-
-        thread_mbz1.join()
-        thread_mbz2.join()
-        thread_mbz3.join()
-        thread_mbz4.join()
+    def check_and_mark_file_crawled(self, marked):
+        for file_name in DATA_CRAWLER.tag_founds.copy().keys():
+            if file_name not in marked and self.directory == DIR_MANAGER.directory:
+                TREE_VIEW.manage_crawled([file_name])
+                marked.append(file_name)

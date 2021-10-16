@@ -1,2 +1,0 @@
-class SingletonException(Exception):
-    pass

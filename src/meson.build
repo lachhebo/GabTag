@@ -31,12 +31,18 @@ gabtag_sources = [
   'version.py',
 
   'exception.py',
+  'constant.py',
+  'extension_manager.py',
+  'dir_manager.py',
+  'selection_handler.py',
   'tools.py',
   'model.py',
 
   'treeview.py',
   'view.py',
-  'window.py',
+  'window_gtk.py',
+  'controller.py',
+  'event_machine.py',
 
   'audio_extension_handler.py',
   'audio_getter.py',
@@ -44,7 +50,7 @@ gabtag_sources = [
 
   'crawler_data.py',
   'crawler_directory.py',
-  'crawler_modification.py'
+  'crawler_modification.py',
 ]
 
 install_data(gabtag_sources, install_dir: moduledir)

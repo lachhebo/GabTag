@@ -1,7 +1,10 @@
 mutagen
 pycairo
 musicbrainzngs
-PyLyrics
 pygobject
 Pillow
 flake8
+pytest 
+pytest-coverage
+pytest-bdd
+pathlib

@@ -2,10 +2,10 @@ name: Run Python Tests
 on:
   push:
     branches:
-      - master
+      - "*"
   pull_request:
     branches:
-      - master
+      - "*"
 
 jobs:
   build:
@@ -28,8 +28,11 @@ jobs:
           pip install -r requirements.txt
           pip install coverage codecov pytest-cov
 
-      - name: Run tests with pytest and flake8
+      - name: Run tests with pytest nd flake8
+        run: |
+          pytest tests --cov=src
+          codecov 
+
+      - name: Run flake8
         run: |
           flake8
-          pytest --cov=./
-          codecov 

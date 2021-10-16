@@ -1,0 +1,2 @@
+[run]
+omit = src/window_gtk.py

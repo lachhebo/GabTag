@@ -1,5 +1,7 @@
+from typing import Dict
+
 from mutagen.id3 import ID3, TIT2, APIC, TALB, TPE1  # noqa:F401
-from mutagen.id3 import TCON, TRCK, TDRC, USLT   # noqa:F401
+from mutagen.id3 import TCON, TRCK, TDRC, USLT  # noqa:F401
 from mutagen.mp3 import MP3
 
 from .audio_extension_handler import AudioExtensionHandler
@@ -7,14 +9,13 @@ from .tools import get_extension_image, music_length_to_string
 from .tools import file_size_to_string
 
 TAG_PARAMS = {
-    'title': 'TIT2',
-    'cover': 'APIC',
-    'album': 'TALB',
-    'artist': 'TPE1',
-    'genre': 'TCON',
-    'track': 'TRCK',
-    'year': 'TDRC',
-    'lyrics': 'USLT',
+    "title": "TIT2",
+    "cover": "APIC",
+    "album": "TALB",
+    "artist": "TPE1",
+    "genre": "TCON",
+    "track": "TRCK",
+    "year": "TDRC",
 }
 
 
@@ -48,20 +49,20 @@ class Mp3FileHandler(AudioExtensionHandler):
         if self.id3 is not None:
             tag_needed = self.id3.getall(id3_name_tag)
             if len(tag_needed) > 0:
-                if data_type == 'text':
+                if data_type == "text":
                     return tag_needed[0].text[0]
-                elif data_type == 'data':
+                elif data_type == "data":
                     return tag_needed[0].data
             else:
-                return ''
+                return ""
         else:
-            return ''
+            return ""
 
     def get_tag_research(self):
         return [
-            self.get_one_tag(TAG_PARAMS['title'], 'text'),
-            self.get_one_tag(TAG_PARAMS['artist'], 'text'),
-            self.get_one_tag(TAG_PARAMS['album'], 'text')
+            self.get_one_tag(TAG_PARAMS["title"], "text"),
+            self.get_one_tag(TAG_PARAMS["artist"], "text"),
+            self.get_one_tag(TAG_PARAMS["album"], "text"),
         ]
 
     def get_tag(self, tag_key):
@@ -70,46 +71,53 @@ class Mp3FileHandler(AudioExtensionHandler):
         is basically the structure.
         """
 
-        if tag_key == 'cover':
-            return self.get_one_tag('APIC', 'data')
-        elif tag_key == 'lyrics':
-            if self.id3 is not None:
-                tag_needed = self.id3.getall('USLT')
-                if len(tag_needed) > 0:
-                    return tag_needed[0].text
-                else:
-                    return ''
-            else:
-                return ''
-        elif tag_key == 'year':
-            return str(self.get_one_tag('TDRC', 'text'))
-        elif tag_key == 'size':
+        if tag_key == "cover":
+            return self.get_one_tag("APIC", "data")
+        elif tag_key == "year":
+            return str(self.get_one_tag("TDRC", "text"))
+        elif tag_key == "size":
             return file_size_to_string(self.path_file)
-        elif tag_key == 'length':
+        elif tag_key == "length":
             return music_length_to_string(self.audio.info.length)
         else:
-            return self.get_one_tag(TAG_PARAMS[tag_key], 'text')
+            return self.get_one_tag(TAG_PARAMS[tag_key], "text")
+
+    def get_tags(self) -> Dict:
+        tags = [
+            "title",
+            "album",
+            "artist",
+            "genre",
+            "cover",
+            "year",
+            "track",
+            "length",
+            "size",
+        ]
+        result = {}
+        for tag in tags:
+            result[tag] = self.get_tag(tag)
+        return result
 
     def check_tag_existence(self, key):
-        """ Every thing is in the title"""
         return len(self.id3.getall(TAG_PARAMS[key])) > 0
 
     def set_tag(self, tag_key, tag_value):
 
-        if tag_key == 'cover':
+        if tag_key == "cover":
 
-            self.id3.delall('APIC')
+            self.id3.delall("APIC")
 
-            if tag_value == '':
+            if tag_value == "":
                 pass
-            elif type(tag_value) == bytes:
+            elif isinstance(tag_value, bytes):
                 self.id3.add(
                     APIC(
                         encoding=3,  # UTF-8
-                        mime='/image/png',  # '/image/png'
+                        mime="/image/png",  # '/image/png'
                         type=3,  # 3 is for album art
-                        desc='Cover',
-                        data=tag_value
+                        desc="Cover",
+                        data=tag_value,
                     )
                 )
             else:
@@ -119,14 +127,13 @@ class Mp3FileHandler(AudioExtensionHandler):
                         encoding=3,  # UTF-8
                         mime=extension_image,  # '/image/png'
                         type=3,  # 3 is for album art
-                        desc='Cover',
-                        data=open(tag_value, 'rb').read()
+                        desc="Cover",
+                        data=open(tag_value, "rb").read(),
                     )
                 )
         else:
             self.id3.delall(TAG_PARAMS[tag_key])
-            self.id3.add(globals()[TAG_PARAMS[tag_key]](encoding=3,
-                                                        text=tag_value))
+            self.id3.add(globals()[TAG_PARAMS[tag_key]](encoding=3, text=tag_value))
 
     def save_modifications(self):
         """
