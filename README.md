@@ -26,24 +26,23 @@ It allows users to select several files and modify their tags. It is also possib
 - [x] Cover tag
 - [x] Modify several file at the same time.
 - [x] MP3  File handled
-- [ ] Flac File handled
 - [x] bold font on modified tags and files
 - [x] Automatic completion of tags (from online data)
-- [x] Lyrics (from online data)
-- [ ] Multi-folder modification
-- [ ] Acoustic ID integration
-
 
 ## Contributing
 
+To setup development environment on arch based distro:
+
+    make setupenv
+
 To run test:
 
-make install
+    make tests
 
-To install 
+To install:
 
-make install
+    make install
 
-to run gabtag:
+to run:
 
-make run 
+    make run 
