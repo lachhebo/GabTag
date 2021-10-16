@@ -158,6 +158,7 @@ def test_on_genre_change__doesnt_run_update_modifications_if_no_selection(mock_m
 
 # track
 
+
 @patch(f"{TESTED_MODULE}.Controller.react_to_user_modif")
 def test_on_track_change_run_update_modifications(mock_modif):
     # given
@@ -192,6 +193,7 @@ def test_on_track_change__doesnt_run_update_modifications_if_no_selection(mock_m
 
 
 # year
+
 
 @patch(f"{TESTED_MODULE}.Controller.react_to_user_modif")
 def test_on_year_change_run_update_modifications(mock_modif):
@@ -268,7 +270,9 @@ def test_selected_changed_update_the_view(mock_model, moc_filenames):
 
 @patch(f"{TESTED_MODULE}.get_filenames_from_selection")
 @patch(f"{TESTED_MODULE}.Controller")
-def test_selected_changed_doesnt_update_the_view_if_no_selection(mock_model, moc_filenames):
+def test_selected_changed_doesnt_update_the_view_if_no_selection(
+    mock_model, moc_filenames
+):
     # given
     event_machine = EventMachine()
     event_machine.is_real_selection = 0
@@ -284,7 +288,9 @@ def test_selected_changed_doesnt_update_the_view_if_no_selection(mock_model, moc
 @patch(f"{TESTED_MODULE}.get_filenames_from_selection")
 @patch(f"{TESTED_MODULE}.Controller")
 @patch(f"{TESTED_MODULE}.MODEL")
-def test_on_set_mbz__update_the_view_if_selection_changed(m_model, m_controller, m_filenames):
+def test_on_set_mbz__update_the_view_if_selection_changed(
+    m_model, m_controller, m_filenames
+):
     # given
     event_machine = EventMachine()
     event_machine.is_real_selection = 1
@@ -301,7 +307,9 @@ def test_on_set_mbz__update_the_view_if_selection_changed(m_model, m_controller,
 @patch(f"{TESTED_MODULE}.get_filenames_from_selection")
 @patch(f"{TESTED_MODULE}.Controller")
 @patch(f"{TESTED_MODULE}.MODEL")
-def test_on_set_mbz__update_the_view_if_no_selection(m_model, m_controller, m_filenames):
+def test_on_set_mbz__update_the_view_if_no_selection(
+    m_model, m_controller, m_filenames
+):
     # given
     event_machine = EventMachine()
     event_machine.is_real_selection = 0
@@ -320,7 +328,9 @@ def test_on_set_mbz__update_the_view_if_no_selection(m_model, m_controller, m_fi
 @patch(f"{TESTED_MODULE}.SELECTION")
 @patch(f"{TESTED_MODULE}.MODEL")
 @patch(f"{TESTED_MODULE}.DIR_MANAGER")
-def test_on_set_online_tags__set_the_online_tags_using_model_data_and_update_view(m_dir_manager, m_model, m_selection, m_controller, _):
+def test_on_set_online_tags__set_the_online_tags_using_model_data_and_update_view(
+    m_dir_manager, m_model, m_selection, m_controller, _
+):
     # given
     event_machine = EventMachine()
     event_machine.is_real_selection = 1
@@ -341,7 +351,9 @@ def test_on_set_online_tags__set_the_online_tags_using_model_data_and_update_vie
 @patch(f"{TESTED_MODULE}.SELECTION")
 @patch(f"{TESTED_MODULE}.MODEL")
 @patch(f"{TESTED_MODULE}.DIR_MANAGER")
-def test_on_set_online_tags__does_notset_the_online_tags_using_model_data_and_update_view_if_no_selection(m_dir_manager, m_model, m_selection, m_controller, _):
+def test_on_set_online_tags__does_notset_the_online_tags_using_model_data_and_update_view_if_no_selection(
+    m_dir_manager, m_model, m_selection, m_controller, _
+):
     # given
     event_machine = EventMachine()
     event_machine.is_real_selection = 0

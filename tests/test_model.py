@@ -1,4 +1,4 @@
-from unittest.mock import Mock, call, patch, ANY
+from unittest.mock import Mock, call, patch
 
 from src.model import Model
 
@@ -7,7 +7,6 @@ TESTED_MODULE = "src.model"
 
 def test_reset_all__clear_view_modificaton_and_tree():
     # given
-    selection = Mock()
     model = Model()
     model.modification = {
         "fake": "",
@@ -65,9 +64,7 @@ def test_erase_tag_results_in_erasing_tags_dictionary():
 
 
 @patch(f"{TESTED_MODULE}.get_file_manager")
-def test_save_modifications__set_tags_for_each_file_in_modification(
-    mock_audio
-):
+def test_save_modifications__set_tags_for_each_file_in_modification(mock_audio):
     # Given
     testmodel = Model()
     testmodel.modification = {
@@ -84,12 +81,12 @@ def test_save_modifications__set_tags_for_each_file_in_modification(
 
     # Then
     audio.set_tag.assert_called_with("title", "naruto")
-    assert testmodel.modification == {'ost.mp4': {}}
+    assert testmodel.modification == {"ost.mp4": {}}
 
 
 @patch(f"{TESTED_MODULE}.get_file_manager")
 def test_save_modifications__remove_bold_fonts_for_each_file_in_modification(
-    mock_audio
+    mock_audio,
 ):
     # Given
     testmodel = Model()
