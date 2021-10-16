@@ -150,16 +150,15 @@ class EventMachine:
             self.is_real_selection = 1
 
     def on_set_online_tags(self, widget):
-        if DIR_MANAGER.is_open_directory:
-            if self.is_real_selection == 1:
-                self.is_real_selection = 0
-                name_files = get_filenames_from_selection(SELECTION.selection)
-                MODEL.set_online_tags()
+        if DIR_MANAGER.is_open_directory and self.is_real_selection == 1:
+            self.is_real_selection = 0
+            name_files = get_filenames_from_selection(SELECTION.selection)
+            MODEL.set_online_tags()
 
-                if SELECTION.selection is not None:
-                    Controller.update_view(name_files)
+            if SELECTION.selection is not None:
+                Controller.update_view(name_files)
 
-                self.is_real_selection = 1
+            self.is_real_selection = 1
 
 
 EVENT_MACHINE = EventMachine()

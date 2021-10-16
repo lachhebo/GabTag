@@ -16,7 +16,7 @@ def test_crawl_one_file__when_crawling_we_start_by_searching_by_filename_if_no_t
     mock_file.return_value = audio
 
     # when
-    data_crawler.crawl_one_file("fake_filename", "fake_dir")
+    data_crawler.crawl_one_file("fake_filename")
 
     # then
     mock_search.assert_called_with("fake_filename")
@@ -34,7 +34,7 @@ def test_crawl_one_file__when_crawling_we_start_by_searching_by_title_and_artist
     mock_file.return_value = audio
 
     # when
-    data_crawler.crawl_one_file("fake_filename", "fake_dir")
+    data_crawler.crawl_one_file("fake_filename")
 
     # then
     mock_search.assert_called_with("fake_filename", ["title", "artist", "", "", ""])
@@ -52,7 +52,7 @@ def test_crawl_one_file__when_crawling_we_start_by_searching_by_artist_and_filen
     mock_file.return_value = audio
 
     # when
-    data_crawler.crawl_one_file("fake_filename", "fake_dir")
+    data_crawler.crawl_one_file("fake_filename")
 
     # then
     mock_search.assert_called_with("fake_filename", ["", "artist", "album", "", ""])
@@ -61,8 +61,6 @@ def test_crawl_one_file__when_crawling_we_start_by_searching_by_artist_and_filen
 def test_get_tags__smash_title_and_track_name_for_multiple_values():
     # given
     crawler = DataCrawler()
-    gmodel = {"file1": ["fake_file.mp3"], "file2": ["fake_second_file.mp3"]}
-    list_iterator = ["file1", "file2"]
     crawler.tag_founds = {
         "fake_file.mp3": {
             "title": " ftitle",
@@ -85,7 +83,7 @@ def test_get_tags__smash_title_and_track_name_for_multiple_values():
     }
 
     # when
-    output = crawler.get_tags(gmodel, list_iterator)
+    output = crawler.get_tags(["fake_file.mp3", "fake_second_file.mp3"])
 
     # then
     assert output == {

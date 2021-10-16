@@ -203,7 +203,7 @@ def test_on_year_change_run_update_modifications(mock_modif):
     event_machine.is_real_selection = 1
 
     # when
-    event_machine.on_track_changed(widget)
+    event_machine.on_year_changed(widget)
 
     # then
     assert event_machine.is_real_selection == 1
@@ -294,5 +294,79 @@ def test_on_set_mbz__update_the_view_if_selection_changed(m_model, m_controller,
     event_machine.on_set_mbz(widget)
 
     # then
-    mock_model.update_view.assert_called()
-    mock_model.set_data_crawled.assert_called()
+    m_controller.update_view.assert_called()
+    m_model.set_data_crawled.assert_called()
+
+
+@patch(f"{TESTED_MODULE}.get_filenames_from_selection")
+@patch(f"{TESTED_MODULE}.Controller")
+@patch(f"{TESTED_MODULE}.MODEL")
+def test_on_set_mbz__update_the_view_if_no_selection(m_model, m_controller, m_filenames):
+    # given
+    event_machine = EventMachine()
+    event_machine.is_real_selection = 0
+    widget = Mock()
+
+    # when
+    event_machine.on_set_mbz(widget)
+
+    # then
+    m_controller.update_view.assert_not_called()
+    m_model.set_data_crawled.assert_not_called()
+
+
+@patch(f"{TESTED_MODULE}.get_filenames_from_selection")
+@patch(f"{TESTED_MODULE}.Controller")
+@patch(f"{TESTED_MODULE}.SELECTION")
+@patch(f"{TESTED_MODULE}.MODEL")
+@patch(f"{TESTED_MODULE}.DIR_MANAGER")
+def test_on_set_online_tags__set_the_online_tags_using_model_data_and_update_view(m_dir_manager, m_model, m_selection, m_controller, _):
+    # given
+    event_machine = EventMachine()
+    event_machine.is_real_selection = 1
+
+    m_dir_manager.is_opened_directory = True
+    widget = Mock()
+
+    # when
+    event_machine.on_set_online_tags(widget)
+
+    # then
+    m_model.set_online_tags.assert_called()
+    m_controller.update_view.assert_called()
+
+
+@patch(f"{TESTED_MODULE}.get_filenames_from_selection")
+@patch(f"{TESTED_MODULE}.Controller")
+@patch(f"{TESTED_MODULE}.SELECTION")
+@patch(f"{TESTED_MODULE}.MODEL")
+@patch(f"{TESTED_MODULE}.DIR_MANAGER")
+def test_on_set_online_tags__does_notset_the_online_tags_using_model_data_and_update_view_if_no_selection(m_dir_manager, m_model, m_selection, m_controller, _):
+    # given
+    event_machine = EventMachine()
+    event_machine.is_real_selection = 0
+
+    m_dir_manager.is_opened_directory = True
+    widget = Mock()
+
+    # when
+    event_machine.on_set_online_tags(widget)
+
+    # then
+    m_model.set_online_tags.assert_not_called()
+    m_controller.update_view.assert_not_called()
+
+
+@patch(f"{TESTED_MODULE}.Controller")
+@patch(f"{TESTED_MODULE}.DIR_MANAGER")
+def test_on_but_saved_clicked__start_modification_thread(m_dir_manager, m_controller):
+    # given
+    event_machine = EventMachine()
+    m_dir_manager.is_opened_directory = True
+    widget = Mock()
+
+    # when
+    event_machine.on_but_saved_clicked(widget)
+
+    # then
+    m_controller.crawl_thread_modification.assert_called()

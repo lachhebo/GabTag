@@ -30,9 +30,9 @@ class Controller:
     @staticmethod
     def update_directory(directory: str):
         DIR_MANAGER.directory = directory
-        DIR_MANAGER.files_name = get_file_list(directory)
+        DIR_MANAGER.file_name = get_file_list(directory)
         DIR_MANAGER.is_open_directory = True
-        TREE_VIEW.update_tree_view_list(DIR_MANAGER.files_name)
+        TREE_VIEW.update_tree_view_list(DIR_MANAGER.file_name)
         MODEL.reset_all()
 
     @staticmethod
