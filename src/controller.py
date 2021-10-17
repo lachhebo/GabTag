@@ -39,12 +39,12 @@ class Controller:
     def reset_all():  # TODO: check it
         """
         Cancel modification before it being saved
-        and reupdate the view,it supposes that something
+        and update the view,it supposes that something
         is selection (True)
         """
         VIEW.erase()
         MODEL.reset_all()
-        # self.update_view()
+        # VIEW.update_view()
         # TREE_VIEW.manage_bold_font(names_file, add=False)
 
     @staticmethod
@@ -53,7 +53,6 @@ class Controller:
         Find the selected rows and delete the related dictionary
         nested in modifications. Then update view
         """
-
         MODEL.reset(name_files)
         TREE_VIEW.manage_bold_font(name_files, add=False)
 

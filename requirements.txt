@@ -8,3 +8,4 @@ pytest
 pytest-coverage
 pytest-bdd
 pathlib
+mypy

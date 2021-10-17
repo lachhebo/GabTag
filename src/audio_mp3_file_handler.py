@@ -42,21 +42,22 @@ class Mp3FileHandler(AudioExtensionHandler):
             self.audio.tags = ID3()
             self.id3 = self.audio.tags
 
-    def get_one_tag(self, id3_name_tag, data_type):
+    def get_one_tag(self, id3_name_tag: str, data_type: str) -> str:
         """
         A function to return the first tag of an id3 label
         """
-        if self.id3 is not None:
-            tag_needed = self.id3.getall(id3_name_tag)
-            if len(tag_needed) > 0:
-                if data_type == "text":
-                    return tag_needed[0].text[0]
-                elif data_type == "data":
-                    return tag_needed[0].data
-            else:
-                return ""
-        else:
+        if self.id3 is None:
             return ""
+
+        tag_needed = self.id3.getall(id3_name_tag)
+
+        if len(tag_needed) == 0:
+            return ""
+
+        if data_type == "text":
+            return tag_needed[0].text[0]
+        elif data_type == "data":
+            return tag_needed[0].data
 
     def get_tag_research(self):
         return [
@@ -104,36 +105,36 @@ class Mp3FileHandler(AudioExtensionHandler):
 
     def set_tag(self, tag_key, tag_value):
 
-        if tag_key == "cover":
-
-            self.id3.delall("APIC")
-
-            if tag_value == "":
-                pass
-            elif isinstance(tag_value, bytes):
-                self.id3.add(
-                    APIC(
-                        encoding=3,  # UTF-8
-                        mime="/image/png",  # '/image/png'
-                        type=3,  # 3 is for album art
-                        desc="Cover",
-                        data=tag_value,
-                    )
-                )
-            else:
-                extension_image = get_extension_image(tag_value)
-                self.id3.add(
-                    APIC(
-                        encoding=3,  # UTF-8
-                        mime=extension_image,  # '/image/png'
-                        type=3,  # 3 is for album art
-                        desc="Cover",
-                        data=open(tag_value, "rb").read(),
-                    )
-                )
-        else:
+        if tag_key != "cover":
             self.id3.delall(TAG_PARAMS[tag_key])
             self.id3.add(globals()[TAG_PARAMS[tag_key]](encoding=3, text=tag_value))
+            return 1
+
+        if tag_value == "":
+            return 0
+
+        self.id3.delall("APIC")
+        if isinstance(tag_value, bytes):
+            self.id3.add(
+                APIC(
+                    encoding=3,  # UTF-8
+                    mime="/image/png",  # '/image/png'
+                    type=3,  # 3 is for album art
+                    desc="Cover",
+                    data=tag_value,
+                )
+            )
+        else:
+            extension_image = get_extension_image(tag_value)
+            self.id3.add(
+                APIC(
+                    encoding=3,  # UTF-8
+                    mime=extension_image,  # '/image/png'
+                    type=3,  # 3 is for album art
+                    desc="Cover",
+                    data=open(tag_value, "rb").read(),
+                )
+            )
 
     def save_modifications(self):
         """
