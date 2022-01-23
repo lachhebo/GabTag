@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop">
 	<id>com.github.lachhebo.Gabtag.desktop</id>
-  <name>GabTag</name>
+  <name translatable="no">GabTag</name>
 	<metadata_license>CC0-1.0</metadata_license>
 	<project_license>GPL-3.0-or-later</project_license>
   <releases>
@@ -31,7 +31,7 @@
     </screenshot>
   </screenshots>
   <update_contact>ismael.lachheb@protonmail.com</update_contact>
-  <developer_name>Ismaël Lachheb</developer_name>
+  <developer_name translatable="no">Ismaël Lachheb</developer_name>
   <launchable type="desktop-id">com.github.lachhebo.Gabtag.desktop</launchable>
   <url type="homepage">https://github.com/lachhebo/gabtag</url>
   <url type="bugtracker">https://github.com/lachhebo/gabtag/issues</url>
