@@ -4,12 +4,16 @@ from typing import Dict, List
 import gi
 import musicbrainzngs as mb
 
+import gettext
+
 from .extension_manager import is_extension_managed
 from .selection_handler import SELECTION
 
 gi.require_version("Gtk", "3.0")
 
 from gi.repository import Gtk  # noqa: E402
+
+_ = gettext.gettext
 
 
 def remove_extension(filename: str):
@@ -102,12 +106,12 @@ def music_length_to_string(length):
 
 def add_filters(dialog):
     filter_png = Gtk.FileFilter()
-    filter_png.set_name("Png")
+    filter_png.set_name(_("PNG images"))
     filter_png.add_mime_type("image/png")
     dialog.add_filter(filter_png)
 
     filter_jpeg = Gtk.FileFilter()
-    filter_jpeg.set_name("jpeg")
+    filter_jpeg.set_name(_("JPEG images"))
     filter_jpeg.add_mime_type("image/jpeg")
     dialog.add_filter(filter_jpeg)
 
