@@ -3,7 +3,11 @@ from typing import List
 import gi
 from gi.repository import Gtk
 
+import gettext
+
 gi.require_version("Gtk", "3.0")
+
+_ = gettext.gettext
 
 
 class TreeView:
@@ -17,12 +21,12 @@ class TreeView:
 
             renderer_filename = Gtk.CellRendererText()
             column_filename = Gtk.TreeViewColumn(
-                "filename", renderer_filename, text=0, weight=2, weight_set=True
+                _("Name"), renderer_filename, text=0, weight=2, weight_set=True
             )
 
             renderer_data = Gtk.CellRendererText()
             column_data_gathered = Gtk.TreeViewColumn(
-                "data gathered", renderer_data, text=1, weight=2, weight_set=True
+                _("Data"), renderer_data, text=1, weight=2, weight_set=True
             )
 
             self.view.append_column(column_data_gathered)
@@ -37,7 +41,7 @@ class TreeView:
         self.store.clear()
 
         for name_file in file_names:
-            self.store.append([name_file, "No", 400])
+            self.store.append([name_file, _("No"), 400])
 
     def manage_crawled(self, name_files, add=True):
         line_number = -1
@@ -54,9 +58,9 @@ class TreeView:
                 path = Gtk.TreePath(line_number)
                 list_iterator = self.store.get_iter(path)
                 if add:
-                    self.store.set_value(list_iterator, 1, "Yes")
+                    self.store.set_value(list_iterator, 1, _("Yes"))
                 else:
-                    self.store.set_value(list_iterator, 1, "No")
+                    self.store.set_value(list_iterator, 1, _("No"))
 
     def manage_bold_font(self, name_files, add=True):
         line_number = -1

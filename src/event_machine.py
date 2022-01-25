@@ -8,8 +8,10 @@ from .version import __version__
 from gi.repository import Gtk
 
 import gi
+import gettext
 
 gi.require_version("Gtk", "3.0")
+_ = gettext.gettext
 
 
 class EventMachine:
@@ -47,10 +49,10 @@ class EventMachine:
     def on_open_clicked(self, widget):
         self.is_real_selection = 0
         dialog = Gtk.FileChooserDialog(
-            "Please choose a folder",
+            _("Select Folder"),
             self.window,
             Gtk.FileChooserAction.SELECT_FOLDER,
-            (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL, "Select", Gtk.ResponseType.OK),
+            (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL, _("Select"), Gtk.ResponseType.OK),
         )
         dialog.set_default_size(800, 400)
 
@@ -107,7 +109,7 @@ class EventMachine:
             self.is_real_selection = 0
 
             dialog = Gtk.FileChooserDialog(
-                "Please choose a file",
+                _("Open File"),
                 self.window,
                 Gtk.FileChooserAction.OPEN,
                 (
