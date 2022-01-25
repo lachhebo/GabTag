@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.22.2 -->
 <interface>
-  <requires lib="gtk+" version="3.20"/>
   <object class="GtkAdjustment" id="adjustment1">
     <property name="upper">100</property>
     <property name="step_increment">1</property>
@@ -13,44 +11,14 @@
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAboutDialog" id="id_about_window">
-    <property name="can_focus">False</property>
-    <property name="title" translatable="yes">About</property>
-    <property name="type_hint">dialog</property>
     <property name="program_name">GabTag</property>
     <property name="comments" translatable="yes">GabTag is an open-source audio tagging tool written in gtk3.</property>
-    <property name="authors">Ismaël Lachheb</property>
     <property name="logo_icon_name">com.github.lachhebo.Gabtag</property>
     <property name="license_type">gpl-3-0</property>
-    <child type="titlebar">
-      <placeholder/>
-    </child>
-    <child internal-child="vbox">
-      <object class="GtkBox">
-        <property name="can_focus">False</property>
-        <property name="orientation">vertical</property>
-        <property name="spacing">2</property>
-        <child internal-child="action_area">
-          <object class="GtkButtonBox">
-            <property name="can_focus">False</property>
-            <property name="layout_style">end</property>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">False</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-      </object>
-    </child>
+    <property name="authors">Ismaël Lachheb</property>
+    <!-- TRANSLATORS: 'Name <email@domain.com>' or 'Name https://website.example' -->
+    <property name="translator-credits" translatable="yes">translator-credits</property>
+    <property name="artists">Tobias Bernard</property>
   </object>
   <object class="GtkPopoverMenu" id="id_popover_menu">
     <property name="can_focus">False</property>
@@ -93,7 +61,7 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
-            <property name="text" translatable="yes">About</property>
+            <property name="text" translatable="yes">About GabTag</property>
             <signal name="clicked" handler="about_clicked" swapped="no"/>
           </object>
           <packing>
