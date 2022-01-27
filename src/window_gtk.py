@@ -1,16 +1,17 @@
 from .event_machine import EVENT_MACHINE
 from .treeview import TREE_VIEW
 from .view import VIEW
-from gi.repository import Gtk
 
 import gi
 
-
 gi.require_version("Gtk", "3.0")
+gi.require_version("Handy", "1")
+
+from gi.repository import Gtk, Handy  # noqa: E402
 
 
 @Gtk.Template(resource_path="/com/github/lachhebo/Gabtag/window.ui")
-class GabtagWindow(Gtk.ApplicationWindow):
+class GabtagWindow(Handy.ApplicationWindow):
     __gtype_name__ = "GabtagWindow"
 
     # HeaderBar
