@@ -19,4 +19,4 @@ jobs:
       env:
         PASSWORD_DEPLOYEMENT: ${{ secrets.PASSWORD_DEPLOYEMENT }}
       run: |
-        ./deploy.sh $(($(git describe --tags --abbrev=0 2>/dev/null)+1))
+        ./deploy.sh $(cat src/version.py | cut -d " " -f 3)
