@@ -21,8 +21,9 @@ import sys
 from .window_gtk import GabtagWindow
 
 gi.require_version("Gtk", "3.0")
+gi.require_version("Handy", "1")
 
-from gi.repository import Gtk, Gio, GLib  # noqa: E402
+from gi.repository import Gtk, Gio, GLib, Handy  # noqa: E402
 
 
 class Application(Gtk.Application):
@@ -33,6 +34,7 @@ class Application(Gtk.Application):
         )
         GLib.set_application_name(("GabTag"))
         GLib.set_prgname("com.github.lachhebo.Gabtag")
+        Handy.init()
 
     def do_activate(self):
         win = self.props.active_window
