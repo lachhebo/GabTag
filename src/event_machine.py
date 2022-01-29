@@ -3,7 +3,6 @@ from .model import MODEL
 from .selection_handler import SELECTION
 from .controller import Controller
 from .tools import add_filters, get_filenames_from_selection
-from .version import __version__
 
 from gi.repository import Gtk
 
@@ -40,11 +39,6 @@ class EventMachine:
             self.is_real_selection = 0
             Controller.reset_all()
             self.is_real_selection = 1
-
-    def on_about_clicked(self, widget):
-        self.window.id_about_window.set_version(__version__)
-        self.window.id_about_window.run()
-        self.window.id_about_window.hide()
 
     def on_open_clicked(self, widget):
         self.is_real_selection = 0
