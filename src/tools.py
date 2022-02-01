@@ -101,7 +101,7 @@ def file_size_to_string(path_file):
 def music_length_to_string(length):
     minutes = str(int(length / 60))
     seconds = str(int(length % 60))
-    return minutes + " minutes " + seconds + " seconds"
+    return minutes + _(" minutes ") + seconds + _(" seconds")
 
 
 def add_filters(dialog):
