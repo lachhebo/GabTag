@@ -35,6 +35,7 @@ class Application(Gtk.Application):
         GLib.set_application_name(("GabTag"))
         GLib.set_prgname("com.github.lachhebo.Gabtag")
         Handy.init()
+        Handy.StyleManager.get_default ().set_color_scheme(Handy.ColorScheme.PREFER_LIGHT)
 
     def do_activate(self):
         win = self.props.active_window
