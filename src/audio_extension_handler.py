@@ -4,11 +4,11 @@ from typing import Dict, Union
 
 class AudioExtensionHandler:
     @abstractmethod
-    def get_tag(self, tag_key) -> Union[str, bin]:
+    def get_tag(self, tag_key) -> str:
         """return the value of the tag"""
 
     @abstractmethod
-    def set_tag(self, tag_key: str, tag_value: Union[str, bin]) -> None:
+    def set_tag(self, tag_key: str, tag_value: str) -> None:
         """modify the value of the tag in the audio file"""
 
     @abstractmethod

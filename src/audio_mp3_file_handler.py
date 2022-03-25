@@ -59,6 +59,8 @@ class Mp3FileHandler(AudioExtensionHandler):
         elif data_type == "data":
             return tag_needed[0].data
 
+        return ""
+
     def get_tag_research(self):
         return [
             self.get_one_tag(TAG_PARAMS["title"], "text"),
