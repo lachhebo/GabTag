@@ -14,25 +14,6 @@ if desktop_utils.found()
   )
 endif
 
-
-# Installing the icons
-icon_sizes = ['scalable']
-
-foreach i : icon_sizes
-  install_data(
-    join_paths('icons/hicolor', i , 'apps', 'com.github.lachhebo.Gabtag' + '.svg'),
-    install_dir: join_paths(get_option('prefix'), get_option('datadir'), 'icons', 'hicolor', i , 'apps'),
-    rename: '@0@.svg'.format('com.github.lachhebo.Gabtag')
-  )
-endforeach
-
-
-install_data(
-	join_paths('icons/hicolor', 'symbolic', 'apps', 'com.github.lachhebo.Gabtag-symbolic' + '.svg'),
-	install_dir :  join_paths(get_option('prefix'), get_option('datadir'), 'icons', 'hicolor', 'symbolic', 'apps'),
-	rename: '@0@.svg'.format('com.github.lachhebo.Gabtag-symbolic')
-)
-
 appstream_file = i18n.merge_file(
   input: 'com.github.lachhebo.Gabtag.appdata.xml.in',
   output: 'com.github.lachhebo.Gabtag.appdata.xml',
@@ -58,3 +39,5 @@ if compile_schemas.found()
     args: ['--strict', '--dry-run', meson.current_source_dir()]
   )
 endif
+
+subdir('icons')
