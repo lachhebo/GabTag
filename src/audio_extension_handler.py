@@ -1,5 +1,5 @@
 from abc import abstractmethod
-from typing import Dict, Union
+from typing import Dict
 
 
 class AudioExtensionHandler:
