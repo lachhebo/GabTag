@@ -1,0 +1,23 @@
+name: Flatpak
+on:
+  push:
+    branches:
+      - "*"
+    pull_request:
+      - "*"
+
+jobs:
+  flatpak:
+    name: Flatpak
+    runs-on: ubuntu-latest
+    container:
+      image: bilelmoussaoui/flatpak-github-actions:gnome-42
+      options: --privileged
+    steps:
+    - uses: actions/checkout@v3
+    - uses: bilelmoussaoui/flatpak-github-actions/flatpak-builder@v4
+      with:
+        manifest-path: manifest.json
+        bundle: com.github.lachhebo.Gabtag.flatpak
+        run-tests: true
+        cache-key: flatpak-builder-${{ github.sha }}
