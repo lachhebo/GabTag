@@ -40,6 +40,7 @@ gabtag_sources = [
   'treeview.py',
   'view.py',
   'window_gtk.py',
+  'about_dialog_gtk.py',
   'controller.py',
   'event_machine.py',
 

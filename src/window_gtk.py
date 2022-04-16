@@ -1,5 +1,7 @@
+from .about_dialog_gtk import GabTagAboutDialog
 from .event_machine import EVENT_MACHINE
 from .treeview import TREE_VIEW
+from .version import __version__
 from .view import VIEW
 
 import gi
@@ -7,7 +9,7 @@ import gi
 gi.require_version("Gtk", "3.0")
 gi.require_version("Handy", "1")
 
-from gi.repository import Gtk, Handy  # noqa: E402
+from gi.repository import Gio, Gtk, Handy  # noqa: E402
 
 
 @Gtk.Template(resource_path="/com/github/lachhebo/Gabtag/window.ui")
@@ -16,7 +18,6 @@ class GabtagWindow(Handy.ApplicationWindow):
 
     # HeaderBar
     id_popover_menu = Gtk.Template.Child()
-    id_about_window = Gtk.Template.Child()
 
     # Table
     tree_view_id = Gtk.Template.Child()
@@ -50,7 +51,6 @@ class GabtagWindow(Handy.ApplicationWindow):
     but_open = Gtk.Template.Child()
     id_reset_all = Gtk.Template.Child()
     id_auto_tag = Gtk.Template.Child()
-    id_about = Gtk.Template.Child()
     but_save = Gtk.Template.Child()
     id_load_cover = Gtk.Template.Child()
     id_reset_one = Gtk.Template.Child()
@@ -60,6 +60,12 @@ class GabtagWindow(Handy.ApplicationWindow):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+
+        # About dialog
+
+        about_action = Gio.SimpleAction.new('about', None)
+        about_action.connect('activate', lambda *_: self._show_about_dialog())
+        self.add_action(about_action)
 
         TREE_VIEW.store = self.liststore1
         TREE_VIEW.view = self.tree_view_id
@@ -87,7 +93,6 @@ class GabtagWindow(Handy.ApplicationWindow):
 
         self.id_reset_all.connect("clicked", EVENT_MACHINE.on_reset_all_clicked)
         self.id_auto_tag.connect("clicked", EVENT_MACHINE.on_set_online_tags)
-        self.id_about.connect("clicked", EVENT_MACHINE.on_about_clicked)
         self.but_open.connect("clicked", EVENT_MACHINE.on_open_clicked)
         self.but_save.connect("clicked", EVENT_MACHINE.on_but_saved_clicked)
         self.id_load_cover.connect("clicked", EVENT_MACHINE.on_load_cover_clicked)
@@ -103,3 +108,8 @@ class GabtagWindow(Handy.ApplicationWindow):
         self.id_track.connect("changed", EVENT_MACHINE.on_track_changed)
 
         EVENT_MACHINE.window = self
+
+    def _show_about_dialog(self):
+        dialog = GabTagAboutDialog(self, __version__)
+        dialog.run()
+        dialog.destroy()

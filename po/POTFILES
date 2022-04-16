@@ -1,6 +1,7 @@
 data/com.github.lachhebo.Gabtag.desktop.in
 data/com.github.lachhebo.Gabtag.appdata.xml.in
 data/com.github.lachhebo.Gabtag.gschema.xml
+src/about_dialog.ui
 src/event_machine.py
 src/main.py
 src/tools.py
