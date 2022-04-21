@@ -46,6 +46,7 @@ gabtag_sources = [
   'audio_extension_handler.py',
   'audio_getter.py',
   'audio_mp3_file_handler.py',
+  'audio_ogg_file_handler.py',
 
   'crawler_data.py',
   'crawler_directory.py',
