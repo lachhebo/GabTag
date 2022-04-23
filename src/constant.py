@@ -1,1 +1,1 @@
-HANDLED_EXTENSIONS = ["mp3"]
+HANDLED_EXTENSIONS = ["mp3", "ogg"]
