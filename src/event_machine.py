@@ -42,6 +42,7 @@ class EventMachine:
             self.is_real_selection = 1
 
     def on_about_clicked(self, widget):
+        self.window.id_about_window.set_transient_for(self.window)
         self.window.id_about_window.set_version(__version__)
         self.window.id_about_window.run()
         self.window.id_about_window.hide()
