@@ -48,17 +48,17 @@ class EventMachine:
 
     def on_open_clicked(self, widget):
         self.is_real_selection = 0
-        dialog = Gtk.FileChooserDialog(
+        dialog = Gtk.FileChooserNative.new(
             _("Select Folder"),
             self.window,
             Gtk.FileChooserAction.SELECT_FOLDER,
-            (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL, _("Select"), Gtk.ResponseType.OK),
+            _("Select"),
+            _("Cancel")
         )
-        dialog.set_default_size(800, 400)
 
         response = dialog.run()
 
-        if response == Gtk.ResponseType.OK:
+        if response == Gtk.ResponseType.ACCEPT:
             Controller.change_directory(dialog.get_filename())
 
         dialog.destroy()
@@ -108,22 +108,18 @@ class EventMachine:
         if self.is_real_selection == 1:
             self.is_real_selection = 0
 
-            dialog = Gtk.FileChooserDialog(
+            dialog = Gtk.FileChooserNative.new(
                 _("Open File"),
                 self.window,
                 Gtk.FileChooserAction.OPEN,
-                (
-                    Gtk.STOCK_CANCEL,
-                    Gtk.ResponseType.CANCEL,
-                    Gtk.STOCK_OPEN,
-                    Gtk.ResponseType.OK,
-                ),
+                _("Open"),
+                _("Cancel")
             )
 
             add_filters(dialog)
             response = dialog.run()
 
-            if response == Gtk.ResponseType.OK:
+            if response == Gtk.ResponseType.ACCEPT:
                 file_cover = dialog.get_filename()
                 name_files = get_filenames_from_selection(SELECTION.selection)
                 MODEL.update_modifications(name_files, "cover", file_cover)
