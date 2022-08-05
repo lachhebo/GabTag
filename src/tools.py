@@ -9,7 +9,7 @@ import gettext
 from .extension_manager import is_extension_managed
 from .selection_handler import SELECTION
 
-gi.require_version("Gtk", "3.0")
+gi.require_version("Gtk", "4.0")
 
 from gi.repository import Gtk  # noqa: E402
 

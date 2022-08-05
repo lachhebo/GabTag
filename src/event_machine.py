@@ -4,12 +4,12 @@ from .selection_handler import SELECTION
 from .controller import Controller
 from .tools import add_filters, get_filenames_from_selection
 
-from gi.repository import Gtk
+from gi.repository import Gio, Gtk
 
 import gi
 import gettext
 
-gi.require_version("Gtk", "3.0")
+gi.require_version("Gtk", "4.0")
 _ = gettext.gettext
 
 
@@ -31,37 +31,43 @@ class EventMachine:
     def on_reset_one_clicked(self, widget):
         if self.is_real_selection == 1:
             self.is_real_selection = 0
-            Controller.reset_some_files()
+            # Controller.reset_some_files()
+            Controller.reset_all()
             self.is_real_selection = 1
 
-    def on_reset_all_clicked(self, widget):
+    def on_reset_all_clicked(self, widget, action: Gio.Action):
         if self.is_real_selection == 1:
             self.is_real_selection = 0
             Controller.reset_all()
             self.is_real_selection = 1
 
-    def on_about_clicked(self, widget):
-        self.window.id_about_window.run()
-        self.window.id_about_window.hide()
+    def on_about_clicked(self, widget, action: Gio.Action):
+        if self.window is not None:
+            self.window.id_about_window.show()
 
     def on_open_clicked(self, widget):
         self.is_real_selection = 0
         dialog = Gtk.FileChooserDialog(
-            _("Select Folder"),
-            self.window,
-            Gtk.FileChooserAction.SELECT_FOLDER,
-            (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL, _("Select"), Gtk.ResponseType.OK),
+            title=_("Select a Folder"),
+            transient_for=self.window,
+            action=Gtk.FileChooserAction.SELECT_FOLDER,
         )
-        dialog.set_default_size(800, 400)
+        dialog.add_buttons(_("_Open"), Gtk.ResponseType.OK)
+        dialog.add_buttons(_("_Cancel"), Gtk.ResponseType.CANCEL)
+        dialog.set_default_response(Gtk.ResponseType.OK)
+        dialog.set_modal(True)
 
-        response = dialog.run()
+        dialog.connect("response", self.on_open_folder_chooser)
 
-        if response == Gtk.ResponseType.OK:
-            Controller.change_directory(dialog.get_filename())
-
-        dialog.destroy()
+        dialog.show()
 
         self.is_real_selection = 1
+
+    def on_open_folder_chooser(self, dialog, response):
+        dialog.destroy()
+
+        if response == Gtk.ResponseType.OK:
+            Controller.change_directory(dialog.get_file().get_path())
 
     def on_menu_but_toggled(self, widget):
         pass
@@ -107,28 +113,32 @@ class EventMachine:
             self.is_real_selection = 0
 
             dialog = Gtk.FileChooserDialog(
-                _("Open File"),
-                self.window,
-                Gtk.FileChooserAction.OPEN,
-                (
-                    Gtk.STOCK_CANCEL,
-                    Gtk.ResponseType.CANCEL,
-                    Gtk.STOCK_OPEN,
-                    Gtk.ResponseType.OK,
-                ),
+                title=_("Open a File"),
+                transient_for=self.window,
+                action=Gtk.FileChooserAction.OPEN,
             )
+            dialog.add_buttons(_("_Open"), Gtk.ResponseType.OK)
+            dialog.add_buttons(_("_Cancel"), Gtk.ResponseType.CANCEL)
+            dialog.set_default_response(Gtk.ResponseType.OK)
+            dialog.set_modal(True)
 
             add_filters(dialog)
-            response = dialog.run()
 
-            if response == Gtk.ResponseType.OK:
-                file_cover = dialog.get_filename()
-                name_files = get_filenames_from_selection(SELECTION.selection)
-                MODEL.update_modifications(name_files, "cover", file_cover)
-                Controller.update_view(name_files)
+            dialog.connect("response", self.on_open_image_chooser)
 
-            dialog.destroy()
+            dialog.show()
+
             self.is_real_selection = 1
+
+    def on_open_image_chooser(self, dialog, response):
+        dialog.destroy()
+
+        if response == Gtk.ResponseType.OK:
+            file_cover = dialog.get_file().get_path()
+
+            name_files = get_filenames_from_selection(SELECTION.selection)
+            MODEL.update_modifications(name_files, "cover", file_cover)
+            Controller.update_view(name_files)
 
     def on_selected_changed(self, selection):
         if self.is_real_selection == 1:
@@ -149,7 +159,7 @@ class EventMachine:
             Controller.update_view(name_files)
             self.is_real_selection = 1
 
-    def on_set_online_tags(self, widget):
+    def on_set_online_tags(self, widget, action: Gio.Action):
         if DIR_MANAGER.is_open_directory and self.is_real_selection == 1:
             self.is_real_selection = 0
             name_files = get_filenames_from_selection(SELECTION.selection)

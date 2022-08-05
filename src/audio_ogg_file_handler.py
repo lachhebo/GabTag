@@ -22,7 +22,6 @@ TAG_PARAMS = {
 
 
 class OggFileHandler(AudioExtensionHandler):
-
     @staticmethod
     def get_extension():
         return ".ogg"
