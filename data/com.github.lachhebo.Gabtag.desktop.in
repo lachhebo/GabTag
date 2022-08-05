@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Gabtag
 Comment= Modify audio tags
-Icon=com.github.lachhebo.Gabtag
+Icon=@APP_ID@
 Exec=gabtag
 Terminal=false
 Type=Application

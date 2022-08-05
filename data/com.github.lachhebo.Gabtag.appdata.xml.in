@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop">
-	<id>com.github.lachhebo.Gabtag.desktop</id>
+	<id>@APP_ID@</id>
   <name translatable="no">GabTag</name>
 	<metadata_license>CC0-1.0</metadata_license>
 	<project_license>GPL-3.0-or-later</project_license>
   <releases>
     <release date="2022-04-23" version="8"/>
   </releases>
-  <version>1.6.0</version>
   ​<categories>
       <category>AudioVideo</category>
   </categories>
@@ -32,7 +31,7 @@
   </screenshots>
   <update_contact>ismael.lachheb@protonmail.com</update_contact>
   <developer_name translatable="no">Ismaël Lachheb</developer_name>
-  <launchable type="desktop-id">com.github.lachhebo.Gabtag.desktop</launchable>
+  <launchable type="desktop-id">@APP_ID@.desktop</launchable>
   <url type="homepage">https://github.com/lachhebo/gabtag</url>
   <url type="bugtracker">https://github.com/lachhebo/gabtag/issues</url>
   <url type="donation">https://paypal.me/lachhebo</url>

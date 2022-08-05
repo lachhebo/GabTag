@@ -23,28 +23,44 @@ from .window_gtk import GabtagWindow
 gi.require_version("Gtk", "3.0")
 gi.require_version("Handy", "1")
 
-from gi.repository import Gtk, Gio, GLib, Handy  # noqa: E402
+from gi.repository import Gtk, Gio, GLib, GObject, Handy  # noqa: E402
 
 
 class Application(Gtk.Application):
-    def __init__(self):
+
+    app_id = GObject.Property(type=str)
+    version = GObject.Property(type=str)
+    devel = GObject.Property(type=bool, default=False)
+
+    def __init__(self, app_id: str, version: str, devel: bool, *args, **kwargs):
         super().__init__(
-            application_id="com.github.lachhebo.Gabtag",
-            flags=Gio.ApplicationFlags.FLAGS_NONE,
+            flags=Gio.ApplicationFlags.HANDLES_OPEN,
+            *args,
+            **kwargs
         )
+
+        self.app_id = app_id
+        self.version = version
+        self.devel = devel
+
         GLib.set_application_name(("GabTag"))
-        GLib.set_prgname("com.github.lachhebo.Gabtag")
+        GLib.set_prgname(self.app_id)
         Handy.init()
         Handy.StyleManager.get_default().set_color_scheme(Handy.ColorScheme.PREFER_LIGHT)
 
     def do_activate(self):
         win = self.props.active_window
         if not win:
-            win = GabtagWindow(application=self)
-            win.set_default_icon_name(self.props.application_id)
+            win = GabtagWindow(
+                application=self,
+                app_id=self.app_id,
+                version=self.version,
+                devel=self.devel,
+            )
+            win.set_default_icon_name(self.app_id)
         win.present()
 
 
-def main(version):
-    app = Application()
+def main(app_id, version, devel):
+    app = Application(app_id, version, devel)
     return app.run(sys.argv)
