@@ -1,5 +1,5 @@
 {
-    "app-id": "com.github.lachhebo.Gabtag",
+    "id": "com.github.lachhebo.Gabtag",
     "runtime": "org.gnome.Platform",
     "runtime-version": "42",
     "sdk": "org.gnome.Sdk",
