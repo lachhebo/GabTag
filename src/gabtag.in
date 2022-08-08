@@ -26,12 +26,14 @@ import locale
 VERSION = '@VERSION@'
 pkgdatadir = '@pkgdatadir@'
 localedir = '@localedir@'
-locale.bindtextdomain('gabtag', localedir)
-locale.textdomain('gabtag')
 
 sys.path.insert(1, pkgdatadir)
 signal.signal(signal.SIGINT, signal.SIG_DFL)
-gettext.install('gabtag', localedir)
+locale.bindtextdomain('gabtag', localedir)
+locale.textdomain('gabtag')
+gettext.bindtextdomain('gabtag', localedir)
+gettext.textdomain('gabtag')
+
 
 if __name__ == '__main__':
     import gi
