@@ -105,13 +105,19 @@ def music_length_to_string(length):
 
 
 def add_filters(dialog):
+    filter_all = Gtk.FileFilter()
+    filter_all.set_name(_("All Suported Images"))
+    filter_all.add_mime_type("image/png")
+    filter_all.add_mime_type("image/jpeg")
+    dialog.add_filter(filter_all)
+
     filter_png = Gtk.FileFilter()
-    filter_png.set_name(_("PNG images"))
+    filter_png.set_name(_("PNG Images"))
     filter_png.add_mime_type("image/png")
     dialog.add_filter(filter_png)
 
     filter_jpeg = Gtk.FileFilter()
-    filter_jpeg.set_name(_("JPEG images"))
+    filter_jpeg.set_name(_("JPEG Images"))
     filter_jpeg.add_mime_type("image/jpeg")
     dialog.add_filter(filter_jpeg)
 
