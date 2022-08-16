@@ -23,7 +23,9 @@ import signal
 import gettext
 import locale
 
+APP_ID = '@APP_ID@'
 VERSION = '@VERSION@'
+DEVEL = '@DEVEL@' == "True"
 pkgdatadir = '@pkgdatadir@'
 localedir = '@localedir@'
 
@@ -43,4 +45,4 @@ if __name__ == '__main__':
     resource._register()
 
     from gabtag import main
-    sys.exit(main.main(VERSION))
+    sys.exit(main.main(app_id=APP_ID, version=VERSION, devel=DEVEL))

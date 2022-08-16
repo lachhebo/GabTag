@@ -17,7 +17,7 @@ jobs:
     - uses: actions/checkout@v3.0.2
     - uses: bilelmoussaoui/flatpak-github-actions/flatpak-builder@v4
       with:
-        manifest-path: manifest.json
-        bundle: com.github.lachhebo.Gabtag.flatpak
+        manifest-path: com.github.lachhebo.Gabtag.Devel.json
+        bundle: com.github.lachhebo.Gabtag.Devel.flatpak
         run-tests: true
         cache-key: flatpak-builder-${{ github.sha }}

@@ -7,12 +7,16 @@ import gi
 gi.require_version("Gtk", "3.0")
 gi.require_version("Handy", "1")
 
-from gi.repository import Gtk, Handy  # noqa: E402
+from gi.repository import Gtk, GObject, Handy  # noqa: E402
 
 
 @Gtk.Template(resource_path="/com/github/lachhebo/Gabtag/window.ui")
 class GabtagWindow(Handy.ApplicationWindow):
     __gtype_name__ = "GabtagWindow"
+
+    app_id = GObject.Property(type=str)
+    version = GObject.Property(type=str)
+    devel = GObject.Property(type=bool, default=False)
 
     # HeaderBar
     id_popover_menu = Gtk.Template.Child()
@@ -58,8 +62,15 @@ class GabtagWindow(Handy.ApplicationWindow):
     id_setmbz_but = Gtk.Template.Child()
     tree_selection_id = Gtk.Template.Child()
 
-    def __init__(self, **kwargs):
+    def __init__(self, app_id, version, devel, **kwargs):
         super().__init__(**kwargs)
+
+        if devel:
+            self.get_style_context().add_class("devel")
+
+        self.set_default_icon_name(app_id)
+        self.id_about_window.set_logo_icon_name(app_id)
+        self.id_about_window.set_version(version)
 
         TREE_VIEW.store = self.liststore1
         TREE_VIEW.view = self.tree_view_id

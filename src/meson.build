@@ -11,14 +11,16 @@ gnome.compile_resources('gabtag',
 python = import('python')
 
 conf = configuration_data()
-conf.set('PYTHON', python.find_installation('python3').full_path())
+conf.set('APP_ID', app_id)
 conf.set('VERSION', meson.project_version())
+conf.set('DEVEL', get_option('devel'))
+conf.set('PYTHON', python.find_installation('python3').full_path())
 conf.set('localedir', join_paths(get_option('prefix'), get_option('localedir')))
 conf.set('pkgdatadir', pkgdatadir)
 
 configure_file(
   input: 'gabtag.in',
-  output: 'gabtag',
+  output: meson.project_name(),
   configuration: conf,
   install: true,
   install_dir: get_option('bindir')

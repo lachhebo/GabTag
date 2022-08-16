@@ -1,5 +1,5 @@
 {
-    "id": "com.github.lachhebo.Gabtag",
+    "id": "com.github.lachhebo.Gabtag.Devel",
     "runtime": "org.gnome.Platform",
     "runtime-version": "42",
     "sdk": "org.gnome.Sdk",
@@ -69,6 +69,9 @@
             "name": "gabtag",
             "buildsystem": "meson",
             "builddir": true,
+            "config-opts" : [
+                "-Ddevel=true"
+            ],
             "sources": [
                 {
                     "type": "dir",

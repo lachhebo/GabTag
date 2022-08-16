@@ -1,6 +1,15 @@
-desktop_file = i18n.merge_file(
+config = configuration_data()
+config.set('APP_ID', app_id)
+
+desktop_conf = configure_file(
   input: 'com.github.lachhebo.Gabtag.desktop.in',
-  output: 'com.github.lachhebo.Gabtag.desktop',
+  output: '@0@.desktop.in'.format(app_id),
+  configuration: config
+)
+
+desktop_file = i18n.merge_file(
+  input: desktop_conf,
+  output: '@0@.desktop'.format(app_id),
   type: 'desktop',
   po_dir: '../po',
   install: true,
@@ -14,9 +23,15 @@ if desktop_utils.found()
   )
 endif
 
-appstream_file = i18n.merge_file(
+appstream_conf = configure_file(
   input: 'com.github.lachhebo.Gabtag.appdata.xml.in',
-  output: 'com.github.lachhebo.Gabtag.appdata.xml',
+  output: '@0@.appdata.xml.in'.format(app_id),
+  configuration: config
+)
+
+appstream_file = i18n.merge_file(
+  input: appstream_conf,
+  output: '@0@.appdata.xml'.format(app_id),
   po_dir: '../po',
   install: true,
   install_dir: join_paths(get_option('datadir'), 'appdata')
