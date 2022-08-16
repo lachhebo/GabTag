@@ -16,3 +16,5 @@ gabtag-repo/
 .vscode/*
 htmlcov/*
 .ipynb_checkpoints/*
+*~
+~*
