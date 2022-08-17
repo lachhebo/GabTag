@@ -6,6 +6,7 @@
     "command": "gabtag",
     "finish-args": [
         "--filesystem=home",
+        "--device=dri",
         "--share=network",
         "--share=ipc",
         "--socket=fallback-x11",
@@ -62,6 +63,53 @@
                     "type": "file",
                     "url": "https://files.pythonhosted.org/packages/0a/67/3e74ae93d90ceeba72ed1a266dd3ca9abd625f315f0afd35f9b034acedd1/musicbrainzngs-0.7.1.tar.gz",
                     "sha256": "ab1c0100fd0b305852e65f2ed4113c6de12e68afd55186987b8ed97e0f98e627"
+                }
+            ]
+        },
+        {
+            "name": "libsass",
+            "sources": [
+                {
+                    "type" : "archive",
+                    "url" : "https://github.com/sass/libsass/archive/3.6.5.tar.gz",
+                    "sha256": "89d8f2c46ae2b1b826b58ce7dde966a176bac41975b82e84ad46b01a55080582"
+                },
+                {
+                    "type" : "script",
+                    "dest-filename" : "autogen.sh",
+                    "commands" : [ "autoreconf -si" ]
+                }
+            ]
+        },
+        {
+            "name": "sassc",
+            "sources": [
+                {
+                    "type" : "archive",
+                    "url" : "https://github.com/sass/sassc/archive/3.6.2.tar.gz",
+                    "sha256": "608dc9002b45a91d11ed59e352469ecc05e4f58fc1259fc9a9f5b8f0f8348a03"
+                },
+                {
+                    "type" : "script",
+                    "dest-filename" : "autogen.sh",
+                    "commands" : [ "autoreconf -si" ]
+                }
+            ]
+        },
+        {
+            "name" : "libadwaita",
+            "buildsystem": "meson",
+            "config-opts" : [
+                "-Dvapi=true",
+                "-Dgtk_doc=false",
+                "-Dexamples=false",
+                "-Dtests=false"
+            ],
+            "sources" : [
+                {
+                    "type" : "git",
+                    "url" : "https://gitlab.gnome.org/GNOME/libadwaita.git",
+                    "branch" : "main"
                 }
             ]
         },

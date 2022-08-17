@@ -4,14 +4,14 @@ from .view import VIEW
 
 import gi
 
-gi.require_version("Gtk", "3.0")
-gi.require_version("Handy", "1")
+gi.require_version("Gtk", "4.0")
+gi.require_version("Adw", "1")
 
-from gi.repository import Gtk, GObject, Handy  # noqa: E402
+from gi.repository import Adw, Gio, GObject, Gtk  # noqa: E402
 
 
 @Gtk.Template(resource_path="/com/github/lachhebo/Gabtag/window.ui")
-class GabtagWindow(Handy.ApplicationWindow):
+class GabtagWindow(Adw.ApplicationWindow):
     __gtype_name__ = "GabtagWindow"
 
     app_id = GObject.Property(type=str)
@@ -19,7 +19,6 @@ class GabtagWindow(Handy.ApplicationWindow):
     devel = GObject.Property(type=bool, default=False)
 
     # HeaderBar
-    id_popover_menu = Gtk.Template.Child()
     id_about_window = Gtk.Template.Child()
 
     # Table
@@ -52,9 +51,6 @@ class GabtagWindow(Handy.ApplicationWindow):
     # Buttons
 
     but_open = Gtk.Template.Child()
-    id_reset_all = Gtk.Template.Child()
-    id_auto_tag = Gtk.Template.Child()
-    id_about = Gtk.Template.Child()
     but_save = Gtk.Template.Child()
     id_load_cover = Gtk.Template.Child()
     id_reset_one = Gtk.Template.Child()
@@ -66,17 +62,17 @@ class GabtagWindow(Handy.ApplicationWindow):
         super().__init__(**kwargs)
 
         if devel:
-            self.get_style_context().add_class("devel")
+            self.add_css_class("devel")
 
         self.set_default_icon_name(app_id)
-        self.id_about_window.set_logo_icon_name(app_id)
+        self.id_about_window.set_application_icon(app_id)
         self.id_about_window.set_version(version)
 
         TREE_VIEW.store = self.liststore1
         TREE_VIEW.view = self.tree_view_id
         TREE_VIEW.add_columns()
 
-        VIEW.tree_view_id = self.tree_view_id
+        VIEW.tree_view = self.tree_view_id
         VIEW.title = self.id_title
         VIEW.album = self.id_album
         VIEW.artist = self.id_artist
@@ -96,13 +92,23 @@ class GabtagWindow(Handy.ApplicationWindow):
 
         # Connect Buttons
 
-        self.id_reset_all.connect("clicked", EVENT_MACHINE.on_reset_all_clicked)
-        self.id_auto_tag.connect("clicked", EVENT_MACHINE.on_set_online_tags)
-        self.id_about.connect("clicked", EVENT_MACHINE.on_about_clicked)
         self.but_open.connect("clicked", EVENT_MACHINE.on_open_clicked)
         self.but_save.connect("clicked", EVENT_MACHINE.on_but_saved_clicked)
+
+        reset_all = Gio.SimpleAction.new("reset-all", None)
+        reset_all.connect("activate", EVENT_MACHINE.on_reset_all_clicked)
+        self.add_action(reset_all)
+
+        set_online_tags = Gio.SimpleAction.new("set-online-tags", None)
+        set_online_tags.connect("activate", EVENT_MACHINE.on_set_online_tags)
+        self.add_action(set_online_tags)
+
+        about = Gio.SimpleAction.new("about", None)
+        about.connect("activate", EVENT_MACHINE.on_about_clicked)
+        self.add_action(about)
+
         self.id_load_cover.connect("clicked", EVENT_MACHINE.on_load_cover_clicked)
-        self.id_reset_one.connect("clicked", EVENT_MACHINE.on_reset_all_clicked)
+        self.id_reset_one.connect("clicked", EVENT_MACHINE.on_reset_one_clicked)
         self.id_save_one.connect("clicked", EVENT_MACHINE.on_clicked_save_one)
         self.id_setmbz_but.connect("clicked", EVENT_MACHINE.on_set_mbz)
         self.tree_selection_id.connect("changed", EVENT_MACHINE.on_selected_changed)

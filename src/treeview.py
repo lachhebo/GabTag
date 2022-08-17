@@ -5,7 +5,7 @@ from gi.repository import Gtk
 
 import gettext
 
-gi.require_version("Gtk", "3.0")
+gi.require_version("Gtk", "4.0")
 
 _ = gettext.gettext
 
@@ -21,12 +21,12 @@ class TreeView:
 
             renderer_filename = Gtk.CellRendererText()
             column_filename = Gtk.TreeViewColumn(
-                _("Name"), renderer_filename, text=0, weight=2, weight_set=True
+                _("Name"), renderer_filename, text=0, weight=2
             )
 
             renderer_data = Gtk.CellRendererText()
             column_data_gathered = Gtk.TreeViewColumn(
-                _("Data"), renderer_data, text=1, weight=2, weight_set=True
+                _("Data"), renderer_data, text=1, weight=2
             )
 
             self.view.append_column(column_data_gathered)

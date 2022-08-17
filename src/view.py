@@ -7,7 +7,7 @@ from gi.repository import GdkPixbuf, GLib
 
 from .tools import set_text_widget_permission, set_label
 
-gi.require_version("Gtk", "3.0")
+gi.require_version("Gtk", "4.0")
 
 
 verrou_tags = RLock()
@@ -76,9 +76,9 @@ class View:
 
                         self.cover_mbz.set_from_pixbuf(pixbuf)
                     except TypeError:
-                        self.cover_mbz.set_from_icon_name("emblem-music-symbolic", 6)
+                        self.cover_mbz.set_from_icon_name("emblem-music-symbolic")
             else:
-                self.cover_mbz.set_from_icon_name("emblem-music-symbolic", 6)
+                self.cover_mbz.set_from_icon_name("emblem-music-symbolic")
 
     def erase(self):
         """
@@ -90,7 +90,7 @@ class View:
         self.artist.set_text("")
         self.year.set_text("")
         self.track.set_text("")
-        self.cover.set_from_icon_name("emblem-music-symbolic", 6)
+        self.cover.set_from_icon_name("emblem-music-symbolic")
         self.last_cover = ""
         self.show_mbz(
             {
@@ -180,7 +180,7 @@ class View:
                     pass
             else:
 
-                self.cover.set_from_icon_name("emblem-music-symbolic", 6)
+                self.cover.set_from_icon_name("emblem-music-symbolic")
                 self.last_cover = ""
 
 

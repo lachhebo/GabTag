@@ -20,13 +20,12 @@ import sys
 
 from .window_gtk import GabtagWindow
 
-gi.require_version("Gtk", "3.0")
-gi.require_version("Handy", "1")
+gi.require_version("Adw", "1")
 
-from gi.repository import Gtk, Gio, GLib, GObject, Handy  # noqa: E402
+from gi.repository import Adw, Gio, GLib, GObject  # noqa: E402
 
 
-class Application(Gtk.Application):
+class Application(Adw.Application):
 
     app_id = GObject.Property(type=str)
     version = GObject.Property(type=str)
@@ -43,10 +42,8 @@ class Application(Gtk.Application):
         self.version = version
         self.devel = devel
 
-        GLib.set_application_name(("GabTag"))
+        GLib.set_application_name("GabTag")
         GLib.set_prgname(self.app_id)
-        Handy.init()
-        Handy.StyleManager.get_default().set_color_scheme(Handy.ColorScheme.PREFER_LIGHT)
 
     def do_activate(self):
         win = self.props.active_window
