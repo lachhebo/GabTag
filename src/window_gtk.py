@@ -51,6 +51,7 @@ class GabtagWindow(Adw.ApplicationWindow):
     # Buttons
 
     but_open = Gtk.Template.Child()
+    but_open_fold = Gtk.Template.Child()
     but_save = Gtk.Template.Child()
     id_load_cover = Gtk.Template.Child()
     id_reset_one = Gtk.Template.Child()
@@ -93,6 +94,7 @@ class GabtagWindow(Adw.ApplicationWindow):
         # Connect Buttons
 
         self.but_open.connect("clicked", EVENT_MACHINE.on_open_clicked)
+        self.but_open_fold.connect("clicked", EVENT_MACHINE.on_open_clicked)
         self.but_save.connect("clicked", EVENT_MACHINE.on_but_saved_clicked)
 
         reset_all = Gio.SimpleAction.new("reset-all", None)
