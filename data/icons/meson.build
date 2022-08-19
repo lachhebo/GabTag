@@ -1,7 +1,13 @@
-scalable_dir = join_paths('hicolor', 'scalable', 'apps')
+scalable_dir = join_paths('hicolor', 'scalable')
+
 install_data(
-  join_paths(scalable_dir, ('@0@.svg').format(app_id)),
-  install_dir: join_paths(get_option('datadir'), 'icons', scalable_dir)
+  join_paths(scalable_dir, 'apps', ('@0@.svg').format(app_id)),
+  install_dir: join_paths(get_option('datadir'), 'icons', scalable_dir, 'apps')
+)
+
+install_data(
+  join_paths(scalable_dir, 'actions', 'tag-symbolic.svg'),
+  install_dir: join_paths(get_option('datadir'), 'icons', scalable_dir, 'actions')
 )
 
 symbolic_dir = join_paths('hicolor', 'symbolic', 'apps')

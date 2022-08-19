@@ -147,223 +147,281 @@
               <object class="GtkSeparator"/>
             </property>
             <property name="content">
-              <object class="GtkScrolledWindow">
-                <property name="hscrollbar-policy">never</property>
-                <property name="hexpand">True</property>
-                <property name="vexpand">True</property>
-                <property name="child">
-                  <object class="AdwClamp">
-                    <property name="width-request">360</property>
+              <object class="AdwCarousel" id="carousel">
+                <property name="width-request">360</property>
+                <child>
+                  <object class="GtkScrolledWindow">
+                    <property name="hscrollbar-policy">never</property>
+                    <property name="vexpand">True</property>
                     <property name="child">
-                      <object class="GtkBox">
-                        <property name="orientation">vertical</property>
-                        <property name="margin-top">36</property>
-                        <property name="margin-bottom">36</property>
-                        <property name="margin-start">12</property>
-                        <property name="margin-end">12</property>
-                        <property name="spacing">24</property>
-                        <child>
-                          <object class="GtkButton" id="id_load_cover">
-                            <property name="tooltip-text" translatable="yes">Load a Cover</property>
-                            <property name="halign">center</property>
-                            <property name="height-request">256</property>
-                            <property name="width-request">256</property>
-                            <property name="css-classes">card</property>
-                            <signal name="clicked" handler="load_cover_clicked" swapped="no"/>
-                            <property name="child">
-                              <object class="GtkImage" id="id_cover">
-                                <property name="icon-name">emblem-music-symbolic</property>
-                                <property name="pixel-size">64</property>
-                              </object>
-                            </property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkLabel">
-                            <property name="label" translatable="yes">Cover</property>
-                            <property name="halign">center</property>
-                            <property name="css-classes">title-1</property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkListBox">
-                            <property name="selection-mode">none</property>
-                            <property name="css-classes">boxed-list</property>
-                            <child>
-                              <object class="AdwEntryRow" id="id_title">
-                                <property name="title" translatable="yes">Title</property>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="AdwEntryRow" id="id_album">
-                                <property name="title" translatable="yes">Album</property>
-                                <signal name="changed" handler="album_changed" swapped="no"/>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="AdwEntryRow" id="id_artist">
-                                <property name="title" translatable="yes">Artist</property>
-                                <signal name="changed" handler="artist_changed" swapped="no"/>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="AdwEntryRow" id="id_type">
-                                <property name="title" translatable="yes">Genre</property>
-                                <signal name="changed" handler="type_changed" swapped="no"/>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="AdwEntryRow" id="id_track">
-                                <property name="title" translatable="yes">Track</property>
-                                <signal name="changed" handler="track_changed" swapped="no"/>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="AdwEntryRow" id="id_year">
-                                <property name="title" translatable="yes">Year</property>
-                                <property name="input-purpose">digits</property>
-                                <signal name="changed" handler="year_changed" swapped="no"/>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="AdwActionRow">
-                                <property name="title" translatable="yes">Length</property>
-                                <property name="css-classes">dim-label</property>
-                                <child>
-                                  <object class="GtkLabel" id="id_info_length">
-                                    <property name="css-classes">dim-label</property>
-                                  </object>
-                                </child>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="AdwActionRow">
-                                <property name="title" translatable="yes">Size</property>
-                                <property name="css-classes">dim-label</property>
-                                <child>
-                                  <object class="GtkLabel" id="id_info_size">
-                                    <property name="css-classes">dim-label</property>
-                                  </object>
-                                </child>
-                              </object>
-                            </child>
-                          </object>
-                        </child>
-                        <child>
+                      <object class="AdwClamp">
+                        <property name="valign">center</property>
+                        <property name="child">
                           <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="margin-top">36</property>
                             <property name="margin-bottom">36</property>
+                            <property name="margin-start">12</property>
+                            <property name="margin-end">12</property>
+                            <property name="spacing">24</property>
                             <child>
-                              <object class="GtkButton" id="id_reset_one">
-                                <property name="label" translatable="yes">Reset</property>
-                                <property name="tooltip-text" translatable="yes">Remove Changes in Fields</property>
+                              <object class="GtkButton" id="id_load_cover">
+                                <property name="tooltip-text" translatable="yes">Load a Cover</property>
                                 <property name="halign">center</property>
-                                <property name="valign">center</property>
-                                <property name="hexpand">True</property>
-                                <signal name="clicked" handler="reset_one_clicked" swapped="no"/>
+                                <property name="height-request">256</property>
+                                <property name="width-request">256</property>
+                                <property name="css-classes">card</property>
+                                <signal name="clicked" handler="load_cover_clicked" swapped="no"/>
+                                <property name="child">
+                                  <object class="GtkImage" id="id_cover">
+                                    <property name="icon-name">emblem-music-symbolic</property>
+                                    <property name="pixel-size">64</property>
+                                  </object>
+                                </property>
                               </object>
                             </child>
                             <child>
-                              <object class="GtkButton" id="id_save_one">
-                                <property name="label" translatable="yes">Save</property>
-                                <property name="tooltip-text" translatable="yes">Store Changes to File</property>
-                                <property name="halign">center</property>
-                                <property name="valign">center</property>
-                                <property name="hexpand">True</property>
-                                <signal name="clicked" handler="clicked_save_one" swapped="no"/>
-                              </object>
-                            </child>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkLabel" id="id_label_mbz">
-                            <property name="label" translatable="yes">MusicBrainz Tags</property>
-                            <property name="css-classes">title-2</property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkImage" id="id_cover_mbz">
-                            <property name="icon-name">emblem-music-symbolic</property>
-                            <property name="height-request">256</property>
-                            <property name="width-request">256</property>
-                            <property name="pixel-size">64</property>
-                            <property name="margin-top">12</property>
-                            <property name="margin-bottom">12</property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkListBox">
-                            <property name="selection-mode">none</property>
-                            <property name="css-classes">boxed-list</property>
-                            <child>
-                              <object class="AdwActionRow">
-                                <property name="title" translatable="yes">Title</property>
-                                <child>
-                                  <object class="GtkLabel" id="id_title_mbz">
-                                    <property name="wrap">True</property>
+                              <object class="GtkCenterBox">
+                                <child type="center">
+                                  <object class="GtkLabel">
+                                    <property name="label" translatable="yes">Cover</property>
+                                    <property name="css-classes">title-1</property>
+                                  </object>
+                                </child>
+                                <child type="end">
+                                  <object class="GtkButton" id="edit_tags_but">
+                                    <property name="icon-name">tag-symbolic</property>
+                                    <property name="tooltip-text" translatable="yes">MusicBrainz Tags</property>
+                                    <property name="halign">center</property>
+                                    <property name="valign">center</property>
+                                    <property name="hexpand">True</property>
+                                    <property name="css-classes">circular</property>
+                                    <signal name="clicked" handler="switch_page_clicked" swapped="no"/>
                                   </object>
                                 </child>
                               </object>
                             </child>
                             <child>
-                              <object class="AdwActionRow">
-                                <property name="title" translatable="yes">Album</property>
+                              <object class="GtkListBox" id="edit_list_box">
+                                <property name="selection-mode">none</property>
+                                <property name="css-classes">boxed-list</property>
                                 <child>
-                                  <object class="GtkLabel" id="id_album_mbz">
-                                    <property name="wrap">True</property>
+                                  <object class="AdwEntryRow" id="id_title">
+                                    <property name="title" translatable="yes">Title</property>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="AdwEntryRow" id="id_album">
+                                    <property name="title" translatable="yes">Album</property>
+                                    <signal name="changed" handler="album_changed" swapped="no"/>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="AdwEntryRow" id="id_artist">
+                                    <property name="title" translatable="yes">Artist</property>
+                                    <signal name="changed" handler="artist_changed" swapped="no"/>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="AdwEntryRow" id="id_type">
+                                    <property name="title" translatable="yes">Genre</property>
+                                    <signal name="changed" handler="type_changed" swapped="no"/>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="AdwEntryRow" id="id_track">
+                                    <property name="title" translatable="yes">Track</property>
+                                    <signal name="changed" handler="track_changed" swapped="no"/>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="AdwEntryRow" id="id_year">
+                                    <property name="title" translatable="yes">Year</property>
+                                    <property name="input-purpose">digits</property>
+                                    <signal name="changed" handler="year_changed" swapped="no"/>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="AdwActionRow">
+                                    <property name="title" translatable="yes">Length</property>
+                                    <property name="css-classes">dim-label</property>
+                                    <child>
+                                      <object class="GtkLabel" id="id_info_length">
+                                        <property name="css-classes">dim-label</property>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="AdwActionRow">
+                                    <property name="title" translatable="yes">Size</property>
+                                    <property name="css-classes">dim-label</property>
+                                    <child>
+                                      <object class="GtkLabel" id="id_info_size">
+                                        <property name="css-classes">dim-label</property>
+                                      </object>
+                                    </child>
                                   </object>
                                 </child>
                               </object>
                             </child>
                             <child>
-                              <object class="AdwActionRow">
-                                <property name="title" translatable="yes">Artist</property>
+                              <object class="GtkBox">
                                 <child>
-                                  <object class="GtkLabel" id="id_artist_mbz">
-                                    <property name="wrap">True</property>
+                                  <object class="GtkButton" id="id_reset_one">
+                                    <property name="label" translatable="yes">Reset</property>
+                                    <property name="tooltip-text" translatable="yes">Remove Changes in Fields</property>
+                                    <property name="halign">center</property>
+                                    <property name="valign">center</property>
+                                    <property name="hexpand">True</property>
+                                    <signal name="clicked" handler="reset_one_clicked" swapped="no"/>
                                   </object>
                                 </child>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="AdwActionRow">
-                                <property name="title" translatable="yes">Genre</property>
                                 <child>
-                                  <object class="GtkLabel" id="id_genre_mbz">
-                                    <property name="wrap">True</property>
+                                  <object class="GtkButton" id="id_save_one">
+                                    <property name="label" translatable="yes">Save</property>
+                                    <property name="tooltip-text" translatable="yes">Store Changes to File</property>
+                                    <property name="halign">center</property>
+                                    <property name="valign">center</property>
+                                    <property name="hexpand">True</property>
+                                    <signal name="clicked" handler="clicked_save_one" swapped="no"/>
                                   </object>
-                                </child>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="AdwActionRow">
-                                <property name="title" translatable="yes">Track</property>
-                                <child>
-                                  <object class="GtkLabel" id="id_track_mbz"/>
-                                </child>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="AdwActionRow">
-                                <property name="title" translatable="yes">Year</property>
-                                <child>
-                                  <object class="GtkLabel" id="id_year_mbz"/>
                                 </child>
                               </object>
                             </child>
                           </object>
-                        </child>
-                        <child>
-                          <object class="GtkButton" id="id_setmbz_but">
-                            <property name="label" translatable="yes">Set Tags</property>
-                            <property name="tooltip-text" translatable="yes">Use MusicBrainz Tags</property>
-                            <property name="halign">center</property>
-                            <signal name="clicked" handler="on_set_mbz" swapped="no"/>
-                          </object>
-                        </child>
+                        </property>
                       </object>
                     </property>
                   </object>
-                </property>
+                </child>
+                <child>
+                  <object class="GtkScrolledWindow">
+                    <property name="hscrollbar-policy">never</property>
+                    <property name="hexpand">True</property>
+                    <property name="vexpand">True</property>
+                    <property name="child">
+                      <object class="AdwClamp">
+                        <property name="valign">center</property>
+                        <property name="child">
+                          <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="margin-top">36</property>
+                            <property name="margin-bottom">36</property>
+                            <property name="margin-start">12</property>
+                            <property name="margin-end">12</property>
+                            <property name="spacing">24</property>
+                            <child>
+                              <object class="GtkLabel" id="id_label_mbz">
+                                <property name="label" translatable="yes">MusicBrainz Tags</property>
+                                <property name="css-classes">title-2</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkImage" id="id_cover_mbz">
+                                <property name="icon-name">emblem-music-symbolic</property>
+                                <property name="height-request">256</property>
+                                <property name="width-request">256</property>
+                                <property name="pixel-size">64</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkCenterBox">
+                                <child type="center">
+                                  <object class="GtkLabel">
+                                    <property name="label" translatable="yes">Cover</property>
+                                    <property name="css-classes">title-1</property>
+                                  </object>
+                                </child>
+                                <child type="end">
+                                  <object class="GtkButton" id="set_tags_but">
+                                    <property name="icon-name">document-edit-symbolic</property>
+                                    <property name="tooltip-text" translatable="yes">Edit Tags</property>
+                                    <property name="halign">center</property>
+                                    <property name="valign">center</property>
+                                    <property name="hexpand">True</property>
+                                    <property name="css-classes">circular</property>
+                                    <signal name="clicked" handler="switch_page_clicked" swapped="no"/>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkListBox">
+                                <property name="selection-mode">none</property>
+                                <property name="css-classes">boxed-list</property>
+                                <child>
+                                  <object class="AdwActionRow">
+                                    <property name="title" translatable="yes">Title</property>
+                                    <child>
+                                      <object class="GtkLabel" id="id_title_mbz">
+                                        <property name="wrap">True</property>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="AdwActionRow">
+                                    <property name="title" translatable="yes">Album</property>
+                                    <child>
+                                      <object class="GtkLabel" id="id_album_mbz">
+                                        <property name="wrap">True</property>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="AdwActionRow">
+                                    <property name="title" translatable="yes">Artist</property>
+                                    <child>
+                                      <object class="GtkLabel" id="id_artist_mbz">
+                                        <property name="wrap">True</property>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="AdwActionRow">
+                                    <property name="title" translatable="yes">Genre</property>
+                                    <child>
+                                      <object class="GtkLabel" id="id_genre_mbz">
+                                        <property name="wrap">True</property>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="AdwActionRow">
+                                    <property name="title" translatable="yes">Track</property>
+                                    <child>
+                                      <object class="GtkLabel" id="id_track_mbz"/>
+                                    </child>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="AdwActionRow">
+                                    <property name="title" translatable="yes">Year</property>
+                                    <child>
+                                      <object class="GtkLabel" id="id_year_mbz"/>
+                                    </child>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkButton" id="id_setmbz_but">
+                                <property name="label" translatable="yes">Set Tags</property>
+                                <property name="tooltip-text" translatable="yes">Use MusicBrainz Tags</property>
+                                <property name="halign">center</property>
+                                <signal name="clicked" handler="on_set_mbz" swapped="no"/>
+                              </object>
+                            </child>
+                          </object>
+                        </property>
+                      </object>
+                    </property>
+                  </object>
+                </child>
               </object>
             </property>
           </object>
