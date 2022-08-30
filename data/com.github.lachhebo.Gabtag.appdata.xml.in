@@ -5,7 +5,7 @@
 	<metadata_license>CC0-1.0</metadata_license>
 	<project_license>GPL-3.0-or-later</project_license>
   <releases>
-    <release date="2022-04-23" version="8"/>
+    <release date="2022-08-30" version="10"/>
   </releases>
   ​<categories>
       <category>AudioVideo</category>
@@ -13,7 +13,7 @@
   <summary> An audio tagging tool </summary>
 	  <description>
     <p>
-    GabTag is a Linux audio tagging tool written in GTK 3, which makes
+    GabTag is a Linux audio tagging tool written in GTK 4, which makes
     it very suitable for GTK based desktop users.
     </p>
     <p>
