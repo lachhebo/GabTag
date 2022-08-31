@@ -3,11 +3,14 @@ from .treeview import TREE_VIEW
 from .view import VIEW
 
 import gi
+import gettext
 
 gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
 
 from gi.repository import Adw, Gio, GObject, Gtk  # noqa: E402
+
+_ = gettext.gettext
 
 
 @Gtk.Template(resource_path="/com/github/lachhebo/Gabtag/window.ui")
@@ -67,6 +70,7 @@ class GabtagWindow(Adw.ApplicationWindow):
         self.set_default_icon_name(app_id)
         self.id_about_window.set_application_icon(app_id)
         self.id_about_window.set_version(version)
+        self.id_about_window.add_link(_("Donate"), "https://paypal.me/lachhebo")
 
         TREE_VIEW.store = self.liststore1
         TREE_VIEW.view = self.tree_view_id

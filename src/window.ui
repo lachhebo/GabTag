@@ -24,8 +24,13 @@
     <property name="application-name">GabTag</property>
     <property name="license-type">gpl-3-0</property>
     <property name="comments" translatable="yes">Audio tagging tool.</property>
+    <property name="website">https://github.com/lachhebo/gabtag</property>
+    <property name="issue-url">https://github.com/lachhebo/gabtag/issues</property>
     <property name="developer-name">Ismaël Lachheb</property>
-    <property name="designers">Tobias Bernard</property>
+    <property name="developers">Ismaël Lachheb
+      Óscar Fernández Díaz</property>
+    <property name="designers">Ismaël Lachheb</property>
+    <property name="artists">Tobias Bernard</property>
     <!-- TRANSLATORS: 'Name <email@domain.com>' or 'Name https://website.example' -->
     <property name="translator-credits" translatable="yes">translator-credits</property>
     <binding name="transient-for">
@@ -323,4 +328,3 @@
     </property>
   </template>
 </interface>
-
