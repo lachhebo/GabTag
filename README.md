@@ -12,7 +12,7 @@ It allows users to select several files and modify their tags. It is also possib
 <p align="center"><img src="https://raw.githubusercontent.com/lachhebo/GabTag/screenshots/Gabtag_v13_1.png#gh-dark-mode-only"/></p>
 
 
-<p align="center"<a href='https://flathub.org/apps/details/com.github.lachhebo.Gabtag'><img width='240' alt='Download on Flathub' src='https://flathub.org/assets/badges/flathub-badge-en.png'/></a></p>
+<p align="center"><a href='https://flathub.org/apps/details/com.github.lachhebo.Gabtag'><img width='240' alt='Download on Flathub' src='https://flathub.org/assets/badges/flathub-badge-en.png'/></a></p>
 
 ## Features :
 
