@@ -13,19 +13,19 @@
   <summary> An audio tagging tool </summary>
 	  <description>
     <p>
-    GabTag is a Linux audio tagging tool written in GTK 4, which makes
-    it very suitable for GTK based desktop users.
+    GabTag is a Linux audio tagging tool written in GTK 4 and Adwaita,
+    which makes it very suitable for GTK based desktop users.
     </p>
     <p>
     It allows users to select several files and modify their tags. It is also possible to let GabTag automatically
-    find tags and lyrics for an audio file using MusicBrainz and lyrics.wikia.com database.
+    find tags for an audio file using MusicBrainz.
     </p>
   </description>
     <screenshots>
-    <screenshot type="default" height="647" width="894">
+    <screenshot type="default" height="600" width="800">
       <image>https://raw.githubusercontent.com/lachhebo/GabTag/screenshots/Gabtag_v13_2.png</image>
     </screenshot>
-    <screenshot type="default" height="647" width="894">
+    <screenshot type="default" height="600" width="800">
        <image>https://raw.githubusercontent.com/lachhebo/GabTag/screenshots/Gabtag_v13_1.png</image>     
     </screenshot>
   </screenshots>
