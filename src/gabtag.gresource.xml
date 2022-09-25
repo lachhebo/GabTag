@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
   <gresource prefix="/com/github/lachhebo/Gabtag">
-    <file>window.ui</file>
+    <file preprocess="xml-stripblanks">window.ui</file>
+    <file preprocess="xml-stripblanks">../data/icons/hicolor/scalable/actions/tag-symbolic.svg</file>
   </gresource>
 </gresources>

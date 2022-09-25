@@ -28,6 +28,8 @@ class GabtagWindow(Adw.ApplicationWindow):
     tree_view_id = Gtk.Template.Child()
     liststore1 = Gtk.Template.Child()
 
+    carousel = Gtk.Template.Child()
+
     # Tags
     id_album = Gtk.Template.Child()
     id_artist = Gtk.Template.Child()
@@ -54,8 +56,11 @@ class GabtagWindow(Adw.ApplicationWindow):
     # Buttons
 
     but_open = Gtk.Template.Child()
+    but_open_fold = Gtk.Template.Child()
     but_save = Gtk.Template.Child()
     id_load_cover = Gtk.Template.Child()
+    edit_tags_but = Gtk.Template.Child()
+    set_tags_but = Gtk.Template.Child()
     id_reset_one = Gtk.Template.Child()
     id_save_one = Gtk.Template.Child()
     id_setmbz_but = Gtk.Template.Child()
@@ -97,6 +102,7 @@ class GabtagWindow(Adw.ApplicationWindow):
         # Connect Buttons
 
         self.but_open.connect("clicked", EVENT_MACHINE.on_open_clicked)
+        self.but_open_fold.connect("clicked", EVENT_MACHINE.on_open_clicked)
         self.but_save.connect("clicked", EVENT_MACHINE.on_but_saved_clicked)
 
         reset_all = Gio.SimpleAction.new("reset-all", None)
@@ -112,6 +118,8 @@ class GabtagWindow(Adw.ApplicationWindow):
         self.add_action(about)
 
         self.id_load_cover.connect("clicked", EVENT_MACHINE.on_load_cover_clicked)
+        self.edit_tags_but.connect("clicked", EVENT_MACHINE.on_switch_page_clicked)
+        self.set_tags_but.connect("clicked", EVENT_MACHINE.on_switch_page_clicked)
         self.id_reset_one.connect("clicked", EVENT_MACHINE.on_reset_one_clicked)
         self.id_save_one.connect("clicked", EVENT_MACHINE.on_clicked_save_one)
         self.id_setmbz_but.connect("clicked", EVENT_MACHINE.on_set_mbz)

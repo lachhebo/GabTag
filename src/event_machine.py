@@ -4,12 +4,14 @@ from .selection_handler import SELECTION
 from .controller import Controller
 from .tools import add_filters, get_filenames_from_selection
 
-from gi.repository import Gio, Gtk
-
 import gi
 import gettext
 
 gi.require_version("Gtk", "4.0")
+gi.require_version("Adw", "1")
+
+from gi.repository import Adw, Gio, Gtk  # noqa: E402
+
 _ = gettext.gettext
 
 
@@ -169,6 +171,16 @@ class EventMachine:
                 Controller.update_view(name_files)
 
             self.is_real_selection = 1
+
+    def on_switch_page_clicked(self, widget):
+        self.is_real_selection = 0
+
+        current_page = Adw.Carousel.get_position(self.window.carousel)
+        new_page = self.window.carousel.get_nth_page((current_page + 1.0) % 2)
+
+        self.window.carousel.scroll_to(new_page, True)
+
+        self.is_real_selection = 1
 
 
 EVENT_MACHINE = EventMachine()
