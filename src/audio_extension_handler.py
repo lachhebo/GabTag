@@ -21,4 +21,4 @@ class AudioExtensionHandler:
 
     @abstractmethod
     def get_tags(self) -> Dict:
-        """return a dictionary containg the value of each tag"""
+        """return a dictionary containing the value of each tag"""

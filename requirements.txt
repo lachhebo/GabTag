@@ -4,8 +4,9 @@ musicbrainzngs
 pygobject
 Pillow
 flake8
-pytest 
+pytest
 pytest-coverage
 pytest-bdd
 pathlib
 mypy
+codespell
