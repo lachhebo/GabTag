@@ -14,6 +14,7 @@ lint:
 	black tests/
 	flake8 src
 	flake8 tests
+	codespell -S venv,po
 
 install:
 	flatpak install flathub org.gnome.Sdk/x86_64/42

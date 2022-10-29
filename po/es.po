@@ -75,7 +75,7 @@ msgid " seconds"
 msgstr " segundos"
 
 #: src/tools.py:109
-msgid "All Suported Images"
+msgid "All Supported Images"
 msgstr "Todas las imágenes soportadas"
 
 #: src/tools.py:115
