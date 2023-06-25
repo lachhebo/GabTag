@@ -44,7 +44,7 @@ class EventMachine:
 
     def on_about_clicked(self, widget, action: Gio.Action):
         if self.window is not None:
-            self.window.id_about_window.show()
+            self.window.id_about_window.set_visible(True)
 
     def on_open_clicked(self, widget):
         self.is_real_selection = 0
