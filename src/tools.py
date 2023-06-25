@@ -11,7 +11,7 @@ from .selection_handler import SELECTION
 
 gi.require_version("Gtk", "4.0")
 
-from gi.repository import Gtk  # noqa: E402
+from gi.repository import Gio, Gtk  # noqa: E402
 
 _ = gettext.gettext
 
@@ -105,21 +105,25 @@ def music_length_to_string(length):
 
 
 def add_filters(dialog):
+    store = Gio.ListStore.new(Gtk.FileFilter)
+
     filter_all = Gtk.FileFilter()
     filter_all.set_name(_("All Supported Images"))
     filter_all.add_mime_type("image/png")
     filter_all.add_mime_type("image/jpeg")
-    dialog.add_filter(filter_all)
+    store.append(filter_all)
 
     filter_png = Gtk.FileFilter()
     filter_png.set_name(_("PNG Images"))
     filter_png.add_mime_type("image/png")
-    dialog.add_filter(filter_png)
+    store.append(filter_png)
 
     filter_jpeg = Gtk.FileFilter()
     filter_jpeg.set_name(_("JPEG Images"))
     filter_jpeg.add_mime_type("image/jpeg")
-    dialog.add_filter(filter_jpeg)
+    store.append(filter_jpeg)
+
+    dialog.set_filters(store)
 
 
 def set_label(view_label, multiple_rows, value):
