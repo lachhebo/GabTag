@@ -4,8 +4,9 @@ from .selection_handler import SELECTION
 from .controller import Controller
 from .tools import add_filters, get_filenames_from_selection
 
-from gi.repository import Gio, Gtk
+from gi.repository import Gio, GLib, Gtk
 
+import logging
 import gi
 import gettext
 
@@ -43,31 +44,25 @@ class EventMachine:
 
     def on_about_clicked(self, widget, action: Gio.Action):
         if self.window is not None:
-            self.window.id_about_window.show()
+            self.window.id_about_window.set_visible(True)
 
     def on_open_clicked(self, widget):
         self.is_real_selection = 0
-        dialog = Gtk.FileChooserDialog(
-            title=_("Select a Folder"),
-            transient_for=self.window,
-            action=Gtk.FileChooserAction.SELECT_FOLDER,
-        )
-        dialog.add_buttons(_("_Open"), Gtk.ResponseType.OK)
-        dialog.add_buttons(_("_Cancel"), Gtk.ResponseType.CANCEL)
-        dialog.set_default_response(Gtk.ResponseType.OK)
+        dialog = Gtk.FileDialog.new()
+        dialog.set_title(_("Select a Folder"))
         dialog.set_modal(True)
 
-        dialog.connect("response", self.on_open_folder_chooser)
-
-        dialog.show()
+        dialog.select_folder(self.window, None, self.on_open_folder_chooser)
 
         self.is_real_selection = 1
 
-    def on_open_folder_chooser(self, dialog, response):
-        dialog.destroy()
-
-        if response == Gtk.ResponseType.OK:
-            Controller.change_directory(dialog.get_file().get_path())
+    def on_open_folder_chooser(self, dialog, result):
+        try:
+            gfile = dialog.select_folder_finish(result)
+        except GLib.Error as err:
+            logging.debug("Could not open folder: %s", err.message)
+        else:
+            Controller.change_directory(gfile.get_path())
 
     def on_menu_but_toggled(self, widget):
         pass
@@ -112,32 +107,24 @@ class EventMachine:
         if self.is_real_selection == 1:
             self.is_real_selection = 0
 
-            dialog = Gtk.FileChooserDialog(
-                title=_("Open a File"),
-                transient_for=self.window,
-                action=Gtk.FileChooserAction.OPEN,
-            )
-            dialog.add_buttons(_("_Open"), Gtk.ResponseType.OK)
-            dialog.add_buttons(_("_Cancel"), Gtk.ResponseType.CANCEL)
-            dialog.set_default_response(Gtk.ResponseType.OK)
+            dialog = Gtk.FileDialog.new()
+            dialog.set_title(_("Open a File"))
             dialog.set_modal(True)
 
             add_filters(dialog)
 
-            dialog.connect("response", self.on_open_image_chooser)
-
-            dialog.show()
+            dialog.open(self.window, None, self.on_open_image_chooser)
 
             self.is_real_selection = 1
 
-    def on_open_image_chooser(self, dialog, response):
-        dialog.destroy()
-
-        if response == Gtk.ResponseType.OK:
-            file_cover = dialog.get_file().get_path()
-
+    def on_open_image_chooser(self, dialog, result):
+        try:
+            gfile = dialog.open_finish(result)
+        except GLib.Error as err:
+            logging.debug("Could not open file: %s", err.message)
+        else:
             name_files = get_filenames_from_selection(SELECTION.selection)
-            MODEL.update_modifications(name_files, "cover", file_cover)
+            MODEL.update_modifications(name_files, "cover", gfile.get_path())
             Controller.update_view(name_files)
 
     def on_selected_changed(self, selection):
