@@ -1,43 +1,47 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# Turkish translation for gabtag.
+# Copyright (C) 2024 gabtag's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gabtag package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
+# Sabri Ünal <yakushabb@gmail.com>, 2024.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: gabtag\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-04-12 16:48+0300\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"PO-Revision-Date: 2024-04-12 16:55+0300\n"
+"Last-Translator: Sabri Ünal <yakushabb@gmail.com>\n"
+"Language-Team: Turkish <takim@gnome.org.tr>\n"
+"Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 3.4.2\n"
 
 #: data/com.github.lachhebo.Gabtag.desktop.in:3
 msgid "Gabtag"
-msgstr ""
+msgstr "Gabtag"
 
 #: data/com.github.lachhebo.Gabtag.desktop.in:4
 msgid "Modify audio tags"
-msgstr ""
+msgstr "Ses etiketlerini değiştir"
 
 #: data/com.github.lachhebo.Gabtag.appdata.xml.in:4
 msgid "GabTag"
-msgstr ""
+msgstr "GabTag"
 
 #: data/com.github.lachhebo.Gabtag.appdata.xml.in:13
 msgid "An audio tagging tool"
-msgstr ""
+msgstr "Ses etiketleme aracı"
 
 #: data/com.github.lachhebo.Gabtag.appdata.xml.in:15
 msgid ""
 "GabTag is a Linux audio tagging tool written in GTK 4 and Adwaita, which "
 "makes it very suitable for GTK based desktop users."
 msgstr ""
+"GabTag, GTK 4 ve Adwaita ile yazılmış Linux ses etiketleme aracıdır. GTK "
+"tabanlı masaüstü kullanıcıları için idealdir."
 
 #: data/com.github.lachhebo.Gabtag.appdata.xml.in:19
 msgid ""
@@ -45,156 +49,159 @@ msgid ""
 "possible to let GabTag automatically find tags for an audio file using "
 "MusicBrainz."
 msgstr ""
+"Kullanıcıların dosya seçmesine ve etiketlerini değiştirmesini sağlar. "
+"GabTag, MusicBrainz kullanarak ses dosyası için etiketleri kendiliğinden "
+"de bulabilir."
 
 #: data/com.github.lachhebo.Gabtag.appdata.xml.in:33
 msgid "Ismaël Lachheb"
-msgstr ""
+msgstr "Ismaël Lachheb"
 
 #: src/event_machine.py:52 src/window.ui:66
 msgid "Select a Folder"
-msgstr ""
+msgstr "Klasör Seç"
 
 #: src/event_machine.py:111
 msgid "Open a File"
-msgstr ""
+msgstr "Dosya Aç"
 
 #: src/tools.py:104
 msgid " minutes "
-msgstr ""
+msgstr " dakika "
 
 #: src/tools.py:104
 msgid " seconds"
-msgstr ""
+msgstr " saniye"
 
 #: src/tools.py:111
 msgid "All Supported Images"
-msgstr ""
+msgstr "Desteklenen Tüm Görüntüler"
 
 #: src/tools.py:117
 msgid "PNG Images"
-msgstr ""
+msgstr "PNG Görüntüler"
 
 #: src/tools.py:122
 msgid "JPEG Images"
-msgstr ""
+msgstr "JPEG Görüntüler"
 
 #: src/treeview.py:24
 msgid "Name"
-msgstr ""
+msgstr "Ad"
 
 #: src/treeview.py:29
 msgid "Data"
-msgstr ""
+msgstr "Veri"
 
 #: src/treeview.py:44 src/treeview.py:63
 msgid "No"
-msgstr ""
+msgstr "Hayır"
 
 #: src/treeview.py:61
 msgid "Yes"
-msgstr ""
+msgstr "Evet"
 
 #: src/window.ui:6
 msgid "Reset Files"
-msgstr ""
+msgstr "Dosyaları Sıfırla"
 
 #: src/window.ui:10
 msgid "Set Online Tags"
-msgstr ""
+msgstr "Çevrim İçi Etiketleri Ayarla"
 
 #: src/window.ui:16
 msgid "About GabTag"
-msgstr ""
+msgstr "GabTag Hakkında"
 
 #: src/window.ui:26
 msgid "Audio tagging tool."
-msgstr ""
+msgstr "Ses etiketleme aracı."
 
 #. TRANSLATORS: 'Name <email@domain.com>' or 'Name https://website.example'
 #: src/window.ui:35
 msgid "translator-credits"
-msgstr ""
+msgstr "Sabri Ünal <yakushabb@gmail.com>"
 
 #: src/window.ui:64
 msgid "_Open"
-msgstr ""
+msgstr "_Aç"
 
 #: src/window.ui:76
 msgid "Main Menu"
-msgstr ""
+msgstr "Ana Menü"
 
 #: src/window.ui:82
 msgid "Save All"
-msgstr ""
+msgstr "Tümünü Kaydet"
 
 #: src/window.ui:130
 msgid "Load a Cover"
-msgstr ""
+msgstr "Kapak Yükle"
 
 #: src/window.ui:146
 msgid "Cover"
-msgstr ""
+msgstr "Kapak"
 
 #: src/window.ui:157 src/window.ui:262
 msgid "Title"
-msgstr ""
+msgstr "Başlık"
 
 #: src/window.ui:162 src/window.ui:271
 msgid "Album"
-msgstr ""
+msgstr "Albüm"
 
 #: src/window.ui:168 src/window.ui:279
 msgid "Artist"
-msgstr ""
+msgstr "Sanatçı"
 
 #: src/window.ui:174 src/window.ui:287
 msgid "Genre"
-msgstr ""
+msgstr "Tür"
 
 #: src/window.ui:180 src/window.ui:295
 msgid "Track"
-msgstr ""
+msgstr "Parça"
 
 #: src/window.ui:186 src/window.ui:303
 msgid "Year"
-msgstr ""
+msgstr "Yıl"
 
 #: src/window.ui:193
 msgid "Length"
-msgstr ""
+msgstr "Uzunluk"
 
 #: src/window.ui:204
 msgid "Size"
-msgstr ""
+msgstr "Boyut"
 
 #: src/window.ui:220
 msgid "Reset"
-msgstr ""
+msgstr "Sıfırla"
 
 #: src/window.ui:221
 msgid "Remove Changes in Fields"
-msgstr ""
+msgstr "Alanlardaki Değişiklikleri Kaldır"
 
 #: src/window.ui:230
 msgid "Save"
-msgstr ""
+msgstr "Kaydet"
 
 #: src/window.ui:231
 msgid "Store Changes to File"
-msgstr ""
+msgstr "Değişiklikleri Dosyada Sakla"
 
 #: src/window.ui:242
 msgid "MusicBrainz Tags"
-msgstr ""
+msgstr "MusicBrainz Etiketleri"
 
 #: src/window.ui:313
 msgid "Set Tags"
-msgstr ""
+msgstr "Etiketleri Ayarla"
 
 #: src/window.ui:314
 msgid "Use MusicBrainz Tags"
-msgstr ""
+msgstr "MusicBrainz Etiketlerini Kullan"
 
 #: src/window_gtk.py:73
 msgid "Donate"
-msgstr ""
+msgstr "Bağış Yap"
