@@ -67,8 +67,8 @@ msgstr ""
 "wikia.com för att hitta låttexter på nätet."
 
 #: data/com.github.lachhebo.Gabtag.appdata.xml.in:38
-msgid "Ismaël Lachheb"
-msgstr "Ismaël Lachheb"
+msgid "Ismaïl Lachheb"
+msgstr "Ismaïl Lachheb"
 
 #: src/window.ui:17 src/window.ui:97
 msgid "About"

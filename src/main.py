@@ -1,6 +1,6 @@
 # main.py
 #
-# Copyright 2019 Ismaël Lachheb
+# Copyright 2019 Ismaïl Lachheb
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by

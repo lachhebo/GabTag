@@ -47,7 +47,7 @@ msgid ""
 msgstr ""
 
 #: data/com.github.lachhebo.Gabtag.appdata.xml.in:33
-msgid "Ismaël Lachheb"
+msgid "Ismaïl Lachheb"
 msgstr ""
 
 #: src/event_machine.py:52 src/window.ui:66

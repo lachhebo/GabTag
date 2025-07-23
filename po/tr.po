@@ -54,8 +54,8 @@ msgstr ""
 "de bulabilir."
 
 #: data/com.github.lachhebo.Gabtag.appdata.xml.in:33
-msgid "Ismaël Lachheb"
-msgstr "Ismaël Lachheb"
+msgid "Ismaïl Lachheb"
+msgstr "Ismaïl Lachheb"
 
 #: src/event_machine.py:52 src/window.ui:66
 msgid "Select a Folder"

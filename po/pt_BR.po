@@ -1,5 +1,5 @@
 # Portuguese translations for GabTag package.
-# Copyright (C) 2019 Ismaël Lachheb
+# Copyright (C) 2019 Ismaïl Lachheb
 # This file is distributed under the same license as the gabtag package.
 # Automatically generated, 2019.
 # Cleiton Floss <cleitonfloss@gmail.com>, 2019.
@@ -68,8 +68,8 @@ msgstr ""
 "áudio e lyrics.wikia.com para encontrar as letras online."
 
 #: data/com.github.lachhebo.Gabtag.appdata.xml.in:38
-msgid "Ismaël Lachheb"
-msgstr "Ismaël Lachheb"
+msgid "Ismaïl Lachheb"
+msgstr "Ismaïl Lachheb"
 
 #: src/window.ui:17 src/window.ui:97
 msgid "About"

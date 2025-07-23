@@ -30,7 +30,7 @@
     </screenshot>
   </screenshots>
   <update_contact>ismael.lachheb@protonmail.com</update_contact>
-  <developer_name translatable="no">Ismaël Lachheb</developer_name>
+  <developer_name translatable="no">Ismaïl Lachheb</developer_name>
   <launchable type="desktop-id">@APP_ID@.desktop</launchable>
   <url type="homepage">https://github.com/lachhebo/gabtag</url>
   <url type="bugtracker">https://github.com/lachhebo/gabtag/issues</url>
