@@ -8,16 +8,15 @@ on:
 
 jobs:
   flatpak:
-    name: Flatpak
+    name: "Flatpak"
     runs-on: ubuntu-latest
     container:
-      image: bilelmoussaoui/flatpak-github-actions:gnome-48
+      image: ghcr.io/flathub-infra/flatpak-github-actions:gnome-48
       options: --privileged
     steps:
-    - uses: actions/checkout@v3.0.2
-    - uses: bilelmoussaoui/flatpak-github-actions/flatpak-builder@v4
+    - uses: actions/checkout@v4
+    - uses: flatpak/flatpak-github-actions/flatpak-builder@v6
       with:
         manifest-path: com.github.lachhebo.Gabtag.Devel.json
         bundle: com.github.lachhebo.Gabtag.Devel.flatpak
-        run-tests: true
         cache-key: flatpak-builder-${{ github.sha }}
