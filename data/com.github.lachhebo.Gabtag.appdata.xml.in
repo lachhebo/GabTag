@@ -36,4 +36,9 @@
   <url type="bugtracker">https://github.com/lachhebo/gabtag/issues</url>
   <url type="donation">https://paypal.me/lachhebo</url>
   <content_rating type="oars-1.1" />
+	<keywords>
+	 <keyword>audio tagger</keyword>
+	 <keyword>music tagging</keyword>
+	 <keyword>audio metadata</keyword>
+	</keywords>
 </component>
