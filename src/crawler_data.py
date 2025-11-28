@@ -14,19 +14,19 @@ class DataCrawler:
         )
         self.tag_founds = {}
 
-    def crawl_one_file(self, name_file):
-        audio = get_file_manager(name_file)
+    def crawl_one_file(self, name_file, directory):
+        # audio = get_file_manager(name_file, directory)
 
-        tags = audio.get_tag_research()
+        # tags = audio.get_tag_research()
 
-        if tags[0] == "" and tags[1] == "":
-            self.search_by_filename(name_file)
-        elif tags[0] != "" and tags[1] != "":
-            self.search_by_title_and_artist(name_file, tags)
-        elif tags[1] == "":
-            self.search_by_title_and_album(name_file, tags)
-        elif tags[0] == "":
-            self.search_by_artist_and_name_file(name_file, tags)
+        #if tags[0] == "" and tags[1] == "":
+        self.search_by_filename(name_file)
+        #elif tags[0] != "" and tags[1] != "":
+        #    self.search_by_title_and_artist(name_file, tags)
+        #elif tags[1] == "":
+        #    self.search_by_title_and_album(name_file, tags)
+        #elif tags[0] == "":
+        #    self.search_by_artist_and_name_file(name_file, tags)
 
     def search_by_artist_and_name_file(self, name_file: str, tags: List):
         try:
@@ -63,19 +63,19 @@ class DataCrawler:
             mb.search_recordings(query=mz_query, limit=1)
         )
 
-    def update_data_crawled(self, modifications: Dict) -> List:
+    def update_data_crawled(self, modifications: Dict, directory: str) -> List:
         names_file = []
         for name_file in modifications:
-            self.crawl_one_file(name_file)
+            self.crawl_one_file(name_file, directory)
             names_file.append(name_file)
         return names_file
 
     def erase_data(self):
         self.tag_founds = {}
 
-    def get_data_from_online(self, file_list):
+    def get_data_from_online(self, file_list, directory: str):
         for name_file in file_list:
-            self.crawl_one_file(name_file)
+            self.crawl_one_file(name_file, directory)
 
     def get_tags(self, names_files):
 

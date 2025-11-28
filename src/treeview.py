@@ -61,6 +61,7 @@ class TreeView:
                     self.store.set_value(list_iterator, 1, _("Yes"))
                 else:
                     self.store.set_value(list_iterator, 1, _("No"))
+            i=0
 
     def manage_bold_font(self, name_files, add=True):
         line_number = -1
@@ -80,6 +81,7 @@ class TreeView:
                     self.store.set_value(list_iterator, 2, 700)
                 else:
                     self.store.set_value(list_iterator, 2, 400)
+            i=0
 
 
 TREE_VIEW = TreeView(None, None)
