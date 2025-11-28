@@ -69,12 +69,12 @@ class Model:
         if name_file not in self.modification:
             return False
 
-        #audio = get_file_manager(name_file, directory)
+        # audio = get_file_manager(name_file, directory)
         if name_file in self.audio_data:
             audio = self.audio_data[name_file]
         else:
             audio = get_file_manager(name_file, directory)
-            self.audio_data[name_file]=audio
+            self.audio_data[name_file] = audio
 
         audio_tag = audio.get_tags()
         tag_modified = self.modification[name_file]
@@ -95,7 +95,9 @@ class Model:
                     key, DATA_CRAWLER.tag_founds[name_file][key], name_file, directory
                 )
 
-    def save_modifications(self, tree_handler, directory: str, name_files: List =None) -> None:
+    def save_modifications(
+        self, tree_handler, directory: str, name_files: List = None
+    ) -> None:
         """
         For each key file in modification, we get the tags inside
         the nested dictionary and integer them on the audio tag file.
@@ -115,7 +117,7 @@ class Model:
                     audio = self.audio_data[filename]
                 else:
                     audio = get_file_manager(filename, directory)
-                    self.audio_data[filename]=audio
+                    self.audio_data[filename] = audio
 
                 # audio = get_file_manager(filename, directory=directory)
                 file_modifications = modifications[filename]
@@ -149,11 +151,10 @@ class Model:
             audio = self.audio_data[name_file]
         else:
             audio = get_file_manager(name_file, directory)
-            self.audio_data[name_file]=audio
+            self.audio_data[name_file] = audio
 
         for key in self.tags_dictionary:
             self.tags_dictionary[key] = audio.get_tag(key)
-
 
         if name_file in self.modification:
             self.update_tags_dictionary_with_modification(name_file)
@@ -167,7 +168,7 @@ class Model:
                     audio = self.audio_data[name_file]
                 else:
                     audio = get_file_manager(name_file, directory)
-                    self.audio_data[name_file]=audio
+                    self.audio_data[name_file] = audio
                 for key in same_tags:
                     if same_tags[key] is True:
                         if key not in ["length", "size"]:

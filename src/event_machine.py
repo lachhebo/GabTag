@@ -125,7 +125,9 @@ class EventMachine:
             logging.debug("Could not open file: %s", err.message)
         else:
             name_files = get_filenames_from_selection(SELECTION.selection)
-            MODEL.update_modifications(name_files, "cover", gfile.get_path(), DIR_MANAGER.directory)
+            MODEL.update_modifications(
+                name_files, "cover", gfile.get_path(), DIR_MANAGER.directory
+            )
             Controller.update_view(name_files)
 
     def on_selected_changed(self, selection):

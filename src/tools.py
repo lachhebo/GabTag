@@ -144,7 +144,7 @@ def set_text_widget_permission(text_widget, multiple_rows, value):
 
 def get_file_list(directory: str):
     file_list = []
-    for (_, _, file_name) in os.walk(directory):
+    for _, _, file_name in os.walk(directory):
         file_list.extend(file_name)
         break
 

@@ -26,7 +26,7 @@ class CrawlerDirectory(Thread):
         for file_list_slice in file_list_pool:
             thread = Thread(
                 target=DATA_CRAWLER.get_data_from_online,
-                args=(file_list_slice,DIR_MANAGER.directory),
+                args=(file_list_slice, DIR_MANAGER.directory),
             )
             thread.start()
             thread_pool.append(thread)

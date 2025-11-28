@@ -17,7 +17,9 @@ class CrawlerModification(Thread):
 
     def run(self):
 
-        names_file = DATA_CRAWLER.update_data_crawled(self.modification, DIR_MANAGER.directory)
+        names_file = DATA_CRAWLER.update_data_crawled(
+            self.modification, DIR_MANAGER.directory
+        )
         TREE_VIEW.manage_crawled(names_file)
 
         if is_selection_valid(self.file_names):
