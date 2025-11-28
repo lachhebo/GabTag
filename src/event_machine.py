@@ -149,7 +149,7 @@ class EventMachine:
         if self.is_real_selection == 1:
             self.is_real_selection = 0
             name_files = get_filenames_from_selection(SELECTION.selection)
-            MODEL.set_data_crawled(name_files)
+            MODEL.set_data_crawled(name_files, DIR_MANAGER.directory)
             Controller.update_view(name_files)
             self.is_real_selection = 1
 

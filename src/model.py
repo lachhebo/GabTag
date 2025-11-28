@@ -96,7 +96,7 @@ class Model:
                 )
 
     def save_modifications(
-        self, tree_handler, directory: str, name_files: List = None
+        self, tree_handler, directory: str, name_files: List[Any]
     ) -> None:
         """
         For each key file in modification, we get the tags inside
@@ -232,7 +232,7 @@ class Model:
 
         return True
 
-    def set_data_crawled(self, names_files: List):
+    def set_data_crawled(self, names_files: List,  directory: str):
         data_scrapped = DATA_CRAWLER.get_tags(names_files)
         new_data = {}
 
@@ -241,7 +241,7 @@ class Model:
                 new_data[key] = data_scrapped[key]
 
         for key in new_data:
-            self.update_modifications(names_files, key, new_data[key])
+            self.update_modifications(names_files, key, new_data[key], directory)
 
 
 MODEL = Model()
