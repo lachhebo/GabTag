@@ -21,9 +21,11 @@ class Model:
             "length": "",
             "size": "",
         }
+        self.audio_data = {}
 
     def reset_all(self) -> None:
         self.modification = {}
+        self.audio_data = {}
 
     def erase_tag(self) -> None:
         for key in self.tags_dictionary:
@@ -43,17 +45,17 @@ class Model:
             return self.modification[name_file]
 
     def update_modification(
-        self, tag_changed: str, new_value: str, name_file: str
+        self, tag_changed: str, new_value: str, name_file: str, directory: str
     ) -> bool:
         if name_file not in self.modification:
             self.modification[name_file] = {}
 
         self.modification[name_file][tag_changed] = new_value
 
-        return self.is_file_modified(name_file)
+        return self.is_file_modified(name_file, directory)
 
     def update_modifications(
-        self, file_names: List, tag_changed: str, new_value: str
+        self, file_names: List, tag_changed: str, new_value: str, directory: str
     ) -> None:
         """
         If the file name is already a key in the directory, add or update
@@ -61,13 +63,19 @@ class Model:
         """
 
         for name_file in file_names:
-            self.update_modification(tag_changed, new_value, name_file)
+            self.update_modification(tag_changed, new_value, name_file, directory)
 
-    def is_file_modified(self, name_file: str) -> bool:
+    def is_file_modified(self, name_file: str, directory: str) -> bool:
         if name_file not in self.modification:
             return False
 
-        audio = get_file_manager(name_file)
+        # audio = get_file_manager(name_file, directory)
+        if name_file in self.audio_data:
+            audio = self.audio_data[name_file]
+        else:
+            audio = get_file_manager(name_file, directory)
+            self.audio_data[name_file] = audio
+
         audio_tag = audio.get_tags()
         tag_modified = self.modification[name_file]
 
@@ -77,17 +85,19 @@ class Model:
 
         return False
 
-    def set_online_tags(self) -> None:
+    def set_online_tags(self, directory) -> None:
         for name_file in DATA_CRAWLER.tag_founds:
             if name_file not in self.modification:
                 self.modification[name_file] = {}
 
             for key in DATA_CRAWLER.tag_founds[name_file]:
                 self.update_modification(
-                    key, DATA_CRAWLER.tag_founds[name_file][key], name_file
+                    key, DATA_CRAWLER.tag_founds[name_file][key], name_file, directory
                 )
 
-    def save_modifications(self, tree_handler, name_files=None) -> None:
+    def save_modifications(
+        self, tree_handler, directory: str, name_files: List[Any]
+    ) -> None:
         """
         For each key file in modification, we get the tags inside
         the nested dictionary and integer them on the audio tag file.
@@ -103,19 +113,31 @@ class Model:
 
         for filename in modifications:
             if modifications[filename] is not None:
-                audio = get_file_manager(filename)
+                if filename in self.audio_data:
+                    audio = self.audio_data[filename]
+                else:
+                    audio = get_file_manager(filename, directory)
+                    self.audio_data[filename] = audio
+
+                # audio = get_file_manager(filename, directory=directory)
                 file_modifications = modifications[filename]
 
                 for key in self.tags_dictionary:
                     if key in file_modifications:
                         audio.set_tag(key, file_modifications[key])
+                        self.tags_dictionary[key] = file_modifications[key]
 
                 tree_handler.manage_bold_font([filename], add=False)
 
                 audio.save_modifications()
                 self.modification[filename] = {}
 
-    def set_tags_dictionary(self, names_file: List) -> int:
+            self.update_tags_dictionary_with_modification(filename)
+
+        # print("tags: ", self.tags_dictionary)
+        # print("modif: " , self.modification)
+
+    def set_tags_dictionary(self, names_file: List, directory: str) -> int:
         """
         First we get the selected rows, we get the tag value of the
         first row, if there are several rows, we check the tag value
@@ -125,20 +147,28 @@ class Model:
 
         name_file = names_file[0]
 
+        if name_file in self.audio_data:
+            audio = self.audio_data[name_file]
+        else:
+            audio = get_file_manager(name_file, directory)
+            self.audio_data[name_file] = audio
+
+        for key in self.tags_dictionary:
+            self.tags_dictionary[key] = audio.get_tag(key)
+
         if name_file in self.modification:
             self.update_tags_dictionary_with_modification(name_file)
-        else:
-            audio = get_file_manager(name_file)
-
-            for key in self.tags_dictionary:
-                self.tags_dictionary[key] = audio.get_tag(key)
 
         if len(names_file) > 1:
 
             same_tags = {key: True for key in self.tags_dictionary.keys()}
 
             for name_file in names_file:
-                audio = get_file_manager(name_file)
+                if name_file in self.audio_data:
+                    audio = self.audio_data[name_file]
+                else:
+                    audio = get_file_manager(name_file, directory)
+                    self.audio_data[name_file] = audio
                 for key in same_tags:
                     if same_tags[key] is True:
                         if key not in ["length", "size"]:
@@ -202,7 +232,7 @@ class Model:
 
         return True
 
-    def set_data_crawled(self, names_files: List):
+    def set_data_crawled(self, names_files: List,  directory: str):
         data_scrapped = DATA_CRAWLER.get_tags(names_files)
         new_data = {}
 
@@ -211,7 +241,7 @@ class Model:
                 new_data[key] = data_scrapped[key]
 
         for key in new_data:
-            self.update_modifications(names_files, key, new_data[key])
+            self.update_modifications(names_files, key, new_data[key], directory)
 
 
 MODEL = Model()

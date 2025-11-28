@@ -1,5 +1,5 @@
 import io
-import math
+# import math
 import gi
 from threading import RLock
 from PIL import Image
@@ -32,8 +32,8 @@ class View:
         self.size = None
 
         # size of the cover
-        self.cover_width = 250
-        self.cover_height = 250
+        self.cover_width = 1000
+        self.cover_height = 1000
         self.last_cover = ""
 
         self.title_mbz = None
@@ -110,9 +110,9 @@ class View:
 
             width = img.width  # The best fix i could find for the moment
             height = img.height
-            if glib_bytes.get_size() < width * height * 3:
-                width = math.sqrt(glib_bytes.get_size() / 3)
-                height = math.sqrt(glib_bytes.get_size() / 3)
+            # if glib_bytes.get_size() < width * height * 3:
+            #    width = math.sqrt(glib_bytes.get_size() / 3)
+            #    height = math.sqrt(glib_bytes.get_size() / 3)
 
             pixbuf = GdkPixbuf.Pixbuf.new_from_bytes(
                 glib_bytes,

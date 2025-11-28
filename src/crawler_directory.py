@@ -6,7 +6,7 @@ from .tools import get_file_list
 from .treeview import TREE_VIEW
 
 
-def split(file_list, n=4):
+def split(file_list, n=1):
     k, m = divmod(len(file_list), n)
     return (
         file_list[i * k + min(i, m): (i + 1) * k + min(i + 1, m)] for i in range(n)
@@ -26,7 +26,7 @@ class CrawlerDirectory(Thread):
         for file_list_slice in file_list_pool:
             thread = Thread(
                 target=DATA_CRAWLER.get_data_from_online,
-                args=(file_list_slice,),
+                args=(file_list_slice, DIR_MANAGER.directory),
             )
             thread.start()
             thread_pool.append(thread)

@@ -32,11 +32,7 @@ class Application(Adw.Application):
     devel = GObject.Property(type=bool, default=False)
 
     def __init__(self, app_id: str, version: str, devel: bool, *args, **kwargs):
-        super().__init__(
-            flags=Gio.ApplicationFlags.HANDLES_OPEN,
-            *args,
-            **kwargs
-        )
+        super().__init__(flags=Gio.ApplicationFlags.HANDLES_OPEN, *args, **kwargs)
 
         self.app_id = app_id
         self.version = version

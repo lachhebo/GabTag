@@ -2,11 +2,10 @@ from os import path
 
 from .audio_mp3_file_handler import Mp3FileHandler
 from .audio_ogg_file_handler import OggFileHandler
-from .dir_manager import DIR_MANAGER
 from .extension_manager import get_file_extension
 
 
-def get_file_manager(filename):
+def get_file_manager(filename, directory):
     """
     return the correct handler for the file
     input : a file (string), a directory (string)
@@ -15,8 +14,9 @@ def get_file_manager(filename):
 
     ext = get_file_extension(filename)
     if ext == "mp3":
-        return Mp3FileHandler(path.join(DIR_MANAGER.directory, filename))
+        # print("read mp3: ",filename)
+        return Mp3FileHandler(path.join(directory, filename))
     elif ext == "ogg":
-        return OggFileHandler(path.join(DIR_MANAGER.directory, filename))
+        return OggFileHandler(path.join(directory, filename))
     else:
         return None

@@ -1,6 +1,8 @@
 from threading import Thread
 from typing import Dict, List
 
+from .dir_manager import DIR_MANAGER
+
 from .crawler_data import DATA_CRAWLER
 from .tools import is_selection_valid
 from .treeview import TREE_VIEW
@@ -15,7 +17,9 @@ class CrawlerModification(Thread):
 
     def run(self):
 
-        names_file = DATA_CRAWLER.update_data_crawled(self.modification)
+        names_file = DATA_CRAWLER.update_data_crawled(
+            self.modification, DIR_MANAGER.directory
+        )
         TREE_VIEW.manage_crawled(names_file)
 
         if is_selection_valid(self.file_names):

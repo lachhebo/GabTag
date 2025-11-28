@@ -63,6 +63,7 @@ class EventMachine:
             logging.debug("Could not open folder: %s", err.message)
         else:
             Controller.change_directory(gfile.get_path())
+            # print("directory changed !", gfile.get_path())
 
     def on_menu_but_toggled(self, widget):
         pass
@@ -124,25 +125,31 @@ class EventMachine:
             logging.debug("Could not open file: %s", err.message)
         else:
             name_files = get_filenames_from_selection(SELECTION.selection)
-            MODEL.update_modifications(name_files, "cover", gfile.get_path())
+            MODEL.update_modifications(
+                name_files, "cover", gfile.get_path(), DIR_MANAGER.directory
+            )
             Controller.update_view(name_files)
 
     def on_selected_changed(self, selection):
         if self.is_real_selection == 1:
             self.is_real_selection = 0
-            self.update_selection(selection)
+            self.update_selection(selection, DIR_MANAGER.directory)
             self.is_real_selection = 1
 
-    def update_selection(self, selection):
-        SELECTION.selection = selection
-        name_files = get_filenames_from_selection(SELECTION.selection)
-        Controller.update_view(name_files)
+    def update_selection(self, selection, directory):
+        if SELECTION.has_directory_change is False:
+            SELECTION.selection = selection
+            name_files = get_filenames_from_selection(SELECTION.selection)
+            # print(name_files)
+            Controller.update_view(name_files)
+        else:
+            SELECTION.has_directory_change = False
 
     def on_set_mbz(self, widget):
         if self.is_real_selection == 1:
             self.is_real_selection = 0
             name_files = get_filenames_from_selection(SELECTION.selection)
-            MODEL.set_data_crawled(name_files)
+            MODEL.set_data_crawled(name_files, DIR_MANAGER.directory)
             Controller.update_view(name_files)
             self.is_real_selection = 1
 
@@ -150,7 +157,7 @@ class EventMachine:
         if DIR_MANAGER.is_open_directory and self.is_real_selection == 1:
             self.is_real_selection = 0
             name_files = get_filenames_from_selection(SELECTION.selection)
-            MODEL.set_online_tags()
+            MODEL.set_online_tags(DIR_MANAGER.directory)
 
             if SELECTION.selection is not None:
                 Controller.update_view(name_files)

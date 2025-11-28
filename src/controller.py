@@ -29,6 +29,7 @@ class Controller:
 
     @staticmethod
     def update_directory(directory: str):
+        SELECTION.update_dir()
         DIR_MANAGER.directory = directory
         DIR_MANAGER.file_names = get_file_list(directory)
         DIR_MANAGER.is_open_directory = True
@@ -59,15 +60,79 @@ class Controller:
     @staticmethod
     def crawl_thread_modification():
         thread = CrawlerModification(MODEL.modification.copy(), TREE_VIEW.store)
-        MODEL.save_modifications(TREE_VIEW)
+        MODEL.save_modifications(TREE_VIEW, directory=DIR_MANAGER.directory)
         thread.start()
 
     @staticmethod
     def save_some_files():
         name_files = get_filenames_from_selection(SELECTION.selection)
         thread = CrawlerModification(MODEL.modification.copy(), name_files)
-        MODEL.save_modifications(TREE_VIEW, name_files=name_files)
+        # print("save for some file")
+        MODEL.save_modifications(
+            TREE_VIEW, name_files=name_files, directory=DIR_MANAGER.directory
+        )
         thread.start()
+        VIEW.erase()
+        MODEL.erase_tag()
+
+        try:
+            multiple_line_selected = MODEL.set_tags_dictionary(
+                name_files, DIR_MANAGER.directory
+            )  # return a int
+            data_scrapped = DATA_CRAWLER.get_tags(name_files)
+            # print("model", MODEL.tags_dictionary)
+            # print("multiples", multiple_line_selected)
+            VIEW.show_tags(MODEL.tags_dictionary, multiple_line_selected)
+        except Exception:
+            # print("issue with bug", e)
+            VIEW.show_mbz(
+                {
+                    "title": "",
+                    "artist": "",
+                    "album": "",
+                    "track": "",
+                    "year": "",
+                    "genre": "",
+                    "cover": "",
+                }
+            )
+
+            VIEW.show_tags(
+                {
+                    "title": "",
+                    "album": "",
+                    "artist": "",
+                    "genre": "",
+                    "cover": "",
+                    "year": "",
+                    "track": "",
+                    "length": "",
+                    "size": "",
+                },
+                1,
+            )
+            return
+
+        if data_scrapped is None:
+            VIEW.show_mbz(
+                {
+                    "title": "",
+                    "artist": "",
+                    "album": "",
+                    "track": "",
+                    "year": "",
+                    "genre": "",
+                    "cover": "",
+                }
+            )
+
+            thread_waiting_mbz = Thread(
+                target=Controller.wait_for_mbz,
+                args=(name_files,),
+            )
+            thread_waiting_mbz.start()
+        else:
+            VIEW.show_mbz(data_scrapped)
 
     @staticmethod
     def reset_some_files():
@@ -77,14 +142,15 @@ class Controller:
     @staticmethod
     def change_directory(directory):
         VIEW.erase()
+        SELECTION.update_dir()
         Controller.update_directory(directory)
-        thread = CrawlerDirectory(DIR_MANAGER.directory)
+        thread = CrawlerDirectory(directory)
         thread.start()
 
     @staticmethod
     def react_to_user_modif(tag: str, text: str):
         name_files = get_filenames_from_selection(SELECTION.selection)
-        MODEL.update_modifications(name_files, tag, text)
+        MODEL.update_modifications(name_files, tag, text, DIR_MANAGER.directory)
         TREE_VIEW.manage_bold_font(name_files)
 
     @staticmethod
@@ -96,10 +162,41 @@ class Controller:
         VIEW.erase()
         MODEL.erase_tag()
 
-        multiple_line_selected = MODEL.set_tags_dictionary(names_files)  # return a int
-        data_scrapped = DATA_CRAWLER.get_tags(names_files)
+        try:
+            multiple_line_selected = MODEL.set_tags_dictionary(
+                names_files, DIR_MANAGER.directory
+            )  # return a int
+            data_scrapped = DATA_CRAWLER.get_tags(names_files)
+            VIEW.show_tags(MODEL.tags_dictionary, multiple_line_selected)
+        except Exception:
+            # print("issue with bug", e)
+            VIEW.show_mbz(
+                {
+                    "title": "",
+                    "artist": "",
+                    "album": "",
+                    "track": "",
+                    "year": "",
+                    "genre": "",
+                    "cover": "",
+                }
+            )
 
-        VIEW.show_tags(MODEL.tags_dictionary, multiple_line_selected)
+            VIEW.show_tags(
+                {
+                    "title": "",
+                    "album": "",
+                    "artist": "",
+                    "genre": "",
+                    "cover": "",
+                    "year": "",
+                    "track": "",
+                    "length": "",
+                    "size": "",
+                },
+                1,
+            )
+            return
 
         if data_scrapped is None:
             VIEW.show_mbz(
