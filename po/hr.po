@@ -1,0 +1,206 @@
+# Croatian translation for gabtag.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the gabtag package.
+# Milo Ivir <mail@milotype.de>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: gabtag\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-04-12 16:48+0300\n"
+"PO-Revision-Date: 2026-02-27 16:16+0100\n"
+"Last-Translator: Milo Ivir <mail@mivirtype.de>\n"
+"Language-Team: \n"
+"Language: hr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.8\n"
+
+#: data/com.github.lachhebo.Gabtag.desktop.in:3
+msgid "Gabtag"
+msgstr "Gabtag"
+
+#: data/com.github.lachhebo.Gabtag.desktop.in:4
+msgid "Modify audio tags"
+msgstr "Promijeni oznake audio snimki"
+
+#: data/com.github.lachhebo.Gabtag.appdata.xml.in:4
+msgid "GabTag"
+msgstr "GabTag"
+
+#: data/com.github.lachhebo.Gabtag.appdata.xml.in:13
+msgid "An audio tagging tool"
+msgstr "Alat za označavanje audio snimki"
+
+#: data/com.github.lachhebo.Gabtag.appdata.xml.in:15
+msgid ""
+"GabTag is a Linux audio tagging tool written in GTK 4 and Adwaita, which "
+"makes it very suitable for GTK based desktop users."
+msgstr ""
+"GabTag je Linux alat za označavanje audio snimki napisan u GTK 4 i "
+"Adwaita, što ga čini vrlo prikladnim za korisnike desktopa baziran na GTK-"
+"u."
+
+#: data/com.github.lachhebo.Gabtag.appdata.xml.in:19
+msgid ""
+"It allows users to select several files and modify their tags. It is also "
+"possible to let GabTag automatically find tags for an audio file using "
+"MusicBrainz."
+msgstr ""
+"Omogućuje korisnicima biranje nekoliko datoteka i promijeniti njihove "
+"oznake. Također je moguće omogućiti GabTagu da automatski pronađe oznake "
+"za audio datoteku koristeći MusicBrainz."
+
+#: data/com.github.lachhebo.Gabtag.appdata.xml.in:33
+msgid "Ismaïl Lachheb"
+msgstr "Ismaïl Lachheb"
+
+#: src/event_machine.py:52 src/window.ui:66
+msgid "Select a Folder"
+msgstr "Odaberi mapu"
+
+#: src/event_machine.py:111
+msgid "Open a File"
+msgstr "Otvori datoteku"
+
+#: src/tools.py:104
+msgid " minutes "
+msgstr " minute "
+
+#: src/tools.py:104
+msgid " seconds"
+msgstr " sekunde"
+
+#: src/tools.py:111
+msgid "All Supported Images"
+msgstr "Sve podržane slike"
+
+#: src/tools.py:117
+msgid "PNG Images"
+msgstr "PNG slike"
+
+#: src/tools.py:122
+msgid "JPEG Images"
+msgstr "JPEG slike"
+
+#: src/treeview.py:24
+msgid "Name"
+msgstr "Ime"
+
+#: src/treeview.py:29
+msgid "Data"
+msgstr "Podaci"
+
+#: src/treeview.py:44 src/treeview.py:63
+msgid "No"
+msgstr "Ne"
+
+#: src/treeview.py:61
+msgid "Yes"
+msgstr "Da"
+
+#: src/window.ui:6
+msgid "Reset Files"
+msgstr "Resetiraj datoteke"
+
+#: src/window.ui:10
+msgid "Set Online Tags"
+msgstr "Postavi online oznake"
+
+#: src/window.ui:16
+msgid "About GabTag"
+msgstr "O aplikaciji GabTag"
+
+#: src/window.ui:26
+msgid "Audio tagging tool."
+msgstr "Alat za označavanje audio snimki."
+
+#. TRANSLATORS: 'Name <email@domain.com>' or 'Name https://website.example'
+#: src/window.ui:35
+msgid "translator-credits"
+msgstr "Milo Ivir <mail@milotype.de>"
+
+#: src/window.ui:64
+msgid "_Open"
+msgstr "_Otvori"
+
+#: src/window.ui:76
+msgid "Main Menu"
+msgstr "Glavni izbornik"
+
+#: src/window.ui:82
+msgid "Save All"
+msgstr "Spremi sve"
+
+#: src/window.ui:130
+msgid "Load a Cover"
+msgstr "Učitaj omot"
+
+#: src/window.ui:146
+msgid "Cover"
+msgstr "Omot"
+
+#: src/window.ui:157 src/window.ui:262
+msgid "Title"
+msgstr "Naslov"
+
+#: src/window.ui:162 src/window.ui:271
+msgid "Album"
+msgstr "Album"
+
+#: src/window.ui:168 src/window.ui:279
+msgid "Artist"
+msgstr "Umjetnik"
+
+#: src/window.ui:174 src/window.ui:287
+msgid "Genre"
+msgstr "Žanr"
+
+#: src/window.ui:180 src/window.ui:295
+msgid "Track"
+msgstr "Pjesma"
+
+#: src/window.ui:186 src/window.ui:303
+msgid "Year"
+msgstr "Godina"
+
+#: src/window.ui:193
+msgid "Length"
+msgstr "Duljina"
+
+#: src/window.ui:204
+msgid "Size"
+msgstr "Veličina"
+
+#: src/window.ui:220
+msgid "Reset"
+msgstr "Resetiraj"
+
+#: src/window.ui:221
+msgid "Remove Changes in Fields"
+msgstr "Ukloni promjene u poljima"
+
+#: src/window.ui:230
+msgid "Save"
+msgstr "Spremi"
+
+#: src/window.ui:231
+msgid "Store Changes to File"
+msgstr "Spremi promjene u datoteku"
+
+#: src/window.ui:242
+msgid "MusicBrainz Tags"
+msgstr "MusicBrainz oznake"
+
+#: src/window.ui:313
+msgid "Set Tags"
+msgstr "Postavi oznake"
+
+#: src/window.ui:314
+msgid "Use MusicBrainz Tags"
+msgstr "Koristi MusicBrainz oznake"
+
+#: src/window_gtk.py:73
+msgid "Donate"
+msgstr "Doniraj"
